@@ -1,0 +1,103 @@
+<template>
+    <div id="Ingreso" class="d-flex flex-column">
+        <!-- LOGIN -->
+        <form
+            @submit.prevent="login(usuario)"
+            class="paralelogramo-primary p-2 d-flex flex-column flex-sm-row justify-content-between align-items-center"
+        >
+            <span class="mx-1"
+                >User:
+                <input
+                    class="w-50"
+                    type="email"
+                    placeholder="email"
+                    required
+                    v-model="usuario.email"
+            /></span>
+            <span class="mx-1"
+                >Clave:
+                <input
+                    class="w-50"
+                    type="password"
+                    placeholder="pass"
+                    required
+                    v-model="usuario.password"
+            /></span>
+            <div class="mx-1 d-flex flex-column">
+                <button type="submit" class="fw-bold">ENTRAR</button>
+                <button
+                    class="navbar-toggler fs-6 m-0 border-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#forgetPass"
+                    aria-controls="forgetPass"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    Olvide mi contraseña
+                </button>
+            </div>
+        </form>
+
+        <!-- RECOVER PASS -->
+        <form
+            @submit.prevent="recoveryPass(forgetPass)"
+            class="collapse paralelogramo-primary p-2 w-auto align-self-end"
+            id="forgetPass"
+        >
+            <input
+                class="w-100"
+                type="email"
+                placeholder="Ingrese correo de recuperación"
+                required
+                v-model="forgetPass.email"
+            />
+            <button type="submit" class="fw-bold">
+                RECUPERAR
+            </button>
+        </form>
+    </div>
+</template>
+
+<script>
+import { mapActions, mapState } from "vuex";
+
+export default {
+    name: "Ingreso",
+    data() {
+        return {
+            usuario: {
+                email: "puma888@gmail.com",
+                password: "puma888",
+            },
+            forgetPass: {
+                email: "puma888@gmail.com",
+            },
+        };
+    },
+    methods: {
+        ...mapActions(["login", "recoveryPass"]),
+    },
+    computed: {
+        ...mapState(["pass"]),
+    },
+};
+</script>
+
+<style scoped>
+#Ingreso * {
+    color: var(--bs-green);
+}
+button {
+    border: none;
+    background-color: transparent;
+}
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+input {
+    border: none;
+    border-bottom: 1px solid var(--bs-secondary);
+    background-color: transparent;
+}
+</style>

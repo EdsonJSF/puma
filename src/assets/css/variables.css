@@ -1,0 +1,18 @@
+:root {
+    --inclinacion: skewX(-15deg);
+
+    --bs-primary: #e9da00;
+    --bs-secondary: #0a6500;
+    /* --bs-success: ; */
+    --bs-info: #b5b5b5;
+    /* --bs-warning: ; */
+    /* --bs-danger: ; */
+    --bs-light: #ffffff80;
+    --bs-dark: #66666642;
+
+    --bs-yellow: #e9da00;
+    --bs-green: #0a6500;
+    --bs-white: #fff;
+    --bs-gray: #b5b5b5;
+    --bs-gray-dark: #66666642;
+}

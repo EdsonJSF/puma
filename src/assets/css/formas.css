@@ -1,0 +1,79 @@
+/* TRIANGLE */
+.triangulo-top,
+.triangulo-right,
+.triangulo-bottom,
+.triangulo-left {
+    content: none;
+    margin: 0.5rem;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    border: none;
+}
+.triangulo-top {
+    border-bottom: 1rem solid var(--bs-white);
+    border-right: 0.5rem solid transparent;
+    border-left: 0.5rem solid transparent;
+}
+.triangulo-right {
+    border-left: 1rem solid var(--bs-white);
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
+}
+.triangulo-bottom {
+    border-top: 1rem solid var(--bs-white);
+    border-right: 0.5rem solid transparent;
+    border-left: 0.5rem solid transparent;
+}
+.triangulo-left {
+    border-right: 1rem solid var(--bs-white);
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
+}
+
+/* PARALELOGRAMO */
+.paralelogramo,
+.paralelogramo-primary,
+.paralelogramo-secondary,
+.paralelogramo-gray {
+    position: relative;
+    height: fit-content;
+    z-index: 0;
+}
+.paralelogramo::before,
+.paralelogramo-primary::before,
+.paralelogramo-secondary::before,
+.paralelogramo-gray::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transform: var(--inclinacion);
+    z-index: -1;
+}
+.paralelogramo-primary::before {
+    background-color: var(--bs-primary);
+}
+.paralelogramo-secondary::before {
+    background-color: var(--bs-secondary);
+}
+.paralelogramo-gray::before {
+    width: auto;
+    height: 0.5rem;
+    background-color: var(--bs-gray);
+    transform: scaleX(1.05) var(--inclinacion);
+}
+
+/* PARALELOGRAMO Welcome & Routes */
+#Routes a.paralelogramo::before,
+#Welcome a.paralelogramo::before {
+    background-color: var(--bs-secondary);
+}
+#Routes a.paralelogramo:hover::before,
+#Routes a.paralelogramo.router-link-exact-active::before,
+#Welcome a.paralelogramo:hover::before,
+#Welcome a.paralelogramo.active::before {
+    background-color: var(--bs-primary);
+}
