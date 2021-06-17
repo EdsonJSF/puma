@@ -26,26 +26,26 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="(resumen, index) in resumenes"
+                                    v-for="(resumen, index) in ResumenVentas"
                                     :key="index"
                                 >
                                     <td class="border border-5 border-start-0 ">
-                                        {{ resumen.fecha }}
+                                        {{ resumen.Fecha.replace(/-/g, "/") }}
                                     </td>
                                     <td class="border border-5 ">
-                                        {{ resumen.numero }}
+                                        {{ resumen.Numero }}
                                     </td>
                                     <td class="border border-5 ">
-                                        {{ resumen.valor }}
+                                        {{ resumen.Valorapuesta }}
                                     </td>
                                     <td class="border border-5 ">
-                                        {{ resumen.loteria }}
+                                        {{ resumen.Loteria }}
                                     </td>
                                     <td class="border border-5 ">
-                                        {{ resumen.tipo }}
+                                        {{ resumen.Tipo }}
                                     </td>
                                     <td class="border border-5 border-end-0 ">
-                                        {{ resumen.vendedor }}
+                                        {{ resumen.Nombrepromotor }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import Finanzas from "@/components/login/Finanzas.vue";
 
 export default {
@@ -65,33 +67,33 @@ export default {
     components: { Finanzas },
     data() {
         return {
-            resumenes: [
-                {
-                    fecha: "data",
-                    numero: "data",
-                    valor: "data",
-                    loteria: "data",
-                    tipo: "data",
-                    vendedor: "data",
-                },
-                {
-                    fecha: "data",
-                    numero: "data",
-                    valor: "data",
-                    loteria: "data",
-                    tipo: "data",
-                    vendedor: "data",
-                },
-                {
-                    fecha: "data",
-                    numero: "data",
-                    valor: "data",
-                    loteria: "data",
-                    tipo: "data",
-                    vendedor: "data",
-                },
-            ],
+            ResumenVentas: [],
         };
+    },
+    methods: {
+        async getResumenVentas() {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/resumenventas?token=${this.token}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+
+                this.ResumenVentas = resData;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+    },
+    computed: {
+        ...mapState(["token", "prefix"]),
+    },
+    created() {
+        this.getResumenVentas();
     },
 };
 </script>

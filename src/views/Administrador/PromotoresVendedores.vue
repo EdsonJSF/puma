@@ -189,8 +189,7 @@ export default {
             }
         },
         onFileSelected(event) {
-            this.selectedFile = event.target.files[0];
-            console.log(event.target.files);
+            this.usuario.foto = event.target.files[0];
         },
         async addUsuario(newUser, rol) {
             if (this.crear) {

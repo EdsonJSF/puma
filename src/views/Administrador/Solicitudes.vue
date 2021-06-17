@@ -16,34 +16,36 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    v-for="(solicitud, index) in solicitudes"
+                                    v-for="(solicitud, index) in Solicitudes"
                                     :key="index"
                                     class="border-5 border-start-0 border-end-0"
                                 >
                                     <td class="bg-light">
-                                        {{ solicitud.name }}
+                                        {{ solicitud.Nombre }}
                                     </td>
                                     <td class="bg-light">
-                                        {{ solicitud.solicita }}
+                                        {{ solicitud.MobiliarioSolicitado }}
                                     </td>
                                     <td>
-                                        <button class="btn">
-                                            <button class="btn">
-                                                <img
-                                                    src="../../assets/img/icons/pen-solid.svg"
-                                                    alt=""
-                                                />
-                                            </button>
+                                        <button
+                                            @click="aprovSolicitudes(solicitud)"
+                                            class="btn"
+                                        >
+                                            <img
+                                                src="../../assets/img/icons/check-square-solid.svg"
+                                                alt=""
+                                            />
                                         </button>
                                     </td>
                                     <td>
-                                        <button class="btn">
-                                            <button class="btn">
-                                                <img
-                                                    src="../../assets/img/icons/trash-solid.svg"
-                                                    alt=""
-                                                />
-                                            </button>
+                                        <button
+                                            @click="negarSolicitudes(solicitud)"
+                                            class="btn"
+                                        >
+                                            <img
+                                                src="../../assets/img/icons/trash-solid.svg"
+                                                alt=""
+                                            />
                                         </button>
                                     </td>
                                 </tr>
@@ -60,28 +62,78 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import Profile from "@/components/login/Profile.vue";
 
 export default {
-    components: { Profile },
     name: "Solicitudes",
+    components: { Profile },
     data() {
         return {
-            solicitudes: [
-                {
-                    name: "data",
-                    solicita: "data",
-                },
-                {
-                    name: "data",
-                    solicita: "data",
-                },
-                {
-                    name: "data",
-                    solicita: "data",
-                },
-            ],
+            Solicitudes: [],
         };
+    },
+    methods: {
+        async getSolicitudes() {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/SolicitudesAdministrador?token=${this.token}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+
+                this.Solicitudes = resData;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async aprovSolicitudes(data) {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/modificarsolicitud/${data.id}?token=${this.token}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+                console.log(resData);
+
+                this.Solicitudes = resData;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async negarSolicitudes(data) {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/eliminarsolicitud/${data.id}?token=${this.token}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+                console.log(resData);
+
+                this.Solicitudes = resData;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+    },
+    computed: {
+        ...mapState(["token", "prefix"]),
+    },
+    created() {
+        this.getSolicitudes();
     },
 };
 </script>
