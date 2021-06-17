@@ -67,11 +67,11 @@ export default {
     data() {
         return {
             usuario: {
-                email: "puma888@gmail.com",
-                password: "puma888",
+                email: "puma1000@gmail.com",
+                password: "puma1000",
             },
             forgetPass: {
-                email: "puma888@gmail.com",
+                email: "puma1000@gmail.com",
             },
         };
     },

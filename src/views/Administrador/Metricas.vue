@@ -7,35 +7,35 @@
                 >
                     <div class="my-2"><h4>Números Bloqueados</h4></div>
                     <div
+                        v-for="(numero, index) in NumerosBloqueados"
+                        :key="index"
                         class="Metricas__numeros-numero d-flex justify-content-between my-1 px-2 py-1"
                     >
-                        <p class="fw-bolder m-0">555</p>
+                        <p class="fw-bolder m-0">
+                            {{ numero.Numero }}
+                        </p>
                         <div>
-                            <button class="btn">
+                            <button
+                                v-if="numero.Estado != 0"
+                                @click="blockNumero(numero)"
+                                class="btn"
+                            >
                                 <img
                                     src="../../assets/img/icons/check-square-solid.svg"
                                     alt=""
                                 />
                             </button>
-                            <button class="btn">
+                            <button
+                                v-else
+                                @click="desBlockNumero(numero)"
+                                class="btn"
+                            >
                                 <img
                                     src="../../assets/img/icons/trash-solid.svg"
                                     alt=""
                                 />
                             </button>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-around mt-4 mb-2">
-                        <button
-                            class="btn btn-light border border-dark rounded-pill"
-                        >
-                            Agregar +
-                        </button>
-                        <button
-                            class="btn btn-light border border-dark rounded-pill"
-                        >
-                            GUARDAR
-                        </button>
                     </div>
                 </div>
             </div>
@@ -46,8 +46,9 @@
                     >
                         <thead>
                             <th class="border border-5 border-start-0 ">
-                                Más vendidos
+                                Agregar
                             </th>
+                            <th class="border border-5 ">Más vendidos</th>
                             <th class="border border-5 ">Valor a apostar</th>
                             <th class="border border-5 ">Lotería</th>
                             <th class="border border-5 ">Tipo</th>
@@ -57,23 +58,34 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="(metrica, index) in metricas"
+                                v-for="(metrica, index) in Metricas"
                                 :key="index"
                             >
+                                <td
+                                    @click="addNumero(metrica)"
+                                    class="border border-5 border-start-0 "
+                                >
+                                    <button class="btn">
+                                        <img
+                                            src="../../assets/img/icons/plus-solid.svg"
+                                            alt=""
+                                        />
+                                    </button>
+                                </td>
                                 <td class="border border-5 border-start-0 ">
-                                    {{ metrica.vendido }}
+                                    {{ metrica.Numero }}
                                 </td>
                                 <td class="border border-5 ">
-                                    {{ metrica.valor }}
+                                    {{ metrica.Valorapuesta }}
                                 </td>
                                 <td class="border border-5 ">
-                                    {{ metrica.loteria }}
+                                    {{ metrica.Loteria }}
                                 </td>
                                 <td class="border border-5 ">
-                                    {{ metrica.tipo }}
+                                    {{ metrica.Tipo }}
                                 </td>
                                 <td class="border border-5 border-end-0">
-                                    {{ metrica.vendedor }}
+                                    {{ metrica.Nombrepromotor }}
                                 </td>
                             </tr>
                         </tbody>
@@ -85,34 +97,92 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     name: "Metricas",
     data() {
         return {
-            metricas: [
-                {
-                    vendido: "datos",
-                    valor: "datos",
-                    loteria: "datos",
-                    tipo: "datos",
-                    vendedor: "datos",
-                },
-                {
-                    vendido: "datos",
-                    valor: "datos",
-                    loteria: "datos",
-                    tipo: "datos",
-                    vendedor: "datos",
-                },
-                {
-                    vendido: "datos",
-                    valor: "datos",
-                    loteria: "datos",
-                    tipo: "datos",
-                    vendedor: "datos",
-                },
-            ],
+            newNumero: "",
+            Metricas: [],
+            NumerosBloqueados: [],
+            NumerosRepetidos: [],
         };
+    },
+    methods: {
+        async getMetricas() {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/metricas?token=${this.token}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+
+                this.Metricas = resData["Data completa del Modelo"];
+                this.NumerosBloqueados =
+                    resData["Numeros de loteria bloqueados"];
+                this.NumerosRepetidos =
+                    resData["Numeros de loteria mas repetidos"];
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        addNumero(data) {
+            this.NumerosBloqueados.push(data);
+            this.Metricas.splice(this.Metricas.indexOf(data), 1);
+        },
+        async blockNumero(data) {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/bloquearNumero/${data.id}?token=${this.token}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+
+                this.NumerosBloqueados[
+                    this.NumerosBloqueados.indexOf(data)
+                ].Estado = 0;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async desBlockNumero(data) {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/desbloquearNumero/${data.id}?token=${this.token}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+
+                this.NumerosBloqueados.splice(
+                    this.NumerosBloqueados.indexOf(data),
+                    1
+                );
+                this.Metricas.unshift(data);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+    },
+    computed: {
+        ...mapState(["token", "prefix"]),
+    },
+    created() {
+        this.getMetricas();
     },
 };
 </script>

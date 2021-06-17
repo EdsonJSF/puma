@@ -25,26 +25,32 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="(estadoCuenta, index) in estadoCuentas"
+                                v-for="(estadoCuenta,
+                                index) in EstadoCuentasReporte"
                                 :key="index"
                             >
                                 <td class="border border-5 border-start-0 ">
-                                    {{ estadoCuenta.fecha }}
+                                    {{
+                                        arreglarCadena(estadoCuenta.created_at)
+                                    }}
                                 </td>
                                 <td class="border border-5 ">
-                                    {{ estadoCuenta.transaccion }}
+                                    {{ estadoCuenta.Transaccion }}
+                                </td>
+                                <td class="border border-5">
+                                    {{ estadoCuenta.Monto }} COP
                                 </td>
                                 <td class="border border-5 ">
-                                    {{ estadoCuenta.monto }}
+                                    {{ estadoCuenta.Referencia }}
                                 </td>
                                 <td class="border border-5 ">
-                                    {{ estadoCuenta.referencia }}
-                                </td>
-                                <td class="border border-5 ">
-                                    {{ estadoCuenta.salida }}
+                                    {{ estadoCuenta.Tipo }}
                                 </td>
                                 <td class="border border-5 border-end-0 ">
-                                    {{ estadoCuenta.encargado }}
+                                    {{
+                                        EstadoCuentasVentas[index]
+                                            .Nombrepromotor
+                                    }}
                                 </td>
                             </tr>
                         </tbody>
@@ -56,6 +62,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import Finanzas from "@/components/login/Finanzas.vue";
 
 export default {
@@ -63,33 +71,38 @@ export default {
     components: { Finanzas },
     data() {
         return {
-            estadoCuentas: [
-                {
-                    fecha: "datos",
-                    transaccion: "datos",
-                    monto: "datos",
-                    referencia: "datos",
-                    salida: "datos",
-                    encargado: "datos",
-                },
-                {
-                    fecha: "datos",
-                    transaccion: "datos",
-                    monto: "datos",
-                    referencia: "datos",
-                    salida: "datos",
-                    encargado: "datos",
-                },
-                {
-                    fecha: "datos",
-                    transaccion: "datos",
-                    monto: "datos",
-                    referencia: "datos",
-                    salida: "datos",
-                    encargado: "datos",
-                },
-            ],
+            EstadoCuentasReporte: [],
+            EstadoCuentasVentas: [],
         };
+    },
+    methods: {
+        async getEstadoCuentas() {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/estadoDeCuenta?token=${this.token}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+                this.EstadoCuentasReporte = resData["Modelo Reporte"];
+                this.EstadoCuentasVentas = resData["Modelo Ventas"];
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        arreglarCadena(cadena) {
+            let newCadena = cadena.split("T");
+            return newCadena[0].replace(/-/g, "/");
+        },
+    },
+    computed: {
+        ...mapState(["token", "prefix"]),
+    },
+    created() {
+        this.getEstadoCuentas();
     },
 };
 </script>

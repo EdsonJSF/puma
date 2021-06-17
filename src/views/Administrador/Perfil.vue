@@ -11,16 +11,8 @@
 <script>
 import Profile from "@/components/login/Profile.vue";
 
-import { mapActions } from "vuex";
-
 export default {
     name: "Login",
     components: { Profile },
-    methods: {
-        ...mapActions(["getDataUsers"]),
-    },
-    created() {
-        this.getDataUsers();
-    },
 };
 </script>

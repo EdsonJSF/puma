@@ -2,7 +2,7 @@ import { createStore, storeKey } from "vuex";
 
 export default createStore({
     state: {
-        prefix: "http://192.168.0.107:8000",
+        prefix: "http://192.168.0.111:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -134,8 +134,25 @@ export default createStore({
                 console.log(error);
             }
         },
+        async recoveryPass({ commit }, forgetPass) {
+            try {
+                const res = await fetch(
+                    `${this.state.prefix}/api/recoveryPass`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(forgetPass),
+                    }
+                );
+                const resData = await res.json();
+                commit("setPass", resData);
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async login({ commit }, usuario) {
-            console.log(usuario);
             try {
                 const res = await fetch(`${this.state.prefix}/api/login`, {
                     method: "POST",
@@ -153,8 +170,6 @@ export default createStore({
 
                 commit("setToken", token);
                 commit("setLoginRoutes", rol);
-
-                console.log(rol);
 
                 window.location += "login";
             } catch (error) {
@@ -181,43 +196,8 @@ export default createStore({
 
             window.location = window.location.origin;
         },
-        async recoveryPass({ commit }, forgetPass) {
-            try {
-                const res = await fetch(
-                    `${this.state.prefix}/api/recoveryPass`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(forgetPass),
-                    }
-                );
-                const resData = await res.json();
-                commit("setPass", resData);
-            } catch (error) {
-                console.log(error);
-            }
-        },
 
         /* CONSULTAS ADMINISTRADOR */
-        async getDataUsers({ commit }) {
-            try {
-                const res = await fetch(
-                    `${this.state.prefix}/api/administrador/resumenventas?token=${this.state.token}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-                const resData = await res.json();
-                console.log(resData);
-                commit("setDataUsers", resData);
-            } catch (error) {
-                console.log(error);
-            }
-        },
         async sendReporte({ commit }, reporte) {
             console.log(reporte);
             // try {
