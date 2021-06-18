@@ -28,7 +28,7 @@
                                     </td>
                                     <td>
                                         <button
-                                            @click="aprovSolicitudes(solicitud)"
+                                            @click="aprobSolicitudes(solicitud)"
                                             class="btn"
                                         >
                                             <img
@@ -72,6 +72,8 @@ export default {
     data() {
         return {
             Solicitudes: [],
+            SolicitudesAceptadas: [],
+            SolicitudesRechazadas: [],
         };
     },
     methods: {
@@ -92,10 +94,10 @@ export default {
                 console.log(error);
             }
         },
-        async aprovSolicitudes(data) {
+        async getSolicitudesAceptadas() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/modificarsolicitud/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/administrador/solicitudesAceptadas?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -105,25 +107,70 @@ export default {
                 const resData = await res.json();
                 console.log(resData);
 
-                this.Solicitudes = resData;
+                this.SolicitudesAceptadas = resData["Solicitudes Aceptadas"];
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getSolicitudesRechazadas() {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/solicitudesRechazadas?token=${this.token}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const resData = await res.json();
+                console.log(resData);
+
+                this.SolicitudesRechazadas = resData["Solicitudes Rechazadas"];
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async aprobSolicitudes(data) {
+            console.log(this.SolicitudesAceptadas);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/administrador/modificarsolicitud/${data.id}?token=${this.token}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                const resData = await res.json();
+
+                this.SolicitudesAceptadas.unshift(data);
+                this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
+
+                console.log(this.SolicitudesAceptadas);
             } catch (error) {
                 console.log(error);
             }
         },
         async negarSolicitudes(data) {
+            console.log(this.SolicitudesRechazadas);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/administrador/eliminarsolicitud/${data.id}?token=${this.token}`,
                     {
+                        method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
                         },
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
 
-                this.Solicitudes = resData;
+                this.SolicitudesRechazadas.unshift(data);
+                this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
+
+                console.log(this.SolicitudesRechazadas);
             } catch (error) {
                 console.log(error);
             }
@@ -134,6 +181,8 @@ export default {
     },
     created() {
         this.getSolicitudes();
+        this.getSolicitudesAceptadas();
+        this.getSolicitudesRechazadas();
     },
 };
 </script>

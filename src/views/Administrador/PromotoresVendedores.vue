@@ -4,85 +4,101 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <form
                     @submit.prevent="addUsuario(usuario, rol)"
-                    class="d-flex flex-column"
+                    class="d-flex flex-column form-signin"
                 >
-                    <!-- <div>
-                        <input
-                            type="file"
-                            @change="onFileSelected"
-                            accept="video/*, image/*"
-                        />
-                    </div> -->
-                    <div>
-                        <input
-                            v-model="usuario.name"
-                            type="name"
-                            placeholder="name"
-                            required
-                        />
-                        <input
-                            v-model="usuario.email"
-                            type="email"
-                            placeholder="email"
-                            required
-                        />
-                        <input
+                    <div class="form-label-group w-100">
+                        <div>
+                            <input
+                                type="file"
+                                class="form-control"
+                                @change="onFileSelected"
+                                accept="image/*"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <input
+                                v-model="usuario.name"
+                                class="form-control"
+                                type="name"
+                                placeholder="name"
+                                required
+                            />
+                            <input
+                                v-model="usuario.email"
+                                class="form-control"
+                                type="email"
+                                placeholder="email"
+                                required
+                            />
+                            <input
+                                v-if="crear"
+                                class="form-control"
+                                v-model="usuario.password"
+                                type="password"
+                                minlength="6"
+                                placeholder="password"
+                                required
+                            />
+                            <input
+                                v-model="usuario.dni"
+                                class="form-control"
+                                type="number"
+                                placeholder="dni"
+                                required
+                            />
+                            <input
+                                v-model="usuario.ganancia"
+                                class="form-control"
+                                type="number"
+                                placeholder="ganancia"
+                                required
+                            />
+                            <input
+                                v-model="usuario.porcentaje"
+                                class="form-control"
+                                type="number"
+                                max="50"
+                                placeholder="porcentaje"
+                                required
+                            />
+                            <input
+                                v-model="usuario.direccion"
+                                class="form-control"
+                                type="direccion"
+                                placeholder="direccion"
+                                required
+                            />
+                            <input
+                                v-model="usuario.telefono"
+                                class="form-control"
+                                type="phone"
+                                placeholder="telefono"
+                                required
+                            />
+                            <select v-model="rol" class="form-control" required>
+                                <option value="Administrador" selected
+                                    >Administrador</option
+                                >
+                                <option value="Promotor">Promotor</option>
+                                <option value="Vendedor">Vendedor</option>
+                            </select>
+                        </div>
+                        <button
                             v-if="crear"
-                            v-model="usuario.password"
-                            type="password"
-                            minlength="6"
-                            placeholder="password"
-                            required
-                        />
-                        <input
-                            v-model="usuario.dni"
-                            type="number"
-                            placeholder="dni"
-                            required
-                        />
-                        <input
-                            v-model="usuario.ganancia"
-                            type="number"
-                            placeholder="ganancia"
-                            required
-                        />
-                        <input
-                            v-model="usuario.porcentaje"
-                            type="number"
-                            max="50"
-                            placeholder="porcentaje"
-                            required
-                        />
-                        <input
-                            v-model="usuario.direccion"
-                            type="direccion"
-                            placeholder="direccion"
-                            required
-                        />
-                        <input
-                            v-model="usuario.telefono"
-                            type="phone"
-                            placeholder="telefono"
-                            required
-                        />
-                        <select v-model="rol" required>
-                            <option value="Administrador" selected
-                                >Administrador</option
-                            >
-                            <option value="Promotor">Promotor</option>
-                            <option value="Vendedor">Vendedor</option>
-                        </select>
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            Crear
+                        </button>
+                        <button
+                            v-else
+                            type="submit"
+                            class="btn btn-primary btn-sm"
+                        >
+                            Editar
+                        </button>
                     </div>
-                    <button
-                        v-if="crear"
-                        type="submit"
-                        class="btn btn-primary btn-sm"
-                    >
-                        Crear
-                    </button>
-                    <button v-else type="submit" class="btn btn-primary btn-sm">
-                        Editar
-                    </button>
                 </form>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
@@ -157,15 +173,15 @@ export default {
         return {
             PromotoresVendedores: [],
             usuario: {
-                name: "eds",
-                email: "eds@eds.eds",
-                password: "eds123",
-                dni: "123",
-                ganancia: "123",
-                porcentaje: "10",
-                foto: "sadas",
-                direccion: "eds",
-                telefono: "123",
+                name: "",
+                email: "",
+                password: "",
+                dni: "",
+                ganancia: "",
+                porcentaje: "",
+                foto: "",
+                direccion: "",
+                telefono: "",
             },
             rol: "",
             crear: true,
