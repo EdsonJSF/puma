@@ -20,7 +20,7 @@
                             class="bg-transparent triangulo-right"
                         ></button>
                     </div>
-                    "Ubicanos"
+                    <!-- "Ubicanos" -->
                 </div>
             </div>
             <div class="paralelogramo-gray"></div>

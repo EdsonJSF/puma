@@ -20,7 +20,7 @@
                             class="bg-transparent triangulo-right"
                         ></button>
                     </div>
-                    "Resultados"
+                    <!-- "Resultados" -->
                 </div>
             </div>
             <div class="paralelogramo-gray"></div>

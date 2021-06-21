@@ -1,8 +1,10 @@
 import { createStore, storeKey } from "vuex";
 
+import router from "../router";
+
 export default createStore({
     state: {
-        prefix: "http://192.168.0.111:8000",
+        prefix: "http://pumab.neuron.com.co/public",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -170,8 +172,7 @@ export default createStore({
 
                 commit("setToken", token);
                 commit("setLoginRoutes", rol);
-
-                window.location += "login";
+                router.push("/login");
             } catch (error) {
                 console.log(error);
             }
@@ -194,37 +195,7 @@ export default createStore({
             commit("setToken", null);
             commit("setLoginRoutes", null);
 
-            window.location = window.location.origin;
-        },
-
-        /* CONSULTAS ADMINISTRADOR */
-        async sendReporte({ commit }, reporte) {
-            console.log(reporte);
-            // try {
-            //     const res = await fetch(`${this.state.prefix}/api/customize`, {
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //     });
-            //     const resData = await res.json();
-            //     commit("setDataHome", resData);
-            // } catch (error) {
-            //     console.log(error);
-            // }
-        },
-        async sendGaleria({ commit }, galeria) {
-            console.log(galeria);
-            // try {
-            //     const res = await fetch(`${this.state.prefix}/api/customize`, {
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //     });
-            //     const resData = await res.json();
-            //     commit("setDataHome", resData);
-            // } catch (error) {
-            //     console.log(error);
-            // }
+            router.push("/");
         },
     },
     modules: {},

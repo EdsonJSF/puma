@@ -6,7 +6,7 @@
             </div>
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="ReportarGastos__options rounded-3 m-1 py-1">
-                    <form @submit.prevent="sendReporte(reporte)">
+                    <form @submit.prevent="">
                         <label>
                             Seleccione
                             <div>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState } from "vuex";
 
 import Finanzas from "@/components/login/Finanzas.vue";
 
@@ -125,9 +125,6 @@ export default {
             salidas: ["Acumulado", "Caja"],
             empleados: ["Edson", "Italo", "Dilson"],
         };
-    },
-    methods: {
-        ...mapActions(["sendReporte"]),
     },
 };
 </script>

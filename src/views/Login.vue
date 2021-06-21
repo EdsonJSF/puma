@@ -1,7 +1,5 @@
 <template>
-    <div id="Login">
-        Pagina Principal del Login
-    </div>
+    <div id="Login"></div>
 </template>
 
 <script>
