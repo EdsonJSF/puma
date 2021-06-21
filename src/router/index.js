@@ -183,6 +183,13 @@ const routes = [
             ),
         meta: { rutaProtegida: true },
     },
+    {
+        path: "/:pathMatch(.*)*",
+        component: () =>
+            import(
+                /* webpackChunkName: "Solicitudes" */ "../views/NotFound404.vue"
+            ),
+    },
 ];
 
 const router = createRouter({

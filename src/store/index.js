@@ -5,6 +5,7 @@ import router from "../router";
 export default createStore({
     state: {
         prefix: "http://pumab.neuron.com.co/public",
+        // prefix: "http://127.0.0.1:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,

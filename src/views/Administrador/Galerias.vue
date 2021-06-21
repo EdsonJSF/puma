@@ -45,6 +45,7 @@
                     <form
                         @submit.prevent="sendGalerias(galeria, galeriaTipo)"
                         class="row"
+                        enctype="multipart/form-data"
                     >
                         <div class="col-12 col-md-6">
                             <div
@@ -57,9 +58,14 @@
                                     required
                                 />
                                 <div class="d-flex justify-content-around">
-                                    <img src="#" alt="" />
-                                    <img src="#" alt="" />
-                                    <img src="#" alt="" />
+                                    <figure>
+                                        <img
+                                            :src="imagen"
+                                            width="150"
+                                            height="150"
+                                            alt="Imagen Seleccionada"
+                                        />
+                                    </figure>
                                 </div>
                                 <div>
                                     <select v-model="galeriaTipo" required>
@@ -132,18 +138,28 @@ export default {
                 titulo: "",
                 contenido: "",
                 rutaVideo: "",
-                orden: 1,
-                tipo: 1,
+                orden: "1",
+                tipo: "1",
                 link: "",
             },
-            fileSelected: "",
+            imagenSeleccionada: "",
             galeriaTipo: "",
             Galerias: [],
         };
     },
     methods: {
         onFileSelected(event) {
-            this.fileSelected = event.target.files[0];
+            const file = event.target.files[0];
+            this.galeria.rutaVideo = file;
+            this.galeria.rutaImagen = file;
+            this.mostrarImagen(file);
+        },
+        mostrarImagen(file) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.imagenSeleccionada = e.target.result;
+            };
+            reader.readAsDataURL(file);
         },
         async getGalerias() {
             try {
@@ -167,22 +183,19 @@ export default {
         async sendGalerias(galeria, tipo) {
             const formData = new FormData();
 
-            formData.append("rutaImagen", this.fileSelected);
+            formData.append("rutaImagen", galeria.rutaImagen);
             formData.append("titulo", galeria.titulo);
             formData.append("contenido", galeria.contenido);
-            formData.append("rutaVideo", this.fileSelected);
+            formData.append("rutaVideo", galeria.rutaVideo);
             formData.append("orden", galeria.orden);
             formData.append("tipo", galeria.tipo);
             formData.append("link", galeria.link);
-
+            console.log(galeria.rutaImagen, galeria);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/administrador/customize?token=${this.token}`,
                     {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
                         body: formData,
                     }
                 );
@@ -296,6 +309,9 @@ export default {
     },
     computed: {
         ...mapState(["token", "prefix"]),
+        imagen() {
+            return this.imagenSeleccionada;
+        },
     },
     created() {
         this.getGalerias();
