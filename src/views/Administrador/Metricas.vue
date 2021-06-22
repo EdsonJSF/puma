@@ -113,7 +113,7 @@ export default {
         async getMetricas() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/metricas?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/metricas?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -138,7 +138,7 @@ export default {
         async blockNumero(data) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/bloquearNumero/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/bloquearNumero/${data.id}?token=${this.token}`,
                     {
                         method: "DELETE",
                         headers: {
@@ -158,7 +158,7 @@ export default {
         async desBlockNumero(data) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/desbloquearNumero/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/desbloquearNumero/${data.id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {
@@ -179,7 +179,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["token", "prefix"]),
+        ...mapState(["token", "rol", "prefix"]),
     },
     created() {
         this.getMetricas();

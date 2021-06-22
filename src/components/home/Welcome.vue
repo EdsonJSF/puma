@@ -1,5 +1,5 @@
 <template>
-    <div id="Welcome" class="w-100 py-2 px-1 px-sm-3 px-md-4 px-lg-5">
+    <div class="Welcome w-100 py-2 px-1 px-sm-3 px-md-4 px-lg-5">
         <div class="d-flex flex-column flex-md-row justify-content-between">
             <div class="d-flex ms-0 ms-md-4">
                 <div class="paralelogramo-primary ms-3 mt-2 mt-md-4">
@@ -92,14 +92,14 @@ export default {
 </script>
 
 <style scoped>
-#Welcome a {
+.Welcome a {
     font-weight: 500;
     text-decoration: none;
     color: var(--bs-white);
     cursor: pointer;
 }
-#Welcome a:hover,
-#Welcome a.active {
+.Welcome a:hover,
+.Welcome a.active {
     color: var(--bs-green);
 }
 </style>

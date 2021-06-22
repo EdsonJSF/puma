@@ -31,10 +31,11 @@ export default createStore({
         ],
 
         token: null,
+        rol: null,
+        loginRoutes: null,
+        
         pass: null,
         message: null,
-        loginRoutes: null,
-        dataUsers: null,
     },
     mutations: {
         setDataHome(state, dataHome) {
@@ -47,18 +48,11 @@ export default createStore({
         setToken(state, token) {
             state.token = token;
         },
-        setPass(state, pass) {
-            state.pass = pass;
-        },
-        setMessage(state, message) {
-            state.message = message;
-        },
-
-        setDataUsers(state, dataUsers) {
-            state.dataUsers = dataUsers;
+        setRol(state, rol) {
+            state.rol = rol;
         },
         setLoginRoutes(state, rol) {
-            if (rol === "Administrador") {
+            if (rol === "administrador") {
                 state.loginRoutes = {
                     rutas: [
                         "perfil",
@@ -72,7 +66,7 @@ export default createStore({
                     ],
                     userRol: rol,
                 };
-            } else if (rol === "Promotor") {
+            } else if (rol === "promotor") {
                 state.loginRoutes = {
                     rutas: [
                         "perfil",
@@ -84,7 +78,7 @@ export default createStore({
                     ],
                     userRol: rol,
                 };
-            } else if (rol === "Vendedor") {
+            } else if (rol === "vendedor") {
                 state.loginRoutes = {
                     rutas: [
                         "perfil",
@@ -100,6 +94,14 @@ export default createStore({
                     userRol: null,
                 };
             }
+        },
+
+        
+        setPass(state, pass) {
+            state.pass = pass;
+        },
+        setMessage(state, message) {
+            state.message = message;
         },
     },
     actions: {
@@ -166,12 +168,13 @@ export default createStore({
                 });
                 const resData = await res.json();
                 const token = resData.token;
-                const rol = resData.usuario.roles[0].name;
+                const rol = resData.usuario.roles[0].name.toLowerCase();
 
                 localStorage.setItem("token", token);
                 localStorage.setItem("rol", rol);
 
                 commit("setToken", token);
+                commit("setRol", rol);
                 commit("setLoginRoutes", rol);
                 router.push("/login");
             } catch (error) {
@@ -183,9 +186,12 @@ export default createStore({
             const rol = localStorage.getItem("rol");
             if (token && rol) {
                 commit("setToken", token);
+                commit("setRol", rol);
                 commit("setLoginRoutes", rol);
+                router.push("/login");
             } else {
                 commit("setToken", null);
+                commit("setRol", null);
                 commit("setLoginRoutes", null);
             }
         },
@@ -194,6 +200,7 @@ export default createStore({
             localStorage.removeItem("rol");
 
             commit("setToken", null);
+            commit("setRol", null);
             commit("setLoginRoutes", null);
 
             router.push("/");

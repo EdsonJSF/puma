@@ -1,5 +1,5 @@
 <template>
-    <div id="NotFound404">
+    <div class="NotFound404">
         Not Found (404)
     </div>
 </template>

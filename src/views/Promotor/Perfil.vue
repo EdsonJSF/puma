@@ -1,8 +1,8 @@
 <template>
-    <div id="Login">
+    <div class="Login">
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
-                Perofil del Promotor
+                Perfil del Promotor
                 <Profile />
             </div>
         </div>

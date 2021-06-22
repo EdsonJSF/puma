@@ -1,15 +1,16 @@
 <template>
-    <div id="Solicitudes">
-        <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
-                Solicitudes del Promotor
-            </div>
-        </div>
+    <div class="Solicitudes">
+        <Solicitud />
     </div>
 </template>
 
 <script>
+import Solicitud from "@/components/login/solicitudes/Solicitud.vue";
+
 export default {
     name: "Solicitudes",
+    components: {
+        Solicitud,
+    },
 };
 </script>

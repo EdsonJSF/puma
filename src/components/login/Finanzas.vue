@@ -1,5 +1,5 @@
 <template>
-    <div id="Finanzas">
+    <div class="Finanzas">
         <div class="d-flex justify-content-center m-1 py-1">
             <table>
                 <tbody class="text-start">
@@ -43,7 +43,7 @@ export default {
         async getFinanzas() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/finanzas?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/finanzas?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["token", "prefix"]),
+        ...mapState(["token", "rol", "prefix"]),
     },
     created() {
         this.getFinanzas();

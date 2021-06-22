@@ -1,5 +1,5 @@
 <template>
-    <div id="Routes" class="d-flex flex-column mx-2">
+    <div class="Routes d-flex flex-column mx-2">
         <div class=" d-flex flex-wrap justify-content-center">
             <router-link
                 v-for="(ruta, index) in loginRoutes.rutas"
@@ -31,14 +31,14 @@ export default {
 };
 </script>
 <style scoped>
-#Routes a {
+.Routes a {
     font-weight: 500;
     text-decoration: none;
     color: var(--bs-white);
     cursor: pointer;
 }
-#Routes a:hover,
-#Routes a.router-link-exact-active {
+.Routes a:hover,
+.Routes a.router-link-exact-active {
     color: var(--bs-green);
 }
 </style>

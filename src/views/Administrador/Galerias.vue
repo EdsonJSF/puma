@@ -164,7 +164,7 @@ export default {
         async getGalerias() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/customize?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -190,17 +190,15 @@ export default {
             formData.append("orden", galeria.orden);
             formData.append("tipo", galeria.tipo);
             formData.append("link", galeria.link);
-            console.log(galeria.rutaImagen, galeria);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/customize?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
                     {
                         method: "POST",
                         body: formData,
                     }
                 );
                 const resData = await res.text();
-                console.log(resData);
 
                 // if (tipo === "Resultados") {
                 //     sendResultados(galeria);
@@ -219,7 +217,7 @@ export default {
         async sendResultados(galeria) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/galeriasResultados?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/galeriasResultados?token=${this.token}`,
                     {
                         method: "POST",
                         headers: {
@@ -229,7 +227,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
             } catch (error) {
                 console.log(error);
             }
@@ -237,7 +234,7 @@ export default {
         async sendSorteos(galeria) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/galeriasSorteos?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/galeriasSorteos?token=${this.token}`,
                     {
                         method: "POST",
                         headers: {
@@ -247,7 +244,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
             } catch (error) {
                 console.log(error);
             }
@@ -255,7 +251,7 @@ export default {
         async sendUbicanos(galeria) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/galeriasUbicanos?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/galeriasUbicanos?token=${this.token}`,
                     {
                         method: "POST",
                         headers: {
@@ -265,7 +261,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
             } catch (error) {
                 console.log(error);
             }
@@ -273,7 +268,7 @@ export default {
         async sendTestimonios(galeria) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/galeriasTestimonios?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/galeriasTestimonios?token=${this.token}`,
                     {
                         method: "POST",
                         headers: {
@@ -283,7 +278,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
             } catch (error) {
                 console.log(error);
             }
@@ -308,7 +302,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["token", "prefix"]),
+        ...mapState(["token", "rol", "prefix"]),
         imagen() {
             return this.imagenSeleccionada;
         },

@@ -1,5 +1,5 @@
 <template>
-    <div id="Home">
+    <div class="Home">
         <SwiperBg />
         <swiper
             :direction="'vertical'"

@@ -1,5 +1,5 @@
 <template>
-    <div id="Profile">
+    <div class="Profile">
         <div class="Profile d-flex flex-column align-items-start">
             <div class="Profile__img p-1 align-self-center align-self-md-start">
                 <img src="../../assets/img/img.jpg" alt="" />

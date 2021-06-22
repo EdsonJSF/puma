@@ -1,15 +1,16 @@
 <template>
-    <div id="EstadoCuenta">
-        <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
-                EstadoCuenta del Promotor
-            </div>
-        </div>
+    <div class="EstadoCuenta">
+        <EstadosCuentas />
     </div>
 </template>
 
 <script>
+import EstadosCuentas from "@/components/login/estadosCuentas/EstadosCuentas.vue";
+
 export default {
     name: "EstadoCuenta",
+    components: {
+        EstadosCuentas,
+    },
 };
 </script>

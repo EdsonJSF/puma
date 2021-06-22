@@ -1,5 +1,5 @@
 <template>
-    <div id="nav" v-if="$route.name !== 'Home'" class="container">
+    <div v-if="$route.name !== 'Home'" class="container">
         <HeaderLogin />
     </div>
     <router-view :class="$route.name === 'Home' ? '' : 'container'" />
@@ -11,7 +11,6 @@ import { mapActions } from "vuex";
 import HeaderLogin from "@/components/login/HeaderLogin.vue";
 
 export default {
-    // name: "nav",
     components: {
         HeaderLogin,
     },

@@ -1,15 +1,16 @@
 <template>
-    <div id="Vendedores">
-        <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
-                Vendedores del Promotor
-            </div>
-        </div>
+    <div class="Vendedores">
+        <ListaUsuarios />
     </div>
 </template>
 
 <script>
+import ListaUsuarios from "@/components/login/ListaUsuarios.vue";
+
 export default {
     name: "Vendedores",
+    components: {
+        ListaUsuarios,
+    },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div id="Ingreso" class="d-flex flex-column">
+    <div class="Ingreso d-flex flex-column">
         <!-- LOGIN -->
         <form
             @submit.prevent="login(usuario)"
@@ -67,11 +67,11 @@ export default {
     data() {
         return {
             usuario: {
-                email: "",
-                password: "",
+                email: "puma1000@gmail.com",
+                password: "puma1000",
             },
             forgetPass: {
-                email: "",
+                email: "puma1000@gmail.com",
             },
         };
     },
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style scoped>
-#Ingreso * {
+.Ingreso * {
     color: var(--bs-green);
 }
 button {

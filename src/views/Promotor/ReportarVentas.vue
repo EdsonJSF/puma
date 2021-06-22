@@ -1,15 +1,16 @@
 <template>
-    <div id="ReportarVentas">
-        <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
-                ReportarVentas del Promotor
-            </div>
-        </div>
+    <div class="ReportarVentas">
+        <Reportes />
     </div>
 </template>
 
 <script>
+import Reportes from "@/components/login/Reportes.vue";
+
 export default {
     name: "ReportarVentas",
+    components: {
+        Reportes,
+    },
 };
 </script>

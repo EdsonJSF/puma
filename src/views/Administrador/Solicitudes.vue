@@ -80,7 +80,7 @@ export default {
         async getSolicitudes() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/SolicitudesAdministrador?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/SolicitudesAdministrador?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export default {
         async getSolicitudesAceptadas() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/solicitudesAceptadas?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/solicitudesAceptadas?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -105,7 +105,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
 
                 this.SolicitudesAceptadas = resData["Solicitudes Aceptadas"];
             } catch (error) {
@@ -115,7 +114,7 @@ export default {
         async getSolicitudesRechazadas() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/solicitudesRechazadas?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/solicitudesRechazadas?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -123,7 +122,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
 
                 this.SolicitudesRechazadas = resData["Solicitudes Rechazadas"];
             } catch (error) {
@@ -131,10 +129,9 @@ export default {
             }
         },
         async aprobSolicitudes(data) {
-            console.log(this.SolicitudesAceptadas);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/modificarsolicitud/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/modificarsolicitud/${data.id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {
@@ -148,16 +145,14 @@ export default {
                 this.SolicitudesAceptadas.unshift(data);
                 this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
 
-                console.log(this.SolicitudesAceptadas);
             } catch (error) {
                 console.log(error);
             }
         },
         async negarSolicitudes(data) {
-            console.log(this.SolicitudesRechazadas);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/administrador/eliminarsolicitud/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/eliminarsolicitud/${data.id}?token=${this.token}`,
                     {
                         method: "DELETE",
                         headers: {
@@ -169,15 +164,13 @@ export default {
 
                 this.SolicitudesRechazadas.unshift(data);
                 this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
-
-                console.log(this.SolicitudesRechazadas);
             } catch (error) {
                 console.log(error);
             }
         },
     },
     computed: {
-        ...mapState(["token", "prefix"]),
+        ...mapState(["token", "rol", "prefix"]),
     },
     created() {
         this.getSolicitudes();

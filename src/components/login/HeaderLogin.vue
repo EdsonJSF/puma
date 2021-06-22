@@ -1,5 +1,5 @@
 <template>
-    <div id="HeaderLogin">
+    <div class="HeaderLogin">
         <div class="d-flex flex-column">
             <!-- LOGO & NAV -->
             <div class="d-flex flex-column flex-md-row">
