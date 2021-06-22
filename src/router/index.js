@@ -185,6 +185,7 @@ const routes = [
     },
     {
         path: "/:pathMatch(.*)*",
+        name: "NotFound404",
         component: () =>
             import(
                 /* webpackChunkName: "Solicitudes" */ "../views/NotFound404.vue"
