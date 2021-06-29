@@ -5,47 +5,45 @@
                 <Finanzas />
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="rounded-3 py-2">
+                <div class="Resumenes__data rounded-3 py-2">
                     <div class="table-responsive">
                         <table
-                            class="table table-hover table-borderless align-middle"
+                            class="table table-borderless table-hover align-middle"
                         >
                             <thead>
-                                <th class="border border-5 border-start-0 ">
-                                    Fecha
-                                </th>
-                                <th class="border border-5 ">Número</th>
-                                <th class="border border-5 ">
-                                    Valor a aportar
-                                </th>
-                                <th class="border border-5 ">Lotería</th>
-                                <th class="border border-5 ">Tipo</th>
-                                <th class="border border-5 border-end-0 ">
-                                    Vendedor
-                                </th>
+                                <th><div>Fecha</div></th>
+                                <th><div>Número</div></th>
+                                <th><div>Valor a aportar</div></th>
+                                <th><div>Lotería</div></th>
+                                <th><div>Tipo</div></th>
+                                <th><div>Vendedor</div></th>
                             </thead>
                             <tbody>
                                 <tr
                                     v-for="(resumen, index) in ResumenVentas"
                                     :key="index"
                                 >
-                                    <td class="border border-5 border-start-0 ">
-                                        {{ resumen.Fecha.replace(/-/g, "/") }}
+                                    <td>
+                                        <div>
+                                            {{
+                                                resumen.Fecha.replace(/-/g, "/")
+                                            }}
+                                        </div>
                                     </td>
-                                    <td class="border border-5 ">
-                                        {{ resumen.Numero }}
+                                    <td>
+                                        <div>{{ resumen.Numero }}</div>
                                     </td>
-                                    <td class="border border-5 ">
-                                        {{ resumen.Valorapuesta }}
+                                    <td>
+                                        <div>{{ resumen.Valorapuesta }}</div>
                                     </td>
-                                    <td class="border border-5 ">
-                                        {{ resumen.Loteria }}
+                                    <td>
+                                        <div>{{ resumen.Loteria }}</div>
                                     </td>
-                                    <td class="border border-5 ">
-                                        {{ resumen.Tipo }}
+                                    <td>
+                                        <div>{{ resumen.Tipo }}</div>
                                     </td>
-                                    <td class="border border-5 border-end-0 ">
-                                        {{ resumen.Nombrepromotor }}
+                                    <td>
+                                        <div>{{ resumen.Nombrepromotor }}</div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -99,7 +97,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rounded-3 {
+.Resumenes__data {
     background: var(--bs-dark);
+    table {
+        th,
+        td {
+            border: 0.5rem solid transparent;
+            padding: 0;
+            div {
+                display: flex;
+                justify-content: center;
+                padding: 0 5px;
+                min-height: 2rem;
+                background: var(--bs-light);
+                white-space: nowrap;
+                select {
+                    background: transparent;
+                    appearance: none;
+                    outline: none;
+                }
+            }
+        }
+        th:first-child,
+        td:first-child {
+            border-left: none;
+        }
+        th:last-child,
+        td:last-child {
+            border-right: none;
+        }
+    }
 }
 </style>

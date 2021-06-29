@@ -1,10 +1,10 @@
 <template>
-    <div id="SolicitarCredito">
+    <div class="SolicitarCredito">
         <form
             @submit.prevent="solicitarCredito(credito)"
             class="d-flex flex-column rounded-3"
         >
-            <h5 class="my-3">CREDITO / PRESTAMO</h5>
+            <h6 class="text-white my-3">CREDITO / PRESTAMO</h6>
             <textarea
                 v-model="credito.cantidad"
                 class="form-control my-3"
@@ -17,9 +17,9 @@
                 placeholder="Cuotas de pago"
                 required
             ></textarea>
-            <div>
+            <div class="align-self-end">
                 <button
-                    class="btn btn-light btn-outline-dark btn-sm rounded-pill my-3"
+                    class="btn btn-light btn-outline-dark btn-sm rounded-pill border-0 my-3 me-3"
                     type="submit"
                 >
                     ENVIAR
@@ -50,6 +50,13 @@ export default {
 
 <style lang="scss" scoped>
 form {
-    background: var(--bs-gray-dark);
+    background: var(--bs-dark);
+    textarea,
+    textarea:focus {
+        background: var(--bs-light);
+        border: none;
+        box-shadow: none;
+        resize: none;
+    }
 }
 </style>

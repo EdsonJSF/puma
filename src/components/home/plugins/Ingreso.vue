@@ -67,11 +67,11 @@ export default {
     data() {
         return {
             usuario: {
-                email: "puma1000@gmail.com",
-                password: "puma1000",
+                email: "prueba12@gmail.com",
+                password: "prueba12",
             },
             forgetPass: {
-                email: "puma1000@gmail.com",
+                email: "prueba12@gmail.com",
             },
         };
     },
@@ -84,7 +84,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .Ingreso * {
     color: var(--bs-green);
 }

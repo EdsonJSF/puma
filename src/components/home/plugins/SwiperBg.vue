@@ -1,5 +1,5 @@
 <template>
-    <div id="SwiperBg">
+    <div class="SwiperBg">
         <swiper
             :loop="true"
             :centeredSlides="true"

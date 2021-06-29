@@ -1,5 +1,5 @@
 <template>
-    <div id="SocialMedia" class="pumaFollows">
+    <div class="SocialMedia pumaFollows">
         <div class="collapse" id="menuSocialMedia">
             <div class="d-flex flex-column bg-dark ms-3 me-2 py-2">
                 <a

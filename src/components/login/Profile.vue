@@ -1,13 +1,15 @@
 <template>
     <div class="Profile">
         <div class="Profile d-flex flex-column align-items-start">
-            <div class="Profile__img p-1 align-self-center align-self-md-start">
-                <img src="../../assets/img/img.jpg" alt="" />
-            </div>
+            <img
+                class="Profile__img rounded-3 p-2 "
+                src="../../assets/img/img.jpg"
+                alt=""
+            />
             <div
                 class="Profile__data-title d-flex flex-column align-items-start my-2"
             >
-                <h5 class="m-0">nombre</h5>
+                <h5 class="m-0">Nombre</h5>
                 <p class="m-0">Informacion del perfil</p>
                 <p class="m-0">Informacion del perfil</p>
                 <p class="m-0">Informacion del perfil</p>
@@ -34,9 +36,7 @@ export default {
 .Profile {
     .Profile__img {
         background: var(--bs-dark);
-        img {
-            width: 10rem;
-        }
+        width: 10rem;
     }
 }
 </style>

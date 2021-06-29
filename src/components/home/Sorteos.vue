@@ -1,5 +1,5 @@
 <template>
-    <div id="Sorteos" class="py-3">
+    <div class="Sorteos py-3">
         <div>
             <h1>
                 Sorteos

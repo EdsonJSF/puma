@@ -5,8 +5,7 @@
 </template>
 
 <script>
-
-import Resumenes from "@/components/login/Resumenes.vue";
+import Resumenes from "@/components/login/ventas/Resumenes.vue";
 
 export default {
     name: "ResumenVentas",

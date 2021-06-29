@@ -18,7 +18,7 @@
                             <p class="m-0">{{ item.titulo }}</p>
                             <div>
                                 <button
-                                    @click="editGaleria(item, indexGaletia)"
+                                    @click="selectGaleria(item)"
                                     class="btn"
                                 >
                                     <img
@@ -43,7 +43,7 @@
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="Galerias__module rounded-3 m-1 py-2">
                     <form
-                        @submit.prevent="sendGalerias(galeria, galeriaTipo)"
+                        @submit.prevent="addGaleria(galeria, galeriaTipo)"
                         class="row"
                         enctype="multipart/form-data"
                     >
@@ -55,12 +55,12 @@
                                     type="file"
                                     @change="onFileSelected"
                                     accept="video/*, image/*"
-                                    required
+                                    :required="crear"
                                 />
                                 <div class="d-flex justify-content-around">
                                     <figure>
                                         <img
-                                            :src="imagen"
+                                            :src="imagenSeleccionada"
                                             width="150"
                                             height="150"
                                             alt="Imagen Seleccionada"
@@ -68,7 +68,11 @@
                                     </figure>
                                 </div>
                                 <div>
-                                    <select v-model="galeriaTipo" required>
+                                    <select
+                                        v-if="crear"
+                                        v-model="galeriaTipo"
+                                        required
+                                    >
                                         <option value="" disabled selected
                                             >Seleccione</option
                                         >
@@ -88,7 +92,7 @@
                                     <button
                                         @click="onUpLoad"
                                         type="submit"
-                                        class="btn btn-light rounded-pill"
+                                        class="btn btn-light btn-outline-dark btn-sm rounded-pill border-0"
                                     >
                                         Guardar
                                     </button>
@@ -145,9 +149,32 @@ export default {
             imagenSeleccionada: "",
             galeriaTipo: "",
             Galerias: [],
+            crear: true,
         };
     },
     methods: {
+        async getGalerias() {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/customize`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+                console.log(resData);
+                this.Galerias = resData;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        tituloGaleria(titulo) {
+            return titulo.split(": ")[1];
+        },
+
         onFileSelected(event) {
             const file = event.target.files[0];
             this.galeria.rutaVideo = file;
@@ -161,24 +188,13 @@ export default {
             };
             reader.readAsDataURL(file);
         },
-        async getGalerias() {
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-                const resData = await res.json();
-                this.Galerias = resData;
-            } catch (error) {
-                console.log(error);
+
+        async addGaleria(data, tipo) {
+            if (this.crear) {
+                this.sendGalerias(data, tipo);
+            } else {
+                this.editGaleria(data);
             }
-        },
-        tituloGaleria(titulo) {
-            return titulo.split(": ")[1];
         },
         async sendGalerias(galeria, tipo) {
             const formData = new FormData();
@@ -199,6 +215,17 @@ export default {
                     }
                 );
                 const resData = await res.text();
+
+                this.galeria = {
+                    rutaImagen: "",
+                    titulo: "",
+                    contenido: "",
+                    rutaVideo: "",
+                    orden: "1",
+                    tipo: "1",
+                    link: "",
+                };
+                this.imagenSeleccionada = "";
 
                 // if (tipo === "Resultados") {
                 //     sendResultados(galeria);
@@ -282,10 +309,15 @@ export default {
                 console.log(error);
             }
         },
-        async editGaleria(data, index) {
+
+        selectGaleria(data) {
+            this.galeria = data;
+            this.imagenSeleccionada = data.rutaImagen;
+            this.crear = false;
+        },
+        async editGaleria(data) {
             try {
-                console.log(data, index);
-                console.log("editGaleria");
+                console.log(data);
             } catch (error) {
                 console.log(error);
             }
@@ -315,27 +347,29 @@ export default {
 
 <style lang="scss" scoped>
 .Galerias {
-    .Galerias__lista,
+    .Galerias__lista {
+        background: var(--bs-dark);
+        .Galerias__lista-item {
+            background: var(--bs-light);
+        }
+    }
     .Galerias__module {
         background: var(--bs-dark);
-    }
-    .Galerias__lista-item {
-        background: var(--bs-light);
-    }
-    .Galerias__module {
         textarea {
             border: none;
-            background-color: transparent;
-            background-image: repeating-linear-gradient(
-                transparent,
-                transparent 1.5rem,
-                #000 1.5rem,
-                #000 1.56rem,
-                transparent 1.56rem
-            );
-        }
-        textarea:focus {
-            outline: none;
+            background: {
+                color: transparent;
+                image: repeating-linear-gradient(
+                    transparent,
+                    transparent 1.5rem,
+                    #000 1.5rem,
+                    #000 1.56rem,
+                    transparent 1.56rem
+                );
+            }
+            &:focus {
+                outline: none;
+            }
         }
     }
 }

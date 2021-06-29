@@ -93,7 +93,7 @@
                         </label>
                         <button
                             type="submit"
-                            class="btn btn-light rounded-pill mb-2"
+                            class="btn btn-light btn-outline-dark btn-sm rounded-pill border-0 mb-2"
                         >
                             ENVIAR
                         </button>
@@ -142,20 +142,14 @@ export default {
             div {
                 display: flex;
                 select {
+                    background: transparent;
                     appearance: none;
                     outline: none;
-                    background: transparent;
                 }
             }
             input {
                 border: none;
                 background: var(--bs-light);
-            }
-        }
-        .btn {
-            transition: all 0.7s ease;
-            &:hover {
-                background: var(--bs-secondary);
             }
         }
     }

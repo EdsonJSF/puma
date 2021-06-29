@@ -1,5 +1,5 @@
 <template>
-    <div id="Testimonios" class="d-flex flex-column py-3">
+    <div class="Testimonios d-flex flex-column py-3">
         <div>
             <h1>
                 Testimonios

@@ -1,5 +1,5 @@
 <template>
-    <div id="Contactanos">
+    <div class="Contactanos">
         <div class="d-flex flex-column h-100">
             <div>
                 <h1>
@@ -71,7 +71,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 input,
 textarea {
     margin: 0.7rem 0;

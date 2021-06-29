@@ -1,19 +1,19 @@
 <template>
-    <div id="OtrasSolicitudes">
+    <div class="OtrasSolicitudes h-100">
         <form
             @submit.prevent="otrasSolicitudes(solicitud)"
-            class="d-flex flex-column rounded-3"
+            class="d-flex flex-column rounded-3 h-100"
         >
-            <h5 class="my-3">OTROS</h5>
+            <h6 class="text-white my-3">OTROS</h6>
             <textarea
                 v-model="solicitud.descripcion"
-                class="form-control my-3"
+                class="form-control my-3 h-100"
                 placeholder="Solicitud"
                 required
             ></textarea>
-            <div>
+            <div class="align-self-end">
                 <button
-                    class="btn btn-light btn-outline-dark btn-sm rounded-pill my-3"
+                    class="btn btn-light btn-outline-dark btn-sm rounded-pill border-0 my-3 me-3"
                     type="submit"
                 >
                     ENVIAR
@@ -43,6 +43,13 @@ export default {
 
 <style lang="scss" scoped>
 form {
-    background: var(--bs-gray-dark);
+    background: var(--bs-dark);
+    textarea,
+    textarea:focus {
+        background: var(--bs-light);
+        border: none;
+        box-shadow: none;
+        resize: none;
+    }
 }
 </style>

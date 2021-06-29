@@ -1,5 +1,5 @@
 <template>
-    <div id="Resultados" class="py-2 px-1 px-sm-3 px-md-4 px-lg-5">
+    <div class="Resultados py-2 px-1 px-sm-3 px-md-4 px-lg-5">
         <div class="d-flex flex-column">
             <div class="d-flex ms-0 ms-md-4">
                 <div class="paralelogramo-primary ms-3 mt-2 mt-md-4">

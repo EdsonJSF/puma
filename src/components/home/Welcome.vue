@@ -91,7 +91,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .Welcome a {
     font-weight: 500;
     text-decoration: none;

@@ -1,5 +1,5 @@
 <template>
-    <div id="Solicitud">
+    <div class="Solicitud">
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
                 <Profile />
