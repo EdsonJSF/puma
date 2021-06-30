@@ -39,7 +39,10 @@
                     v-for="(resultado, index) in dataResultados"
                     :key="index"
                 >
-                    <img :src="resultado.rutaImagen" :alt="resultado.titulo" />
+                    <img
+                        :src="`${prefix}/images/${resultado.rutaImagen}`"
+                        :alt="resultado.titulo"
+                    />
                     <div class="d-flex align-items-end">
                         <h1 class="paralelogramo-primary pe-5">
                             {{ resultado.titulo }}
@@ -88,7 +91,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["dataResultados"]),
+        ...mapState(["dataResultados", "prefix"]),
     },
 };
 </script>

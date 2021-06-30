@@ -39,7 +39,10 @@
                     v-for="(ubicacion, index) in dataUbicanos"
                     :key="index"
                 >
-                    <img :src="ubicacion.rutaImagen" :alt="ubicacion.titulo" />
+                    <img
+                        :src="`${prefix}/images/${ubicacion.rutaImagen}`"
+                        :alt="ubicacion.titulo"
+                    />
                     <div class="d-flex align-items-end">
                         <h1 class="paralelogramo-primary pe-5">
                             {{ ubicacion.titulo }}
@@ -88,7 +91,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["dataUbicanos"]),
+        ...mapState(["dataUbicanos", "prefix"]),
     },
 };
 </script>

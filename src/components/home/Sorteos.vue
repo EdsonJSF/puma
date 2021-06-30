@@ -18,7 +18,10 @@
         >
             <swiper-slide v-for="(sorteo, index) in dataSorteos" :key="index">
                 <div>
-                    <img :src="sorteo.rutaImagen" :alt="sorteo.titulo" />
+                    <img
+                        :src="`${prefix}/images/${sorteo.rutaImagen}`"
+                        :alt="sorteo.titulo"
+                    />
                     <p>{{ sorteo.titulo }}</p>
                 </div>
             </swiper-slide>
@@ -62,7 +65,7 @@ export default {
         return {};
     },
     computed: {
-        ...mapState(["dataSorteos"]),
+        ...mapState(["dataSorteos", "prefix"]),
     },
 };
 </script>

@@ -21,7 +21,10 @@
                 :key="index"
                 class="d-flex flex-column"
             >
-                <img :src="testimonio.rutaImagen" :alt="testimonio.titulo" />
+                <img
+                    :src="`${prefix}/images/${testimonio.rutaImagen}`"
+                    :alt="testimonio.titulo"
+                />
                 <h1>{{ testimonio.titulo }}</h1>
             </swiper-slide>
         </swiper>
@@ -51,7 +54,7 @@ export default {
         return {};
     },
     computed: {
-        ...mapState(["dataTestimonios"]),
+        ...mapState(["dataTestimonios", "prefix"]),
     },
 };
 </script>
