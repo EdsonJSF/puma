@@ -239,6 +239,7 @@ export default {
                 div {
                     display: flex;
                     justify-content: center;
+                    align-items: center;
                     padding: 0 5px;
                     min-height: 2rem;
                     background: var(--bs-light);

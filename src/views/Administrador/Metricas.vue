@@ -42,50 +42,45 @@
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="Metricas__Info table-responsive rounded-3 m-1 py-2">
                     <table
-                        class="table table-hover table-borderless align-middle"
+                        class="table table-borderless table-hover align-middle"
                     >
                         <thead>
-                            <th class="border border-5 border-start-0 ">
-                                Agregar
-                            </th>
-                            <th class="border border-5 ">Más vendidos</th>
-                            <th class="border border-5 ">Valor a apostar</th>
-                            <th class="border border-5 ">Lotería</th>
-                            <th class="border border-5 ">Tipo</th>
-                            <th class="border border-5 border-end-0 ">
-                                Vendedor
-                            </th>
+                            <th><div>Agregar</div></th>
+                            <th><div>Más vendidos</div></th>
+                            <th><div>Valor a apostar</div></th>
+                            <th><div>Lotería</div></th>
+                            <th><div>Tipo</div></th>
+                            <th><div>Vendedor</div></th>
                         </thead>
                         <tbody>
                             <tr
                                 v-for="(metrica, index) in Metricas"
                                 :key="index"
                             >
-                                <td
-                                    @click="addNumero(metrica)"
-                                    class="border border-5 border-start-0 "
-                                >
-                                    <button class="btn">
-                                        <img
-                                            src="../../assets/img/icons/plus-solid.svg"
-                                            alt=""
-                                        />
-                                    </button>
+                                <td @click="addNumero(metrica)">
+                                    <div>
+                                        <button class="btn">
+                                            <img
+                                                src="../../assets/img/icons/plus-solid.svg"
+                                                alt=""
+                                            />
+                                        </button>
+                                    </div>
                                 </td>
-                                <td class="border border-5 border-start-0 ">
-                                    {{ metrica.Numero }}
+                                <td>
+                                    <div>{{ metrica.Numero }}</div>
                                 </td>
-                                <td class="border border-5 ">
-                                    {{ metrica.Valorapuesta }}
+                                <td>
+                                    <div>{{ metrica.Valorapuesta }}</div>
                                 </td>
-                                <td class="border border-5 ">
-                                    {{ metrica.Loteria }}
+                                <td>
+                                    <div>{{ metrica.Loteria }}</div>
                                 </td>
-                                <td class="border border-5 ">
-                                    {{ metrica.Tipo }}
+                                <td>
+                                    <div>{{ metrica.Tipo }}</div>
                                 </td>
-                                <td class="border border-5 border-end-0">
-                                    {{ metrica.Nombrepromotor }}
+                                <td>
+                                    <div>{{ metrica.Nombrepromotor }}</div>
                                 </td>
                             </tr>
                         </tbody>
@@ -97,7 +92,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
     name: "Metricas",
@@ -110,6 +105,8 @@ export default {
         };
     },
     methods: {
+        ...mapActions(["logout"]),
+
         async getMetricas() {
             try {
                 const res = await fetch(
@@ -122,11 +119,15 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.Metricas = resData["Data completa del Modelo"];
-                this.NumerosBloqueados =
-                    resData["Numeros de loteria bloqueados"];
-                this.NumerosRepetidos =
-                    resData["Numeros de loteria mas repetidos"];
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.Metricas = resData["Data completa del Modelo"];
+                    this.NumerosBloqueados =
+                        resData["Numeros de loteria bloqueados"];
+                    this.NumerosRepetidos =
+                        resData["Numeros de loteria mas repetidos"];
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -148,9 +149,13 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.NumerosBloqueados[
-                    this.NumerosBloqueados.indexOf(data)
-                ].Estado = 0;
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.NumerosBloqueados[
+                        this.NumerosBloqueados.indexOf(data)
+                    ].Estado = 0;
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -168,11 +173,15 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.NumerosBloqueados.splice(
-                    this.NumerosBloqueados.indexOf(data),
-                    1
-                );
-                this.Metricas.unshift(data);
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.NumerosBloqueados.splice(
+                        this.NumerosBloqueados.indexOf(data),
+                        1
+                    );
+                    this.Metricas.unshift(data);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -188,8 +197,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.Metricas__numeros-numero,
+.Metricas__numeros-numero {
+    background: var(--bs-dark);
+}
 .Metricas__Info {
-    background: var(--bs-dark) !important;
+    background: var(--bs-dark);
+    table {
+        th,
+        td {
+            border: 0.5rem solid transparent;
+            padding: 0;
+            div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0 5px;
+                min-height: 2rem;
+                background: var(--bs-light);
+                white-space: nowrap;
+                select {
+                    background: transparent;
+                    appearance: none;
+                    outline: none;
+                }
+            }
+        }
+        th:first-child,
+        td:first-child {
+            border-left: none;
+        }
+        th:last-child,
+        td:last-child {
+            border-right: none;
+        }
+    }
 }
 </style>

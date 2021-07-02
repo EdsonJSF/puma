@@ -4,7 +4,7 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <form
                     @submit.prevent="addUsuario(usuario, rol)"
-                    class="d-flex flex-column form-signin"
+                    class="ListUsuarios__form d-flex flex-column form-signin"
                 >
                     <div class="form-label-group w-100">
                         <div>
@@ -76,7 +76,7 @@
                                 placeholder="telefono"
                                 required
                             />
-                            <select v-model="newRol" class="form-control" required>
+                            <select v-model="rol" class="form-control" required>
                                 <option value="Administrador" selected
                                     >Administrador</option
                                 >
@@ -84,28 +84,19 @@
                                 <option value="Vendedor">Vendedor</option>
                             </select>
                         </div>
-                        <button
-                            v-if="crear"
-                            type="submit"
-                            class="btn btn-primary btn-sm"
-                        >
-                            Crear
-                        </button>
-                        <button
-                            v-else
-                            type="submit"
-                            class="btn btn-primary btn-sm"
-                        >
-                            Editar
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            {{ crear ? "Crear" : "Editar" }}
                         </button>
                     </div>
                 </form>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="d-flex flex-column rounded-3 my-2 py-2">
+                <div
+                    class="ListUsuarios__data d-flex flex-column rounded-3 my-2 py-2"
+                >
                     <div class="table-responsive">
                         <table
-                            class="table table-hover table-borderless align-middle"
+                            class="table table-borderless table-hover align-middle"
                         >
                             <thead>
                                 <th>Nombre Apellido</th>
@@ -117,36 +108,43 @@
                                     v-for="(usuario,
                                     index) in PromotoresVendedores"
                                     :key="index"
-                                    class="border-5 border-start-0 border-end-0"
                                 >
-                                    <td class="bg-light">
-                                        {{ usuario.name }}
-                                    </td>
-                                    <td class="bg-light">{{ usuario.dni }}</td>
-                                    <td class="bg-light">
-                                        {{ usuario.balance }} COP
+                                    <td>
+                                        <div>
+                                            {{ usuario.name }}
+                                        </div>
                                     </td>
                                     <td>
-                                        <button
-                                            @click="selectUsuario(usuario)"
-                                            class="btn"
-                                        >
-                                            <img
-                                                src="../../assets/img/icons/pen-solid.svg"
-                                                alt=""
-                                            />
-                                        </button>
+                                        <div>{{ usuario.dni }}</div>
                                     </td>
                                     <td>
-                                        <button
-                                            @click="delUsuario(usuario)"
-                                            class="btn"
-                                        >
-                                            <img
-                                                src="../../assets/img/icons/trash-solid.svg"
-                                                alt=""
-                                            />
-                                        </button>
+                                        <div>{{ usuario.balance }} COP</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <button
+                                                @click="selectUsuario(usuario)"
+                                                class="btn btn-sm"
+                                            >
+                                                <img
+                                                    src="../../assets/img/icons/pen-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <button
+                                                @click="delUsuario(usuario)"
+                                                class="btn btn-sm"
+                                            >
+                                                <img
+                                                    src="../../assets/img/icons/trash-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -154,7 +152,7 @@
                     </div>
                     <button
                         type="submit"
-                        class="btn text-light  align-self-end mx-5"
+                        class="btn text-light align-self-end mx-5"
                     >
                         Agregar +
                     </button>
@@ -165,7 +163,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
     name: "ListUsuarios",
@@ -183,11 +181,15 @@ export default {
                 direccion: "",
                 telefono: "",
             },
-            newRol: "",
+            rol: "",
             crear: true,
+            fileInputKey: 0,
+            imagenSeleccionada: "",
         };
     },
     methods: {
+        ...mapActions(["logout"]),
+
         async getPromotoresVendedores() {
             try {
                 const res = await fetch(
@@ -199,7 +201,12 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.PromotoresVendedores = resData;
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.PromotoresVendedores = resData;
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -207,7 +214,25 @@ export default {
         onFileSelected(event) {
             this.usuario.foto = event.target.files[0];
         },
-        async addUsuario(newUser, rol) {
+        clearInput() {
+            this.usuario = {
+                name: "",
+                email: "",
+                password: "",
+                dni: "",
+                ganancia: "",
+                porcentaje: "",
+                foto: "",
+                direccion: "",
+                telefono: "",
+            };
+            this.rol = "";
+            this.crear = true;
+            this.fileInputKey++;
+            this.imagenSeleccionada = "";
+        },
+
+        addUsuario(newUser, rol) {
             if (this.crear) {
                 this.createUsuario(newUser, rol);
             } else {
@@ -230,18 +255,6 @@ export default {
 
                 if (resData.token) {
                     this.PromotoresVendedores.unshift(resData.user);
-                    this.usuario = {
-                        name: "",
-                        email: "",
-                        password: "",
-                        dni: "",
-                        ganancia: "",
-                        porcentaje: "",
-                        foto: "",
-                        direccion: "",
-                        telefono: "",
-                    };
-                    this.rol = "";
 
                     if (rol === "Administrador") {
                         this.createAdmin();
@@ -252,6 +265,8 @@ export default {
                     } else {
                         console.log("error");
                     }
+                } else if (resData.status === "Token is Expired") {
+                    this.logout();
                 } else {
                     console.log("error");
                 }
@@ -270,6 +285,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
@@ -285,6 +301,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
@@ -300,6 +317,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
@@ -321,20 +339,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                
-                this.usuario = {
-                    name: "",
-                    email: "",
-                    password: "",
-                    dni: "",
-                    ganancia: "",
-                    porcentaje: "",
-                    foto: "",
-                    direccion: "",
-                    telefono: "",
-                };
-                this.rol = "";
-                this.crear = true;
 
                 if (rol === "Administrador") {
                     this.editAdmin(newUser.id);
@@ -342,6 +346,8 @@ export default {
                     this.editProm(newUser.id);
                 } else if (rol === "Vendedor") {
                     this.editVend(newUser.id);
+                } else if (resData.status === "Token is Expired") {
+                    this.logout();
                 } else {
                     console.log("error");
                 }
@@ -360,6 +366,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
@@ -375,6 +382,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
@@ -390,6 +398,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
@@ -406,10 +415,15 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.PromotoresVendedores.splice(
-                    this.PromotoresVendedores.indexOf(user),
-                    1
-                );
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.PromotoresVendedores.splice(
+                        this.PromotoresVendedores.indexOf(user),
+                        1
+                    );
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -425,10 +439,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rounded-3 {
+.ListUsuarios__data {
     background: var(--bs-dark);
-}
-.text-light {
-    text-shadow: 2px 2px 1.5px #222;
+    table {
+        td {
+            border-top: 0.5rem solid transparent;
+            border-bottom: 0.5rem solid transparent;
+            padding: 0;
+            div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0 5px;
+                min-height: 2rem;
+                background: var(--bs-light);
+                white-space: nowrap;
+            }
+        }
+    }
+    .text-light {
+        text-shadow: 2px 2px 1.5px #222;
+    }
 }
 </style>

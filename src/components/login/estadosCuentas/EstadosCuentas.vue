@@ -9,19 +9,15 @@
                     class="EstadosCuentas__options table-responsive rounded-3 m-1 py-2"
                 >
                     <table
-                        class="table table-hover table-borderless align-middle"
+                        class="table table-borderless table-hover align-middle"
                     >
                         <thead>
-                            <th class="border border-5 border-start-0 ">
-                                Fecha
-                            </th>
-                            <th class="border border-5 ">Transacción</th>
-                            <th class="border border-5 ">Monto</th>
-                            <th class="border border-5 ">Referencia</th>
-                            <th class="border border-5 ">Salida</th>
-                            <th class="border border-5 border-end-0 ">
-                                Encargado
-                            </th>
+                            <th><div>Fecha</div></th>
+                            <th><div>Transacción</div></th>
+                            <th><div>Monto</div></th>
+                            <th><div>Referencia</div></th>
+                            <th><div>Salida</div></th>
+                            <th><div>Encargado</div></th>
                         </thead>
                         <tbody>
                             <tr
@@ -29,28 +25,34 @@
                                 index) in EstadoCuentasReporte"
                                 :key="index"
                             >
-                                <td class="border border-5 border-start-0 ">
-                                    {{
-                                        arreglarCadena(estadoCuenta.created_at)
-                                    }}
+                                <td>
+                                    <div>
+                                        {{
+                                            arreglarCadena(
+                                                estadoCuenta.created_at
+                                            )
+                                        }}
+                                    </div>
                                 </td>
-                                <td class="border border-5 ">
-                                    {{ estadoCuenta.Transaccion }}
+                                <td>
+                                    <div>{{ estadoCuenta.Transaccion }}</div>
                                 </td>
-                                <td class="border border-5">
-                                    {{ estadoCuenta.Monto }} COP
+                                <td>
+                                    <div>{{ estadoCuenta.Monto }} COP</div>
                                 </td>
-                                <td class="border border-5 ">
-                                    {{ estadoCuenta.Referencia }}
+                                <td>
+                                    <div>{{ estadoCuenta.Referencia }}</div>
                                 </td>
-                                <td class="border border-5 ">
-                                    {{ estadoCuenta.Tipo }}
+                                <td>
+                                    <div>{{ estadoCuenta.Tipo }}</div>
                                 </td>
-                                <td class="border border-5 border-end-0 ">
-                                    {{
-                                        EstadoCuentasVentas[index]
-                                            .Nombrepromotor
-                                    }}
+                                <td>
+                                    <div>
+                                        {{
+                                            EstadoCuentasVentas[index]
+                                                .Nombrepromotor
+                                        }}
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -62,7 +64,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import Finanzas from "@/components/login/Finanzas.vue";
 
@@ -76,19 +78,27 @@ export default {
         };
     },
     methods: {
+        ...mapActions(["logout"]),
+
         async getEstadoCuentas() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/estadoDeCuenta?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/estadoDeCuenta`,
                     {
                         headers: {
                             "Content-Type": "application/json",
+                            Autorization: `bearer ${this.token}`,
                         },
                     }
                 );
-                const resData = await res.json();
-                this.EstadoCuentasReporte = resData["Modelo Reporte"];
-                this.EstadoCuentasVentas = resData["Modelo Ventas"];
+                const resData = await res.text();
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.EstadoCuentasReporte = resData["Modelo Reporte"];
+                    this.EstadoCuentasVentas = resData["Modelo Ventas"];
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -102,7 +112,7 @@ export default {
         ...mapState(["token", "rol", "prefix"]),
     },
     created() {
-        this.getEstadoCuentas();
+        // this.getEstadoCuentas();
     },
 };
 </script>
@@ -110,5 +120,34 @@ export default {
 <style lang="scss" scoped>
 .EstadosCuentas__options {
     background: var(--bs-dark);
+    table {
+        th,
+        td {
+            border: 0.5rem solid transparent;
+            padding: 0;
+            div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0 5px;
+                min-height: 2rem;
+                background: var(--bs-light);
+                white-space: nowrap;
+                select {
+                    background: transparent;
+                    appearance: none;
+                    outline: none;
+                }
+            }
+        }
+        th:first-child,
+        td:first-child {
+            border-left: none;
+        }
+        th:last-child,
+        td:last-child {
+            border-right: none;
+        }
+    }
 }
 </style>

@@ -5,10 +5,12 @@
                 <Profile />
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="d-flex flex-column rounded-3 my-2 py-2">
+                <div
+                    class="Solicitudes__data d-flex flex-column rounded-3 my-2 py-2"
+                >
                     <div class="table-responsive">
                         <table
-                            class="table table-hover table-borderless align-middle"
+                            class="table table-borderless table-hover align-middle"
                         >
                             <thead>
                                 <th>Nombre Apellido</th>
@@ -18,35 +20,42 @@
                                 <tr
                                     v-for="(solicitud, index) in Solicitudes"
                                     :key="index"
-                                    class="border-5 border-start-0 border-end-0"
                                 >
-                                    <td class="bg-light">
-                                        {{ solicitud.Nombre }}
-                                    </td>
-                                    <td class="bg-light">
-                                        {{ solicitud.MobiliarioSolicitado }}
+                                    <td>
+                                        <div>
+                                            {{ solicitud.Nombre }}
+                                        </div>
                                     </td>
                                     <td>
-                                        <button
-                                            @click="aprobSolicitudes(solicitud)"
-                                            class="btn"
-                                        >
-                                            <img
-                                                src="../../assets/img/icons/check-square-solid.svg"
-                                                alt=""
-                                            />
-                                        </button>
+                                        <div>
+                                            {{ solicitud.MobiliarioSolicitado }}
+                                        </div>
                                     </td>
                                     <td>
-                                        <button
-                                            @click="negarSolicitudes(solicitud)"
-                                            class="btn"
-                                        >
-                                            <img
-                                                src="../../assets/img/icons/trash-solid.svg"
-                                                alt=""
-                                            />
-                                        </button>
+                                        <div>
+                                            <button
+                                                @click="
+                                                    aprobSolicitudes(solicitud)
+                                                "
+                                                class="btn btn-sm"
+                                            >
+                                                <img
+                                                    src="../../assets/img/icons/check-square-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                            <button
+                                                @click="
+                                                    negarSolicitudes(solicitud)
+                                                "
+                                                class="btn btn-sm"
+                                            >
+                                                <img
+                                                    src="../../assets/img/icons/trash-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -62,7 +71,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import Profile from "@/components/login/Profile.vue";
 
@@ -77,6 +86,8 @@ export default {
         };
     },
     methods: {
+        ...mapActions(["logout"]),
+
         async getSolicitudes() {
             try {
                 const res = await fetch(
@@ -89,7 +100,11 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.Solicitudes = resData;
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.Solicitudes = resData;
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -106,7 +121,12 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.SolicitudesAceptadas = resData["Solicitudes Aceptadas"];
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.SolicitudesAceptadas =
+                        resData["Solicitudes Aceptadas"];
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -123,7 +143,12 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.SolicitudesRechazadas = resData["Solicitudes Rechazadas"];
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.SolicitudesRechazadas =
+                        resData["Solicitudes Rechazadas"];
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -142,9 +167,12 @@ export default {
 
                 const resData = await res.json();
 
-                this.SolicitudesAceptadas.unshift(data);
-                this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
-
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.SolicitudesAceptadas.unshift(data);
+                    this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -162,8 +190,12 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.SolicitudesRechazadas.unshift(data);
-                this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.SolicitudesRechazadas.unshift(data);
+                    this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -180,4 +212,27 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.Solicitudes__data {
+    background: var(--bs-dark);
+    table {
+        td {
+            border-top: 0.5rem solid transparent;
+            border-bottom: 0.5rem solid transparent;
+            padding: 0;
+            div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0 5px;
+                min-height: 2rem;
+                background: var(--bs-light);
+                white-space: nowrap;
+            }
+        }
+    }
+    .text-light {
+        text-shadow: 2px 2px 1.5px #222;
+    }
+}
+</style>
