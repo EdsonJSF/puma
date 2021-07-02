@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
     name: "Finanzas",
@@ -40,6 +40,8 @@ export default {
         };
     },
     methods: {
+        ...mapActions(["logout"]),
+
         async getFinanzas() {
             try {
                 const res = await fetch(
@@ -52,7 +54,11 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.Finanzas = resData;
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.Finanzas = resData;
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -69,6 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 td {
+    padding: 0.5rem;
     border-right: 0.5rem solid transparent;
     border-left: 0.5rem solid transparent;
 }

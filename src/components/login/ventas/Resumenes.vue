@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import Finanzas from "@/components/login/Finanzas.vue";
 
@@ -69,6 +69,8 @@ export default {
         };
     },
     methods: {
+        ...mapActions(["logout"]),
+
         async getResumenVentas() {
             try {
                 const res = await fetch(
@@ -81,7 +83,11 @@ export default {
                 );
                 const resData = await res.json();
 
-                this.ResumenVentas = resData;
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.ResumenVentas = resData;
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -107,6 +113,7 @@ export default {
             div {
                 display: flex;
                 justify-content: center;
+                align-items: center;
                 padding: 0 5px;
                 min-height: 2rem;
                 background: var(--bs-light);
