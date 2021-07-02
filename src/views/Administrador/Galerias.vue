@@ -6,10 +6,10 @@
                     class="Galerias__lista d-flex flex-column rounded-3 m-1 py-2"
                 >
                     <div
-                        v-for="(galeria, indexGaletia) in Galerias"
-                        :key="indexGaletia"
+                        v-for="(galeria, indexGaleria) in Galerias"
+                        :key="indexGaleria"
                     >
-                        <h2 class="my-2">{{ tituloGaleria(indexGaletia) }}</h2>
+                        <h2 class="my-2">{{ tituloGaleria(indexGaleria) }}</h2>
                         <div
                             v-for="(item, indexItem) in galeria"
                             :key="indexItem"
@@ -22,12 +22,19 @@
                                     class="btn"
                                 >
                                     <img
+                                        v-if="item.estado === 1"
+                                        src="../../assets/img/icons/pen-solid.svg"
+                                        alt=""
+                                    />
+                                    <img
+                                        v-else
                                         src="../../assets/img/icons/check-square-solid.svg"
                                         alt=""
                                     />
                                 </button>
                                 <button
-                                    @click="deleteGaleria(item, indexGaletia)"
+                                    v-if="item.estado === 1"
+                                    @click="deleteGaleria(item, indexGaleria)"
                                     class="btn"
                                 >
                                     <img
@@ -54,6 +61,7 @@
                                 <input
                                     type="file"
                                     @change="onFileSelected"
+                                    :key="fileInputKey"
                                     accept="video/*, image/*"
                                     :required="crear"
                                 />
@@ -90,11 +98,10 @@
                                 </div>
                                 <div class="d-flex align-items-start p-2">
                                     <button
-                                        @click="onUpLoad"
                                         type="submit"
                                         class="btn btn-light btn-outline-dark btn-sm rounded-pill border-0"
                                     >
-                                        Guardar
+                                        {{ crear ? "Guardar" : "Editar" }}
                                     </button>
                                 </div>
                             </div>
@@ -131,7 +138,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
     name: "Galerias",
@@ -146,6 +153,7 @@ export default {
                 tipo: "1",
                 link: "",
             },
+            fileInputKey: 0,
             imagenSeleccionada: "",
             galeriaTipo: "",
             Galerias: [],
@@ -153,20 +161,26 @@ export default {
         };
     },
     methods: {
+        ...mapActions(["logout"]),
+
         async getGalerias() {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/customize`,
+                    `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${this.token}`,
+                            // Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
-                this.Galerias = resData;
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.Galerias = resData;
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -188,8 +202,21 @@ export default {
             };
             reader.readAsDataURL(file);
         },
+        clearInput() {
+            this.galeria = {
+                rutaImagen: "",
+                titulo: "",
+                contenido: "",
+                rutaVideo: "",
+                orden: "1",
+                tipo: "1",
+                link: "",
+            };
+            this.imagenSeleccionada = "";
+            this.fileInputKey++;
+        },
 
-        async addGaleria(data, tipo) {
+        addGaleria(data, tipo) {
             if (this.crear) {
                 this.sendGalerias(data, tipo);
             } else {
@@ -211,42 +238,57 @@ export default {
                     `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
                     {
                         method: "POST",
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        //     Authorization: `Bearer ${this.token}`,
+                        // },
                         body: formData,
                     }
                 );
-                const resData = await res.text();
+                const resData = await res.json();
 
-                this.galeria = {
-                    rutaImagen: "",
-                    titulo: "",
-                    contenido: "",
-                    rutaVideo: "",
-                    orden: "1",
-                    tipo: "1",
-                    link: "",
-                };
-                this.imagenSeleccionada = "";
+                if (tipo === "Resultados") {
+                    this.setResultados(resData);
+                } else if (tipo === "Sorteos") {
+                    this.setSorteos(resData);
+                } else if (tipo === "Ubicanos") {
+                    this.setUbicanos(resData);
+                } else if (tipo === "Testimonios") {
+                    this.setTestimonios(resData);
+                } else if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async setResultados(galeria) {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/galeriasResultados/${galeria[1].id}?token=${this.token}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(galeria),
+                    }
+                );
+                const resData = await res.json();
 
-                // if (tipo === "Resultados") {
-                //     sendResultados(galeria);
-                // } else if (tipo === "Sorteos") {
-                //     sendSorteos(galeria);
-                // } else if (tipo === "Ubicanos") {
-                //     sendUbicanos(galeria);
-                // } else if (tipo === "Testimonios") {
-                //     sendTestimonios(galeria);
-                // } else {
-                // }
+                this.Galerias["Datos tipo 1: Resultados"].push(galeria[1]);
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
         },
-        async sendResultados(galeria) {
+        async setSorteos(galeria) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasResultados?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/galeriasSorteos/${galeria[1].id}?token=${this.token}`,
                     {
-                        method: "POST",
+                        method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
                         },
@@ -254,16 +296,19 @@ export default {
                     }
                 );
                 const resData = await res.json();
+
+                this.Galerias["Datos tipo 2: Sorteos"].push(galeria[1]);
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
         },
-        async sendSorteos(galeria) {
+        async setUbicanos(galeria) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasSorteos?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/galeriasUbicanos/${galeria[1].id}?token=${this.token}`,
                     {
-                        method: "POST",
+                        method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
                         },
@@ -271,16 +316,19 @@ export default {
                     }
                 );
                 const resData = await res.json();
+
+                this.Galerias["Datos tipo 3: Ubicanos"].push(galeria[1]);
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
         },
-        async sendUbicanos(galeria) {
+        async setTestimonios(galeria) {
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasUbicanos?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/galeriasTestimonios/${galeria[1].id}?token=${this.token}`,
                     {
-                        method: "POST",
+                        method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
                         },
@@ -288,46 +336,79 @@ export default {
                     }
                 );
                 const resData = await res.json();
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        async sendTestimonios(galeria) {
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasTestimonios?token=${this.token}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(galeria),
-                    }
-                );
-                const resData = await res.json();
+
+                this.Galerias["Datos tipo 4: Testimonios"].push(galeria[1]);
+                this.clearInput();
             } catch (error) {
                 console.log(error);
             }
         },
 
         selectGaleria(data) {
+            console.log(data);
             this.galeria = data;
-            this.imagenSeleccionada = data.rutaImagen;
+            this.imagenSeleccionada = `${this.prefix}/images/${
+                data.rutaImagen.name ? data.rutaImagen.name : data.rutaImagen
+            }`;
             this.crear = false;
         },
-        async editGaleria(data) {
+
+        // FIXME no envia bien la foto
+        async editGaleria(galeria) {
+            console.log(galeria.rutaImagen);
+            const formData = new FormData();
+
+            formData.append("rutaImagen", galeria.rutaImagen);
+            formData.append("titulo", galeria.titulo);
+            formData.append("contenido", galeria.contenido);
+            formData.append("rutaVideo", galeria.rutaVideo);
+            formData.append("link", galeria.link);
+            formData.append("estado", 1);
             try {
-                console.log(data);
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/customizeUpdate/${galeria.id}?token=${this.token}`,
+                    {
+                        method: "POST",
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        //     Authorization: `Bearer ${this.token}`,
+                        // },
+                        body: formData,
+                    }
+                );
+                const resData = await res.json();
+                console.log(resData);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    galeria.estado = 1;
+                    this.crear = true;
+                    this.clearInput();
+                }
             } catch (error) {
                 console.log(error);
             }
         },
-        async deleteGaleria(data, index) {
+        async deleteGaleria(galeria, index) {
             try {
-                this.Galerias[index].splice(
-                    this.Galerias[index].indexOf(data),
-                    1
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/customize/${galeria.id}?token=${this.token}`,
+                    {
+                        method: "DELETE",
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        //     Authorization: `Bearer ${this.token}`,
+                        // },
+                    }
                 );
+                const resData = await res.json();
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    galeria.estado = 0;
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -351,6 +432,9 @@ export default {
         background: var(--bs-dark);
         .Galerias__lista-item {
             background: var(--bs-light);
+            &:hover {
+                background: var(--bs-dark);
+            }
         }
     }
     .Galerias__module {

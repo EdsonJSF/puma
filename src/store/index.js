@@ -6,7 +6,7 @@ export default createStore({
     state: {
         // prefix: "http://pumab.neuron.com.co/public",
         // prefix: "http://127.0.0.1:8000",
-        prefix: "http://192.168.0.107:8000",
+        prefix: "http://192.168.0.116:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -31,6 +31,7 @@ export default createStore({
             },
         ],
 
+        /* DATOS PARA EL LOGIN */
         token: null,
         rol: null,
         loginRoutes: null,
@@ -121,6 +122,7 @@ export default createStore({
                 console.log(error);
             }
         },
+        // FIXME aun no se ha probado
         async contactanos({ commit }, contacto) {
             try {
                 const res = await fetch(
@@ -139,6 +141,7 @@ export default createStore({
                 console.log(error);
             }
         },
+        // FIXME aun no se ha probado
         async recoveryPass({ commit }, forgetPass) {
             try {
                 const res = await fetch(
