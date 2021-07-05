@@ -27,12 +27,12 @@ export default {
     min-height: 100vh;
 }
 .preloader__animation {
-    width: 7rem;
-    height: 7rem;
-    border: 1.5rem solid var(--bs-secondary);
-    border-right-color: transparent;
+    width: 4rem;
+    height: 4rem;
+    border: 0.7rem solid var(--bs-secondary);
+    border-right-color: var(--bs-primary);
     border-radius: 100%;
-    animation: preloader 1s infinite;
+    animation: preloader 0.7s linear infinite;
 }
 @keyframes preloader {
     0% {
