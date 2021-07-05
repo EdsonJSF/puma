@@ -16,29 +16,33 @@
                             class="Galerias__lista-item d-flex justify-content-between align-items-center px-2 my-2"
                         >
                             <p class="m-0">{{ item.titulo }}</p>
-                            <div>
+                            <div v-if="item.estado === 1">
                                 <button
                                     @click="selectGaleria(item)"
                                     class="btn"
                                 >
                                     <img
-                                        v-if="item.estado === 1"
                                         src="../../assets/img/icons/pen-solid.svg"
-                                        alt=""
-                                    />
-                                    <img
-                                        v-else
-                                        src="../../assets/img/icons/check-square-solid.svg"
                                         alt=""
                                     />
                                 </button>
                                 <button
-                                    v-if="item.estado === 1"
-                                    @click="deleteGaleria(item, indexGaleria)"
+                                    @click="deleteGaleria(item)"
                                     class="btn"
                                 >
                                     <img
                                         src="../../assets/img/icons/trash-solid.svg"
+                                        alt=""
+                                    />
+                                </button>
+                            </div>
+                            <div v-else>
+                                <button
+                                    @click="activarGaleria(item)"
+                                    class="btn"
+                                >
+                                    <img
+                                        src="../../assets/img/icons/check-square-solid.svg"
                                         alt=""
                                     />
                                 </button>
@@ -62,18 +66,32 @@
                                     type="file"
                                     @change="onFileSelected"
                                     :key="fileInputKey"
-                                    accept="video/*, image/*"
+                                    accept="image/*"
                                     :required="crear"
                                 />
                                 <div class="d-flex justify-content-around">
-                                    <figure>
+                                    <figure v-if="imagenSeleccionada">
                                         <img
-                                            :src="imagenSeleccionada"
+                                            :src="imagen"
                                             width="150"
                                             height="150"
                                             alt="Imagen Seleccionada"
                                         />
                                     </figure>
+                                </div>
+                                <input
+                                    type="file"
+                                    @change="onVideoSelected"
+                                    :key="fileInputKey"
+                                    accept="video/*"
+                                />
+                                <div class="d-flex justify-content-around">
+                                    <video
+                                        v-if="videoSeleccionado"
+                                        :src="video"
+                                        width="150"
+                                        controls
+                                    ></video>
                                 </div>
                                 <div>
                                     <select
@@ -155,6 +173,7 @@ export default {
             },
             fileInputKey: 0,
             imagenSeleccionada: "",
+            videoSeleccionado: "",
             galeriaTipo: "",
             Galerias: [],
             crear: true,
@@ -190,17 +209,28 @@ export default {
         },
 
         onFileSelected(event) {
-            const file = event.target.files[0];
-            this.galeria.rutaVideo = file;
-            this.galeria.rutaImagen = file;
-            this.mostrarImagen(file);
+            const img = event.target.files[0];
+            this.galeria.rutaImagen = img;
+            this.mostrarImagen(img);
         },
-        mostrarImagen(file) {
+        mostrarImagen(img) {
             let reader = new FileReader();
             reader.onload = (e) => {
                 this.imagenSeleccionada = e.target.result;
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(img);
+        },
+        onVideoSelected(event) {
+            const video = event.target.files[0];
+            this.galeria.rutaVideo = video;
+            this.mostrarVideo(video);
+        },
+        mostrarVideo(video) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.videoSeleccionado = e.target.result;
+            };
+            reader.readAsDataURL(video);
         },
         clearInput() {
             this.galeria = {
@@ -213,26 +243,27 @@ export default {
                 link: "",
             };
             this.imagenSeleccionada = "";
+            this.videoSeleccionado = "";
             this.fileInputKey++;
         },
 
-        addGaleria(data, tipo) {
+        addGaleria(galeria, tipo) {
             if (this.crear) {
-                this.sendGalerias(data, tipo);
+                this.sendGalerias(galeria, tipo);
             } else {
-                this.editGaleria(data);
+                this.editGaleria(galeria);
             }
         },
         async sendGalerias(galeria, tipo) {
             const formData = new FormData();
 
             formData.append("rutaImagen", galeria.rutaImagen);
+            formData.append("rutaVideo", galeria.rutaVideo);
             formData.append("titulo", galeria.titulo);
             formData.append("contenido", galeria.contenido);
-            formData.append("rutaVideo", galeria.rutaVideo);
+            formData.append("link", galeria.link);
             formData.append("orden", galeria.orden);
             formData.append("tipo", galeria.tipo);
-            formData.append("link", galeria.link);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
@@ -344,26 +375,22 @@ export default {
             }
         },
 
-        selectGaleria(data) {
-            console.log(data);
-            this.galeria = data;
-            this.imagenSeleccionada = `${this.prefix}/images/${
-                data.rutaImagen.name ? data.rutaImagen.name : data.rutaImagen
-            }`;
+        selectGaleria(galeria) {
+            console.log(galeria.rutaImagen);
+            console.log(galeria.rutaVideo);
+            this.galeria = galeria;
+            this.imagenSeleccionada = `${this.prefix}/images/${galeria.rutaImagen}`;
+            this.videoSeleccionado = `${this.prefix}/videos/${galeria.rutaVideo}`;
             this.crear = false;
         },
-
-        // FIXME no envia bien la foto
         async editGaleria(galeria) {
-            console.log(galeria.rutaImagen);
             const formData = new FormData();
 
             formData.append("rutaImagen", galeria.rutaImagen);
+            formData.append("rutaVideo", galeria.rutaVideo);
             formData.append("titulo", galeria.titulo);
             formData.append("contenido", galeria.contenido);
-            formData.append("rutaVideo", galeria.rutaVideo);
             formData.append("link", galeria.link);
-            formData.append("estado", 1);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/customizeUpdate/${galeria.id}?token=${this.token}`,
@@ -377,12 +404,19 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
+                console.log(resData["El objeto fue actualizado con exito!"]);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    galeria.estado = 1;
+                    galeria.rutaImagen =
+                        resData[
+                            "El objeto fue actualizado con exito!"
+                        ].rutaImagen;
+                    galeria.rutaVideo =
+                        resData[
+                            "El objeto fue actualizado con exito!"
+                        ].rutaVideo;
                     this.crear = true;
                     this.clearInput();
                 }
@@ -390,7 +424,7 @@ export default {
                 console.log(error);
             }
         },
-        async deleteGaleria(galeria, index) {
+        async deleteGaleria(galeria) {
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/customize/${galeria.id}?token=${this.token}`,
@@ -413,11 +447,37 @@ export default {
                 console.log(error);
             }
         },
+        async activarGaleria(galeria) {
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/UpdateEstado/${galeria.id}?token=${this.token}`,
+                    {
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        //     Authorization: `Bearer ${this.token}`,
+                        // },
+                    }
+                );
+                const resData = await res.json();
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    galeria.estado = 1;
+                    this.selectGaleria(galeria);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
     computed: {
         ...mapState(["token", "rol", "prefix"]),
         imagen() {
             return this.imagenSeleccionada;
+        },
+        video() {
+            return this.videoSeleccionado;
         },
     },
     created() {
