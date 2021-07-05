@@ -180,9 +180,10 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout"]),
+        ...mapActions(["logout", "showPreloader"]),
 
         async getGalerias() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
@@ -194,6 +195,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -202,6 +204,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         tituloGaleria(titulo) {
@@ -255,6 +258,7 @@ export default {
             }
         },
         async sendGalerias(galeria, tipo) {
+            this.showPreloader(true);
             const formData = new FormData();
 
             formData.append("rutaImagen", galeria.rutaImagen);
@@ -277,6 +281,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (tipo === "Resultados") {
                     this.setResultados(resData);
@@ -292,9 +297,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async setResultados(galeria) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/galeriasResultados/${galeria[1].id}?token=${this.token}`,
@@ -307,14 +314,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 1: Resultados"].push(galeria[1]);
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async setSorteos(galeria) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/galeriasSorteos/${galeria[1].id}?token=${this.token}`,
@@ -327,14 +337,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 2: Sorteos"].push(galeria[1]);
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async setUbicanos(galeria) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/galeriasUbicanos/${galeria[1].id}?token=${this.token}`,
@@ -347,14 +360,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 3: Ubicanos"].push(galeria[1]);
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async setTestimonios(galeria) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/galeriasTestimonios/${galeria[1].id}?token=${this.token}`,
@@ -367,23 +383,24 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 4: Testimonios"].push(galeria[1]);
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
 
         selectGaleria(galeria) {
-            console.log(galeria.rutaImagen);
-            console.log(galeria.rutaVideo);
             this.galeria = galeria;
             this.imagenSeleccionada = `${this.prefix}/images/${galeria.rutaImagen}`;
             this.videoSeleccionado = `${this.prefix}/videos/${galeria.rutaVideo}`;
             this.crear = false;
         },
         async editGaleria(galeria) {
+            this.showPreloader(true);
             const formData = new FormData();
 
             formData.append("rutaImagen", galeria.rutaImagen);
@@ -404,7 +421,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData["El objeto fue actualizado con exito!"]);
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -422,9 +439,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async deleteGaleria(galeria) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/customize/${galeria.id}?token=${this.token}`,
@@ -437,6 +456,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -445,9 +465,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async activarGaleria(galeria) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/UpdateEstado/${galeria.id}?token=${this.token}`,
@@ -459,6 +481,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -468,6 +491,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
     },

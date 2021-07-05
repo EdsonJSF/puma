@@ -69,9 +69,10 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout"]),
+        ...mapActions(["logout", "showPreloader"]),
 
         async getResumenVentas() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/resumenventas?token=${this.token}`,
@@ -82,6 +83,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -90,6 +92,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
     },

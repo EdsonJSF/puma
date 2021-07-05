@@ -78,9 +78,10 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout"]),
+        ...mapActions(["logout", "showPreloader"]),
 
         async getEstadoCuentas() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/estadoDeCuenta`,
@@ -92,6 +93,7 @@ export default {
                     }
                 );
                 const resData = await res.text();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -101,6 +103,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         arreglarCadena(cadena) {

@@ -1,4 +1,5 @@
 <template>
+    <Preloader />
     <div v-if="$route.name !== 'Home'" class="container">
         <HeaderLogin />
     </div>
@@ -9,10 +10,12 @@
 import { mapActions } from "vuex";
 
 import HeaderLogin from "@/components/login/HeaderLogin.vue";
+import Preloader from "@/components/Preloader.vue";
 
 export default {
     components: {
         HeaderLogin,
+        Preloader,
     },
     methods: {
         ...mapActions(["readToken"]),

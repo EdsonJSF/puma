@@ -188,9 +188,10 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout"]),
+        ...mapActions(["logout", "showPreloader"]),
 
         async getPromotoresVendedores() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/modulopromotorvendedor?token=${this.token}`,
@@ -201,6 +202,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -209,6 +211,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         onFileSelected(event) {
@@ -240,6 +243,7 @@ export default {
             }
         },
         async createUsuario(newUser, rol) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/crearpromotorvendedor?token=${this.token}`,
@@ -252,6 +256,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.token) {
                     this.PromotoresVendedores.unshift(resData.user);
@@ -272,9 +277,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async createAdmin() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/CrearAdministrador?token=${this.token}`,
@@ -285,12 +292,16 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
+
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async createProm() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/CrearPromotor?token=${this.token}`,
@@ -301,12 +312,16 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
+
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async createVend() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/CrearVendedor?token=${this.token}`,
@@ -317,16 +332,20 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
+
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
-        async selectUsuario(user) {
+        selectUsuario(user) {
             this.crear = false;
             this.usuario = user;
         },
         async editUsuario(newUser, rol) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/modulopromotorvendedor/${newUser.id}?token=${this.token}`,
@@ -339,6 +358,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (rol === "Administrador") {
                     this.editAdmin(newUser.id);
@@ -353,9 +373,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async editAdmin(id) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/ModificarAdministrador/${id}?token=${this.token}`,
@@ -366,12 +388,16 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
+
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async editProm(id) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/ModificarPromotor/${id}?token=${this.token}`,
@@ -382,12 +408,16 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
+
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async editVend(id) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/ModificarVendedor/${id}?token=${this.token}`,
@@ -398,12 +428,16 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
+
                 this.clearInput();
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async delUsuario(user) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/modulopromotorvendedor/${user.id}?token=${this.token}`,
@@ -415,6 +449,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -426,6 +461,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
     },

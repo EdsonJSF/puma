@@ -86,9 +86,10 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout"]),
+        ...mapActions(["logout", "showPreloader"]),
 
         async getSolicitudes() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/SolicitudesAdministrador?token=${this.token}`,
@@ -99,6 +100,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -107,9 +109,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async getSolicitudesAceptadas() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/solicitudesAceptadas?token=${this.token}`,
@@ -120,6 +124,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -129,9 +134,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async getSolicitudesRechazadas() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/solicitudesRechazadas?token=${this.token}`,
@@ -142,6 +149,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -151,9 +159,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async aprobSolicitudes(data) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/modificarsolicitud/${data.id}?token=${this.token}`,
@@ -164,8 +174,8 @@ export default {
                         },
                     }
                 );
-
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -175,9 +185,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async negarSolicitudes(data) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/eliminarsolicitud/${data.id}?token=${this.token}`,
@@ -189,6 +201,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -198,6 +211,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
     },

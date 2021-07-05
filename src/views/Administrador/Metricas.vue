@@ -105,19 +105,23 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout"]),
+        ...mapActions(["logout", "showPreloader"]),
 
         async getMetricas() {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/metricas?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/metricas`,
                     {
                         headers: {
                             "Content-Type": "application/json",
+                            Autorization: `bearer ${this.token}`,
                         },
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
+                console.log(resData);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -130,6 +134,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         addNumero(data) {
@@ -137,6 +142,7 @@ export default {
             this.Metricas.splice(this.Metricas.indexOf(data), 1);
         },
         async blockNumero(data) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/bloquearNumero/${data.id}?token=${this.token}`,
@@ -148,6 +154,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -158,9 +165,11 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
         async desBlockNumero(data) {
+            this.showPreloader(true);
             try {
                 const res = await fetch(
                     `${this.prefix}/api/${this.rol}/desbloquearNumero/${data.id}?token=${this.token}`,
@@ -172,6 +181,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -184,6 +194,7 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+                this.showPreloader(false);
             }
         },
     },
