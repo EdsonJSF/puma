@@ -93,6 +93,7 @@ export default {
                     }
                 );
                 const resData = await res.text();
+                console.log(resData);
                 this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
@@ -115,7 +116,7 @@ export default {
         ...mapState(["token", "rol", "prefix"]),
     },
     created() {
-        // this.getEstadoCuentas();
+        this.getEstadoCuentas();
     },
 };
 </script>

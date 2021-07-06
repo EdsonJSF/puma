@@ -9,12 +9,22 @@
                     <div class="form-label-group w-100">
                         <div>
                             <input
+                                @change="onFileSelected"
+                                :key="fileInputKey"
                                 type="file"
                                 class="form-control"
-                                @change="onFileSelected"
                                 accept="image/*"
-                                required
                             />
+                        </div>
+                        <div class="">
+                            <figure v-if="imagenSeleccionada">
+                                <img
+                                    :src="imagen"
+                                    width="150"
+                                    height="150"
+                                    alt="Imagen Seleccionada"
+                                />
+                            </figure>
                         </div>
                         <div>
                             <input
@@ -48,6 +58,7 @@
                                 required
                             />
                             <input
+                                v-if="usuario.rol !== '1'"
                                 v-model="usuario.ganancia"
                                 class="form-control"
                                 type="number"
@@ -55,6 +66,7 @@
                                 required
                             />
                             <input
+                                v-if="usuario.rol !== '1'"
                                 v-model="usuario.porcentaje"
                                 class="form-control"
                                 type="number"
@@ -76,12 +88,16 @@
                                 placeholder="telefono"
                                 required
                             />
-                            <select v-model="rol" class="form-control" required>
-                                <option value="Administrador" selected
+                            <select
+                                v-model="usuario.rol"
+                                class="form-control"
+                                required
+                            >
+                                <option value="1" selected
                                     >Administrador</option
                                 >
-                                <option value="Promotor">Promotor</option>
-                                <option value="Vendedor">Vendedor</option>
+                                <option value="2">Promotor</option>
+                                <option value="3">Vendedor</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary btn-sm">
@@ -171,17 +187,18 @@ export default {
         return {
             PromotoresVendedores: [],
             usuario: {
-                name: "",
-                email: "",
-                password: "",
-                dni: "",
+                name: "Edson",
+                email: "Edsonjsf1990@gmail.com",
+                password: "123456",
+                dni: "20425049",
                 ganancia: "",
                 porcentaje: "",
                 foto: "",
-                direccion: "",
-                telefono: "",
+                direccion: "mi casa",
+                telefono: "4247469327",
+                rol: "1",
+                codigo: "1",
             },
-            rol: "",
             crear: true,
             fileInputKey: 0,
             imagenSeleccionada: "",
@@ -215,24 +232,16 @@ export default {
             }
         },
         onFileSelected(event) {
-            this.usuario.foto = event.target.files[0];
+            const img = event.target.files[0];
+            this.usuario.foto = img;
+            this.mostrarImagen(img);
         },
-        clearInput() {
-            this.usuario = {
-                name: "",
-                email: "",
-                password: "",
-                dni: "",
-                ganancia: "",
-                porcentaje: "",
-                foto: "",
-                direccion: "",
-                telefono: "",
+        mostrarImagen(img) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.imagenSeleccionada = e.target.result;
             };
-            this.rol = "";
-            this.crear = true;
-            this.fileInputKey++;
-            this.imagenSeleccionada = "";
+            reader.readAsDataURL(img);
         },
 
         addUsuario(newUser, rol) {
@@ -243,38 +252,57 @@ export default {
             }
         },
         async createUsuario(newUser, rol) {
+            console.log(newUser);
+            console.log(newUser.rol);
+
             this.showPreloader(true);
+
+            const formData = new FormData();
+
+            formData.append("name", newUser.name);
+            formData.append("email", newUser.email);
+            formData.append("password", newUser.password);
+            formData.append("dni", newUser.dni);
+            formData.append("ganancia", newUser.ganancia);
+            formData.append("porcentaje", newUser.porcentaje);
+            formData.append("foto", newUser.foto);
+            formData.append("direccion", newUser.direccion);
+            formData.append("telefono", newUser.telefono);
+            formData.append("rol", newUser.rol);
+            formData.append("codigo", newUser.codigo);
+
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/crearpromotorvendedor?token=${this.token}`,
+                    `${this.prefix}/api/register?token=${this.token}`,
                     {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify(newUser),
+                        body: formData,
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 this.showPreloader(false);
 
-                if (resData.token) {
-                    this.PromotoresVendedores.unshift(resData.user);
+                // if (resData.token) {
+                //     this.PromotoresVendedores.unshift(resData.user);
 
-                    if (rol === "Administrador") {
-                        this.createAdmin();
-                    } else if (rol === "Promotor") {
-                        this.createProm();
-                    } else if (rol === "Vendedor") {
-                        this.createVend();
-                    } else {
-                        console.log("error");
-                    }
-                } else if (resData.status === "Token is Expired") {
-                    this.logout();
-                } else {
-                    console.log("error");
-                }
+                //     if (rol === "1") {
+                //         this.createAdmin();
+                //     } else if (rol === "2") {
+                //         this.createProm();
+                //     } else if (rol === "3") {
+                //         this.createVend();
+                //     } else {
+                //         console.log("error");
+                //     }
+                // } else if (resData.status === "Token is Expired") {
+                //     this.logout();
+                // } else {
+                //     console.log("error");
+                // }
             } catch (error) {
                 console.log(error);
                 this.showPreloader(false);
@@ -467,9 +495,14 @@ export default {
     },
     computed: {
         ...mapState(["token", "rol", "prefix"]),
+
+        imagen() {
+            return this.imagenSeleccionada;
+        },
     },
     created() {
-        this.getPromotoresVendedores();
+        // TODO descomentar esto
+        // this.getPromotoresVendedores();
     },
 };
 </script>

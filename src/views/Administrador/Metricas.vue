@@ -18,7 +18,7 @@
                             <button
                                 v-if="numero.Estado != 0"
                                 @click="blockNumero(numero)"
-                                class="btn"
+                                class="btn btn-sm"
                             >
                                 <img
                                     src="../../assets/img/icons/check-square-solid.svg"
@@ -28,7 +28,7 @@
                             <button
                                 v-else
                                 @click="desBlockNumero(numero)"
-                                class="btn"
+                                class="btn btn-sm"
                             >
                                 <img
                                     src="../../assets/img/icons/trash-solid.svg"
@@ -59,7 +59,7 @@
                             >
                                 <td @click="addNumero(metrica)">
                                     <div>
-                                        <button class="btn">
+                                        <button class="btn btn-sm">
                                             <img
                                                 src="../../assets/img/icons/plus-solid.svg"
                                                 alt=""
@@ -115,13 +115,12 @@ export default {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Autorization: `bearer ${this.token}`,
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
                 const resData = await res.json();
                 this.showPreloader(false);
-                console.log(resData);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -137,19 +136,20 @@ export default {
                 this.showPreloader(false);
             }
         },
-        addNumero(data) {
-            this.NumerosBloqueados.push(data);
-            this.Metricas.splice(this.Metricas.indexOf(data), 1);
+        addNumero(numero) {
+            this.NumerosBloqueados.push(numero);
+            this.Metricas.splice(this.Metricas.indexOf(numero), 1);
         },
-        async blockNumero(data) {
+        async blockNumero(numero) {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/bloquearNumero/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/bloquearNumero/${numero.id}`,
                     {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
@@ -159,20 +159,25 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.NumerosBloqueados[
-                        this.NumerosBloqueados.indexOf(data)
-                    ].Estado = 0;
+                    this.NumerosBloqueados.splice(
+                        this.NumerosBloqueados.indexOf(numero),
+                        1
+                    );
+                    this.NumerosBloqueados = [
+                        ...this.NumerosBloqueados,
+                        ...resData["El objeto fue eliminado con exito!"],
+                    ];
                 }
             } catch (error) {
                 console.log(error);
                 this.showPreloader(false);
             }
         },
-        async desBlockNumero(data) {
+        async desBlockNumero(numero) {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/desbloquearNumero/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/desbloquearNumero/${numero.id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {
@@ -186,11 +191,12 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    numero.Estado = 1;
                     this.NumerosBloqueados.splice(
-                        this.NumerosBloqueados.indexOf(data),
+                        this.NumerosBloqueados.indexOf(numero),
                         1
                     );
-                    this.Metricas.unshift(data);
+                    this.Metricas.unshift(numero);
                 }
             } catch (error) {
                 console.log(error);
