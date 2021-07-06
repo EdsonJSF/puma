@@ -89,6 +89,15 @@ const routes = [
             ),
         meta: { rutaProtegida: true },
     },
+    {
+        path: "/administrador/sorteos",
+        name: "SorteosAdmin",
+        component: () =>
+            import(
+                /* webpackChunkName: "Sorteos" */ "../views/Administrador/Sorteos.vue"
+            ),
+        meta: { rutaProtegida: true },
+    },
 
     /* RUTAS PROMOTOR */
     {

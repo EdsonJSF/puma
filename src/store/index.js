@@ -71,6 +71,7 @@ export default createStore({
                         "galerias",
                         "estado-de-cuenta",
                         "metricas",
+                        "sorteos",
                     ],
                     userRol: rol,
                 };
