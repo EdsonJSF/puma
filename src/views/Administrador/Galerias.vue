@@ -171,12 +171,13 @@ export default {
                 tipo: "1",
                 link: "",
             },
-            fileInputKey: 0,
             imagenSeleccionada: "",
             videoSeleccionado: "",
+            fileInputKey: 0,
             galeriaTipo: "",
-            Galerias: [],
             crear: true,
+
+            Galerias: [],
         };
     },
     methods: {
@@ -248,6 +249,8 @@ export default {
             this.imagenSeleccionada = "";
             this.videoSeleccionado = "";
             this.fileInputKey++;
+            this.galeriaTipo = "";
+            this.crear = true;
         },
 
         addGaleria(galeria, tipo) {
@@ -283,6 +286,7 @@ export default {
                 const resData = await res.json();
                 this.showPreloader(false);
 
+                // TODO revisar la consulta if
                 if (tipo === "Resultados") {
                     this.setResultados(resData);
                 } else if (tipo === "Sorteos") {
@@ -434,7 +438,6 @@ export default {
                         resData[
                             "El objeto fue actualizado con exito!"
                         ].rutaVideo;
-                    this.crear = true;
                     this.clearInput();
                 }
             } catch (error) {
@@ -524,7 +527,6 @@ export default {
     .Galerias__module {
         background: var(--bs-dark);
         textarea {
-            border: none;
             background: {
                 color: transparent;
                 image: repeating-linear-gradient(
@@ -534,9 +536,6 @@ export default {
                     #000 1.56rem,
                     transparent 1.56rem
                 );
-            }
-            &:focus {
-                outline: none;
             }
         }
     }

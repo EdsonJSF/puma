@@ -67,11 +67,11 @@ export default {
     data() {
         return {
             usuario: {
-                email: "puma15@gmail.com",
-                password: "puma14",
+                email: "puma01@gmail.com",
+                password: "puma01",
             },
             forgetPass: {
-                email: "puma15@gmail.com",
+                email: "puma01@gmail.com",
             },
         };
     },
@@ -87,17 +87,16 @@ export default {
 <style lang="scss" scoped>
 .Ingreso * {
     color: var(--bs-green);
-}
-button {
-    border: none;
-    background-color: transparent;
-}
-.navbar-toggler:focus {
-    box-shadow: none;
-}
-input {
-    border: none;
-    border-bottom: 1px solid var(--bs-secondary);
-    background-color: transparent;
+    button {
+        border: none;
+        background-color: transparent;
+    }
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+    input {
+        border-bottom: 1px solid var(--bs-secondary);
+        background-color: transparent;
+    }
 }
 </style>

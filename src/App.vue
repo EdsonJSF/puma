@@ -42,7 +42,6 @@ body,
     background-size: 75vw 85vh;
 }
 .btn {
-    box-shadow: none !important;
     img {
         min-width: 1rem;
     }

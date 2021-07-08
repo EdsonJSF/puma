@@ -73,12 +73,14 @@ export default {
 
 <style lang="scss" scoped>
 input,
-textarea {
+textarea,
+textarea:focus {
     margin: 0.7rem 0;
     padding: 0rem 1rem;
     background: var(--bs-dark);
-    border: none;
+    resize: none;
 }
+
 button.paralelogramo-primary:hover::before {
     background-color: var(--bs-secondary);
 }

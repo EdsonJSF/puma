@@ -54,8 +54,6 @@ form {
     textarea,
     textarea:focus {
         background: var(--bs-light);
-        border: none;
-        box-shadow: none;
         resize: none;
     }
 }

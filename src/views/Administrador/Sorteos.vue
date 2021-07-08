@@ -246,7 +246,6 @@ export default {
         form {
             input {
                 background: var(--bs-light);
-                outline: none;
             }
         }
     }

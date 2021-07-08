@@ -148,7 +148,6 @@ export default {
                 }
             }
             input {
-                border: none;
                 background: var(--bs-light);
             }
         }
