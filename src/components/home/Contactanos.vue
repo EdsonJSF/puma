@@ -13,25 +13,25 @@
             >
                 <div class="col-6 d-flex flex-column">
                     <input
+                        v-model="contacto.nombre_contacto"
                         type="text"
-                        required
                         placeholder="Tu nombre"
-                        v-model="contacto.name"
+                        required
                     />
                     <input
+                        v-model="contacto.correo_contacto"
                         type="email"
-                        required
                         placeholder="Tu correo"
-                        v-model="contacto.email"
+                        required
                     />
                 </div>
                 <textarea
+                    v-model="contacto.mensaje_contacto"
                     class="col-6"
                     cols="auto"
                     rows="3"
-                    required
                     placeholder="Tu mensaje"
-                    v-model="contacto.message"
+                    required
                 ></textarea>
                 <button
                     class="paralelogramo-primary btn w-auto my-4 px-3 py-1"
@@ -59,9 +59,9 @@ export default {
     data() {
         return {
             contacto: {
-                email: "",
-                name: "",
-                message: "",
+                nombre_contacto: "",
+                correo_contacto: "",
+                mensaje_contacto: "",
             },
         };
     },

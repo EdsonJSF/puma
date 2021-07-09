@@ -135,7 +135,6 @@ export default createStore({
                 commit("setPreloader", false);
             }
         },
-        // FIXME aun no se ha probado
         async contactanos({ commit }, contacto) {
             commit("setPreloader", true);
             try {
@@ -144,12 +143,14 @@ export default createStore({
                     {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
+                            // "Content-Type": "application/json",
                         },
                         body: JSON.stringify(contacto),
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
+
                 commit("setMessage", resData);
                 commit("setPreloader", false);
             } catch (error) {
@@ -213,7 +214,7 @@ export default createStore({
                 commit("setToken", token);
                 commit("setRol", rol);
                 commit("setLoginRoutes", rol);
-                router.push("/login");
+                // router.push("/login");
             } else {
                 commit("setToken", null);
                 commit("setRol", null);
