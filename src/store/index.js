@@ -8,7 +8,7 @@ export default createStore({
 
         prefix: "http://pumab.neuron.com.co/public",
         // prefix: "http://127.0.0.1:8000",
-        // prefix: "http://192.168.0.106:8000",
+        // prefix: "http://192.168.0.107:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -71,7 +71,7 @@ export default createStore({
                         "galerias",
                         "estado-de-cuenta",
                         "metricas",
-                        "sorteos",
+                        "crear-sorteos",
                     ],
                     userRol: rol,
                 };
@@ -143,16 +143,18 @@ export default createStore({
                     {
                         method: "POST",
                         headers: {
-                            // "Content-Type": "application/json",
+                            "Content-Type": "application/json",
                         },
                         body: JSON.stringify(contacto),
                     }
                 );
-                const resData = await res.json();
+                // TODO probar con JSON
+                const resData = await res.text();
                 console.log(resData);
 
                 commit("setMessage", resData);
                 commit("setPreloader", false);
+                return true;
             } catch (error) {
                 console.log(error);
                 commit("setPreloader", false);

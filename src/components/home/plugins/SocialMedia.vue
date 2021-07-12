@@ -24,7 +24,7 @@
                 </a>
                 <a
                     class="mb-2"
-                    href="https://wa.me/584247469327"
+                    href="https://wa.me/5842455555555"
                     target="_blanck"
                 >
                     <img

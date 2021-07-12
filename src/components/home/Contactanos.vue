@@ -8,7 +8,7 @@
             </div>
             <HeaderComponents />
             <form
-                @submit.prevent="contactanos(contacto)"
+                @submit.prevent="contactar(contacto)"
                 class="row d-flex justify-content-center align-items-center mx-2 my-auto"
             >
                 <div class="col-6 d-flex flex-column">
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import HeaderComponents from "@/components/home/plugins/HeaderComponents.vue";
 
 export default {
@@ -67,6 +67,16 @@ export default {
     },
     methods: {
         ...mapActions(["contactanos"]),
+
+        async contactar(mensaje) {
+            const res = await this.contactanos(mensaje);
+            if (res) {
+                alert(this.message);
+            }
+        },
+    },
+    computed: {
+        ...mapState(["message"]),
     },
 };
 </script>

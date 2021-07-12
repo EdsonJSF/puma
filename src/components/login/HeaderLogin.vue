@@ -16,11 +16,13 @@
             <!-- SEARCH BTN -->
             <div class="d-flex align-self-end mt-3">
                 <div class="paralelogramo-primary">
-                    <img
-                        class="ico-search p-2"
-                        src="../../assets/img/icons/search-solid.svg"
-                        alt=""
-                    />
+                    <div class="btn btn-sm">
+                        <img
+                            class="ico-search"
+                            src="../../assets/img/icons/search-solid.svg"
+                            alt=""
+                        />
+                    </div>
                 </div>
             </div>
         </div>

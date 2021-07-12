@@ -5,14 +5,12 @@ const routes = [
     {
         path: "/",
         name: "Home",
-        component: () =>
-            import(/* webpackChunkName: "Home" */ "../views/Home.vue"),
+        component: () => import("../views/Home.vue"),
     },
     {
         path: "/login",
         name: "Login",
-        component: () =>
-            import(/* webpackChunkName: "Login" */ "../views/Login.vue"),
+        component: () => import("../views/Login.vue"),
         meta: { rutaProtegida: true },
     },
 
@@ -20,82 +18,56 @@ const routes = [
     {
         path: "/administrador/perfil",
         name: "PerfilAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "Perfil" */ "../views/Administrador/Perfil.vue"
-            ),
+        component: () => import("../views/Administrador/Perfil.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/administrador/estado-de-cuenta",
         name: "EstadoCuentaAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "EstadoCuenta" */ "../views/Administrador/EstadoCuenta.vue"
-            ),
+        component: () => import("../views/Administrador/EstadoCuenta.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/administrador/galerias",
         name: "GaleriasAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "Galerias" */ "../views/Administrador/Galerias.vue"
-            ),
+        component: () => import("../views/Administrador/Galerias.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/administrador/metricas",
         name: "MetricasAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "Metricas" */ "../views/Administrador/Metricas.vue"
-            ),
+        component: () => import("../views/Administrador/Metricas.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/administrador/promotores-y-vendedores",
         name: "PromotoresVendedoresAdmin",
         component: () =>
-            import(
-                /* webpackChunkName: "PromotoresVendedores" */ "../views/Administrador/PromotoresVendedores.vue"
-            ),
+            import("../views/Administrador/PromotoresVendedores.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/administrador/reportar-gastos",
         name: "ReportarGastosAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "ReportarGastos" */ "../views/Administrador/ReportarGastos.vue"
-            ),
+        component: () => import("../views/Administrador/ReportarGastos.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/administrador/resumen-de-ventas",
         name: "ResumenVentasAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "ResumenVentas" */ "../views/Administrador/ResumenVentas.vue"
-            ),
+        component: () => import("../views/Administrador/ResumenVentas.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/administrador/solicitudes",
         name: "SolicitudesAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "Solicitudes" */ "../views/Administrador/Solicitudes.vue"
-            ),
+        component: () => import("../views/Administrador/Solicitudes.vue"),
         meta: { rutaProtegida: true },
     },
     {
-        path: "/administrador/sorteos",
+        path: "/administrador/crear-sorteos",
         name: "SorteosAdmin",
-        component: () =>
-            import(
-                /* webpackChunkName: "Sorteos" */ "../views/Administrador/Sorteos.vue"
-            ),
+        component: () => import("../views/Administrador/Sorteos.vue"),
         meta: { rutaProtegida: true },
     },
 
@@ -103,55 +75,37 @@ const routes = [
     {
         path: "/promotor/perfil",
         name: "PerfilProm",
-        component: () =>
-            import(
-                /* webpackChunkName: "Perfil" */ "../views/Promotor/Perfil.vue"
-            ),
+        component: () => import("../views/Promotor/Perfil.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/promotor/estado-de-cuenta",
         name: "EstadoCuentaProm",
-        component: () =>
-            import(
-                /* webpackChunkName: "EstadoCuenta" */ "../views/Promotor/EstadoCuenta.vue"
-            ),
+        component: () => import("../views/Promotor/EstadoCuenta.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/promotor/reportar-ventas",
         name: "ReportarVentasProm",
-        component: () =>
-            import(
-                /* webpackChunkName: "ReportarVentas" */ "../views/Promotor/ReportarVentas.vue"
-            ),
+        component: () => import("../views/Promotor/ReportarVentas.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/promotor/resumen-de-ventas",
         name: "ResumenVentasProm",
-        component: () =>
-            import(
-                /* webpackChunkName: "ResumenVentas" */ "../views/Promotor/ResumenVentas.vue"
-            ),
+        component: () => import("../views/Promotor/ResumenVentas.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/promotor/solicitudes",
         name: "SolicitudesProm",
-        component: () =>
-            import(
-                /* webpackChunkName: "Solicitudes" */ "../views/Promotor/Solicitudes.vue"
-            ),
+        component: () => import("../views/Promotor/Solicitudes.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/promotor/vendedores",
         name: "VendedoresProm",
-        component: () =>
-            import(
-                /* webpackChunkName: "Vendedores" */ "../views/Promotor/Vendedores.vue"
-            ),
+        component: () => import("../views/Promotor/Vendedores.vue"),
         meta: { rutaProtegida: true },
     },
 
@@ -159,46 +113,31 @@ const routes = [
     {
         path: "/vendedor/perfil",
         name: "PerfilVend",
-        component: () =>
-            import(
-                /* webpackChunkName: "Perfil" */ "../views/Vendedor/Perfil.vue"
-            ),
+        component: () => import("../views/Vendedor/Perfil.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/vendedor/estado-de-cuenta",
         name: "EstadoCuentaVend",
-        component: () =>
-            import(
-                /* webpackChunkName: "EstadoCuenta" */ "../views/Vendedor/EstadoCuenta.vue"
-            ),
+        component: () => import("../views/Vendedor/EstadoCuenta.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/vendedor/reportar-ventas",
         name: "ReportarVentasVend",
-        component: () =>
-            import(
-                /* webpackChunkName: "ReportarVentas" */ "../views/Vendedor/ReportarVentas.vue"
-            ),
+        component: () => import("../views/Vendedor/ReportarVentas.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/vendedor/solicitudes",
         name: "SolicitudesVend",
-        component: () =>
-            import(
-                /* webpackChunkName: "Solicitudes" */ "../views/Vendedor/Solicitudes.vue"
-            ),
+        component: () => import("../views/Vendedor/Solicitudes.vue"),
         meta: { rutaProtegida: true },
     },
     {
         path: "/:pathMatch(.*)*",
         name: "NotFound404",
-        component: () =>
-            import(
-                /* webpackChunkName: "Solicitudes" */ "../views/NotFound404.vue"
-            ),
+        component: () => import("../views/NotFound404.vue"),
     },
 ];
 
@@ -210,7 +149,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const exitsProtec = to.matched.some((item) => item.meta.rutaProtegida);
 
-    if (exitsProtec && store.state.token === null) {
+    if (exitsProtec && !store.state.token && !store.state.rol) {
         next("/");
     } else {
         next();

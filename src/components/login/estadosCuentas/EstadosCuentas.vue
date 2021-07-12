@@ -88,12 +88,11 @@ export default {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Autorization: `bearer ${this.token}`,
+                            Authorization: `bearer ${this.token}`,
                         },
                     }
                 );
-                const resData = await res.text();
-                console.log(resData);
+                const resData = await res.json();
                 this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
