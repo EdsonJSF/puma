@@ -1,227 +1,309 @@
 <template>
-    <div class="Reportar rounded-3 m-2">
-        <form @submit.prevent="sendReporte(reporte)" class="row">
-            <div class="Reportar__data col-12 col-md-8">
-                <div class="table-responsive m-1 p-2">
-                    <table
-                        class="table table-borderless table-hover align-middle"
-                    >
-                        <thead>
-                            <th><div>Fecha</div></th>
-                            <th><div>Número</div></th>
-                            <th><div>Valor a apostar</div></th>
-                            <th><div>Loteria</div></th>
-                            <th><div>Tipo</div></th>
-                            <th>
-                                <div>
-                                    <button
-                                        @click.prevent="pushReporte()"
-                                        class="btn btn-sm"
-                                    >
-                                        <img
-                                            src="../../../assets/img/icons/plus-solid.svg"
-                                            alt=""
-                                        />
-                                    </button>
-                                </div>
-                            </th>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="(newReporte, index) in reportes"
-                                :key="index"
-                            >
-                                <td>
-                                    <div>
-                                        <input
-                                            v-model="reporte.datas[index].fecha"
-                                            class="border-0 bg-transparent w-100"
-                                            type="date"
-                                            placeholder="fecha"
-                                            required
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <input
-                                            v-model="
-                                                reporte.datas[index].numero
-                                            "
-                                            class="border-0 bg-transparent w-100"
-                                            type="number"
-                                            min="0"
-                                            step="1"
-                                            placeholder="numero"
-                                            required
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <input
-                                            v-model="
-                                                reporte.datas[index].apuesta
-                                            "
-                                            class="border-0 bg-transparent w-100"
-                                            type="text"
-                                            placeholder="apuesta"
-                                            required
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        {{ reporte.datas[index].loteria }}
-                                        <select
-                                            v-model="
-                                                reporte.datas[index].loteria
-                                            "
-                                            class="triangulo-bottom"
-                                            required
-                                        >
-                                            <option
-                                                v-for="(loteria,
-                                                index) in loterias"
-                                                :key="index"
-                                                :value="loteria"
-                                                >{{ loteria }}</option
-                                            >
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        {{ reporte.datas[index].tipo }}
-                                        <select
-                                            v-model="reporte.datas[index].tipo"
-                                            class="triangulo-bottom"
-                                            required
-                                        >
-                                            <option value="Directo"
-                                                >Directo</option
-                                            >
-                                            <option value="Conbinado"
-                                                >Conbinado</option
-                                            >
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
+    <div class="Reportar">
+        <div class="rounded-3">
+            <form @submit.prevent="sendReporte(reporte)" class="row">
+                <div class="Reportar__data col-12 col-md-8">
+                    <div class="table-responsive my-1 py-2">
+                        <table
+                            class="table table-borderless table-hover align-middle"
+                        >
+                            <thead>
+                                <th><div>Fecha</div></th>
+                                <th><div>Número</div></th>
+                                <th><div>Valor a apostar</div></th>
+                                <th><div>Loteria</div></th>
+                                <th><div>Tipo</div></th>
+                                <!-- <th>
                                     <div>
                                         <button
-                                            @click.prevent="
-                                                clearReportes(index)
-                                            "
+                                            @click.prevent="pushReporte()"
                                             class="btn btn-sm"
                                         >
                                             <img
-                                                src="../../../assets/img/icons/trash-solid.svg"
+                                                src="../../../assets/img/icons/plus-solid.svg"
                                                 alt=""
                                             />
                                         </button>
                                     </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                </th> -->
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <input
+                                                v-model="reporte.Fecha"
+                                                class="bg-transparent w-100"
+                                                type="date"
+                                                placeholder="Fecha"
+                                                required
+                                            />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <input
+                                                v-model="reporte.Numero"
+                                                class="bg-transparent w-100"
+                                                type="number"
+                                                min="0"
+                                                step="1"
+                                                placeholder="Numero"
+                                                required
+                                            />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <input
+                                                v-model="reporte.Valorapuesta"
+                                                class="bg-transparent w-100"
+                                                type="number"
+                                                min="0"
+                                                placeholder="Apuesta"
+                                                required
+                                            />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ reporte.Loteria }}
+                                            <select
+                                                v-model="reporte.Loteria"
+                                                class="triangulo-bottom"
+                                                required
+                                            >
+                                                <option
+                                                    v-for="(loteria,
+                                                    index) in loterias"
+                                                    :key="index"
+                                                    :value="loteria"
+                                                    >{{ loteria }}</option
+                                                >
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ reporte.Tipo }}
+                                            <select
+                                                v-model="reporte.Tipo"
+                                                class="triangulo-bottom"
+                                                required
+                                            >
+                                                <option
+                                                    v-for="(tipo,
+                                                    index) in tipos"
+                                                    :key="index"
+                                                    :value="tipo"
+                                                    >{{ tipo }}</option
+                                                >
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <!-- <td>
+                                        <div>
+                                            <button
+                                                @click.prevent="
+                                                    clearReportes(index)
+                                                "
+                                                class="btn btn-sm"
+                                            >
+                                                <img
+                                                    src="../../../assets/img/icons/trash-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="Reportar__total col-12 col-md-4">
-                <div
-                    class="d-flex flex-column justify-content-between align-items-center text-start m-1 p-2"
-                >
-                    <div>
-                        <div class="Reportar__total-item m-1 p-2">
-                            <h6>Suma total de las ventas</h6>
-                            <input
-                                v-model="reporte.data"
-                                class="border-0 bg-transparent w-100"
-                                type="text"
-                                required
-                            />
+                <div class="Reportar__total col-12 col-md-4">
+                    <div
+                        class="d-flex flex-column justify-content-between text-start my-1 py-2"
+                    >
+                        <div>
+                            <div class="Reportar__total-item my-1 p-2">
+                                <h6>Suma total de las ventas</h6>
+                                <div>{{ total }}</div>
+                            </div>
+                            <div class="Reportar__total-item my-1 p-2">
+                                <h6>Puntos de venta</h6>
+                                <input
+                                    v-model="reporte.Puntoventas"
+                                    class="bg-transparent w-100"
+                                    type="text"
+                                    required
+                                />
+                            </div>
+                            <div class="Reportar__total-item my-1 p-2">
+                                <h6>Nombre del Promotor</h6>
+                                <div>{{ promotor }}</div>
+                            </div>
+                            <div class="Reportar__total-item my-1 p-2">
+                                <h6>Punto de entrega de las ventas</h6>
+                                <input
+                                    v-model="reporte.Puntoentregaventas"
+                                    class="bg-transparent w-100"
+                                    type="text"
+                                    required
+                                />
+                            </div>
+                            <div class="Reportar__total-item my-1 p-2">
+                                <h6>Referencia</h6>
+                                <input
+                                    v-model="reporte.Referencia"
+                                    class="bg-transparent w-100"
+                                    type="text"
+                                    required
+                                />
+                            </div>
                         </div>
-                        <div class="Reportar__total-item m-1 p-2">
-                            <h6>Puntos de venta</h6>
-                            <input
-                                v-model="reporte.data"
-                                class="border-0 bg-transparent w-100"
-                                type="text"
-                                required
-                            />
-                        </div>
-                        <div class="Reportar__total-item m-1 p-2">
-                            <h6>Nombre del Promotor</h6>
-                            <input
-                                v-model="reporte.data"
-                                class="border-0 bg-transparent w-100"
-                                type="text"
-                                required
-                            />
-                        </div>
-                        <div class="Reportar__total-item m-1 p-2">
-                            <h6>Punto de entrega de las ventas</h6>
-                            <input
-                                v-model="reporte.data"
-                                class="border-0 bg-transparent w-100"
-                                type="text"
-                                required
-                            />
+                        <div class="align-self-end">
+                            <button
+                                class="btn btn-light btn-outline-dark btn-sm rounded-pill me-4"
+                                type="submit"
+                            >
+                                ENVIAR
+                            </button>
                         </div>
                     </div>
-                    <div class="align-self-end">
-                        <button
-                            class="btn btn-light btn-outline-dark btn-sm rounded-pill border-0 me-4"
-                            type="submit"
-                        >
-                            ENVIAR
-                        </button>
-                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
     name: "Reportar",
     data() {
         return {
             reporte: {
-                datas: [
-                    {
-                        fecha: "",
-                        numero: "",
-                        apuesta: "",
-                        loteria: "",
-                        tipo: "",
-                    },
-                ],
-                data: "",
+                Fecha: "",
+                Numero: "",
+                Valorapuesta: "",
+                Loteria: "",
+                Tipo: "",
+                Referencia: "",
+                Puntoventas: "",
+                Puntoentregaventas: "",
             },
+
+            total: "",
+            promotor: "",
+
             reportes: 1,
+
             loterias: ["kino", "triple gordo", "no se cual"],
+            tipos: ["Directo", "Combinado"],
         };
     },
     methods: {
-        sendReporte(reporte) {
-            console.log(reporte);
+        ...mapActions(["logout", "showPreloader"]),
+
+        async getPromotor() {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/adicionalesVendedor`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                this.total = resData.sumatotal;
+                this.promotor = resData.promotor[0].name;
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
         },
-        pushReporte() {
-            this.reportes++;
-            this.reporte.datas.push({
-                fecha: "",
-                numero: "",
-                apuesta: "",
-                loteria: "",
-                tipo: "",
-            });
+
+        // pushReporte() {
+        //     this.reportes++;
+        //     this.reporte.push({
+        //         Fecha: "",
+        //         Numero: "",
+        //         Valorapuesta: "",
+        //         Loteria: "",
+        //         Tipo: "",
+        //         Referencia: "",
+        //         Puntoventas: "",
+        //         Puntoentregaventas: "",
+        //     });
+        // },
+
+        // clearReportes(index) {
+        //     this.reportes--;
+        //     this.reporte.splice(index, 1);
+        // },
+
+        clearInput() {
+            this.reporte = [
+                {
+                    Fecha: "",
+                    Numero: "",
+                    Valorapuesta: "",
+                    Loteria: "",
+                    Tipo: "",
+                    Referencia: "",
+                    Puntoventas: "",
+                    Puntoentregaventas: "",
+                },
+            ];
+            this.promotor = "";
+            this.reportes = 1;
         },
-        clearReportes(index) {
-            this.reportes--;
-            this.reporte.datas.splice(index, 1);
+
+        async sendReporte(reporte) {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/venta`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                        body: JSON.stringify(reporte),
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.clearInput();
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
         },
+    },
+    computed: {
+        ...mapState(["token", "rol", "prefix"]),
+    },
+    created() {
+        this.getPromotor();
     },
 };
 </script>

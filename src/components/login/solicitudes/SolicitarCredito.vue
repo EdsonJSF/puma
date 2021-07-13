@@ -6,13 +6,13 @@
         >
             <h6 class="text-white my-3">CREDITO / PRESTAMO</h6>
             <textarea
-                v-model="credito.cantidad"
+                v-model="credito.CantidadSolicitada"
                 class="form-control my-3"
                 placeholder="Cantidad a solicitar"
                 required
             ></textarea>
             <textarea
-                v-model="credito.cuotas"
+                v-model="credito.Cuotas"
                 class="form-control my-3"
                 placeholder="Cuotas de pago"
                 required
@@ -30,20 +30,50 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
     name: "SolicitarCredito",
     data() {
         return {
             credito: {
-                cantidad: "",
-                cuotas: "",
+                CantidadSolicitada: "",
+                Cuotas: "",
             },
         };
     },
     methods: {
-        solicitarCredito(credito) {
-            console.log(credito);
+        ...mapActions(["logout", "showPreloader"]),
+
+        async solicitarCredito(credito) {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/crearsolicitud`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                        body: JSON.stringify(credito),
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
         },
+    },
+    computed: {
+        ...mapState(["token", "rol", "prefix"]),
     },
 };
 </script>

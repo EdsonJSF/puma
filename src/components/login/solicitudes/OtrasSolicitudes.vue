@@ -6,7 +6,7 @@
         >
             <h6 class="text-white my-3">OTROS</h6>
             <textarea
-                v-model="solicitud.descripcion"
+                v-model="solicitud.Solicitud"
                 class="form-control my-3 h-100"
                 placeholder="Solicitud"
                 required
@@ -24,19 +24,49 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
     name: "OtrasSolicitudes",
     data() {
         return {
             solicitud: {
-                descripcion: "",
+                Solicitud: "",
             },
         };
     },
     methods: {
-        otrasSolicitudes(solicitud) {
-            console.log(solicitud);
+        ...mapActions(["logout", "showPreloader"]),
+
+        async otrasSolicitudes(solicitud) {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/crearsolicitud`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                        body: JSON.stringify(solicitud),
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
         },
+    },
+    computed: {
+        ...mapState(["token", "rol", "prefix"]),
     },
 };
 </script>

@@ -8,7 +8,7 @@ export default createStore({
 
         prefix: "http://pumab.neuron.com.co/public",
         // prefix: "http://127.0.0.1:8000",
-        // prefix: "http://192.168.0.107:8000",
+        // prefix: "http://192.168.0.103:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -116,8 +116,8 @@ export default createStore({
         showPreloader({ commit }, show) {
             commit("setPreloader", show);
         },
-        async getDataHome({ commit }) {
-            commit("setPreloader", true);
+        async getDataHome({ dispatch, commit }) {
+            dispatch("showPreloader", true);
             try {
                 const res = await fetch(
                     `${this.state.prefix}/api/HomeCustomize`,
@@ -129,14 +129,14 @@ export default createStore({
                 );
                 const resData = await res.json();
                 commit("setDataHome", resData);
-                commit("setPreloader", false);
+                dispatch("showPreloader", false);
             } catch (error) {
                 console.log(error);
-                commit("setPreloader", false);
+                dispatch("showPreloader", false);
             }
         },
-        async contactanos({ commit }, contacto) {
-            commit("setPreloader", true);
+        async contactanos({ dispatch, commit }, contacto) {
+            dispatch("showPreloader", true);
             try {
                 const res = await fetch(
                     `${this.state.prefix}/api/contactanos`,
@@ -150,19 +150,19 @@ export default createStore({
                 );
                 // TODO probar con JSON
                 const resData = await res.text();
-                console.log(resData);
 
                 commit("setMessage", resData);
-                commit("setPreloader", false);
+                dispatch("showPreloader", false);
+
                 return true;
             } catch (error) {
                 console.log(error);
-                commit("setPreloader", false);
+                dispatch("showPreloader", false);
             }
         },
         // FIXME aun no se ha probado
-        async recoveryPass({ commit }, forgetPass) {
-            commit("setPreloader", true);
+        async recoveryPass({ dispatch, commit }, forgetPass) {
+            dispatch("showPreloader", true);
             try {
                 const res = await fetch(
                     `${this.state.prefix}/api/recoveryPass`,
@@ -176,14 +176,14 @@ export default createStore({
                 );
                 const resData = await res.json();
                 commit("setPass", resData);
-                commit("setPreloader", false);
+                dispatch("showPreloader", false);
             } catch (error) {
                 console.log(error);
-                commit("setPreloader", false);
+                dispatch("showPreloader", false);
             }
         },
-        async login({ commit }, usuario) {
-            commit("setPreloader", true);
+        async login({ dispatch, commit }, usuario) {
+            dispatch("showPreloader", true);
             try {
                 const res = await fetch(`${this.state.prefix}/api/login`, {
                     method: "POST",
@@ -202,11 +202,37 @@ export default createStore({
                 commit("setToken", token);
                 commit("setRol", rol);
                 commit("setLoginRoutes", rol);
-                router.push("/login");
-                commit("setPreloader", false);
+                router.push(`/${rol}/perfil`);
+                dispatch("showPreloader", false);
             } catch (error) {
                 console.log(error);
-                commit("setPreloader", false);
+                dispatch("showPreloader", false);
+            }
+        },
+        async getPerfil({ dispatch }) {
+            dispatch("showPreloader", true);
+            try {
+                const res = await fetch(
+                    `${this.state.prefix}/api/${this.state.rol}/perfil`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.state.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+
+                dispatch("showPreloader", false);
+
+                if (resData.status === "Token is Expired") {
+                    dispatch("logout");
+                } else {
+                    return resData;
+                }
+            } catch (error) {
+                console.log(error);
+                dispatch("showPreloader", false);
             }
         },
         readToken({ commit }) {

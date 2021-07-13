@@ -6,13 +6,13 @@
         >
             <h6 class="text-white my-3">MOBILIARIO</h6>
             <textarea
-                v-model="mobiliario.cantidad"
+                v-model="mobiliario.MobiliarioSolicitado"
                 class="form-control my-3 h-100"
                 placeholder="Mobiliario a solicitar"
                 required
             ></textarea>
             <textarea
-                v-model="mobiliario.cuotas"
+                v-model="mobiliario.Ubicacion"
                 class="form-control my-3 h-100"
                 placeholder="Ubicación del punto"
                 required
@@ -30,20 +30,50 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
     name: "SolicitarMobiliario",
     data() {
         return {
             mobiliario: {
-                cantidad: "",
-                cuotas: "",
+                MobiliarioSolicitado: "",
+                Ubicacion: "",
             },
         };
     },
     methods: {
-        solicitarMobiliario(mobiliario) {
-            console.log(mobiliario);
+        ...mapActions(["logout", "showPreloader"]),
+
+        async solicitarMobiliario(mobiliario) {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/crearsolicitud`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                        body: JSON.stringify(mobiliario),
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
         },
+    },
+    computed: {
+        ...mapState(["token", "rol", "prefix"]),
     },
 };
 </script>

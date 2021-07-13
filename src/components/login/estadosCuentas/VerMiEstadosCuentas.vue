@@ -11,9 +11,16 @@
                             <th><div>Ventas</div></th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><div>1</div></td>
-                                <td><div>1</div></td>
+                            <tr
+                                v-for="(estado, index) in VerMiEstadosCuentas"
+                                :key="index"
+                            >
+                                <td>
+                                    <div>{{ estado.Fecha }}</div>
+                                </td>
+                                <td>
+                                    <div>{{ estado.Estado }}</div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -26,19 +33,19 @@
                     <div class="my-1 p-2">
                         <h5>Ventas del día</h5>
                         <p>
-                            Lorem ipsum dolor sit amet.
+                            {{ ventasDia }}
                         </p>
                     </div>
                     <div class="my-1 p-2">
                         <h5>Ventas de la semana</h5>
                         <p>
-                            Lorem ipsum dolor sit amet.
+                            {{ ventasSemana }}
                         </p>
                     </div>
                     <div class="my-1 p-2">
                         <h5>Ventas del mes</h5>
                         <p>
-                            Lorem ipsum dolor sit amet.
+                            {{ ventasMes }}
                         </p>
                     </div>
                 </div>
@@ -48,8 +55,57 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
     name: "VerMiEstadosCuentas",
+    data() {
+        return {
+            VerMiEstadosCuentas: [],
+            ventasDia: "",
+            ventasSemana: "",
+            ventasMes: "",
+        };
+    },
+    methods: {
+        ...mapActions(["logout", "showPreloader"]),
+
+        async getMiEstadosCuentas() {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/estadodecuenta`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.VerMiEstadosCuentas =
+                        resData["Datos del modelo asociado al vendedor"].ventas;
+                    this.ventasDia = resData["Ventas del dia del usuario"];
+                    this.ventasSemana =
+                        resData["Ventas de la semana del usuario"];
+                    this.ventasMes = resData["Ventas del mes del usuario"];
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
+        },
+    },
+    computed: {
+        ...mapState(["token", "rol", "prefix"]),
+    },
+    created() {
+        this.getMiEstadosCuentas();
+    },
 };
 </script>
 

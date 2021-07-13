@@ -1,61 +1,63 @@
 <template>
-    <div class="Ingreso d-flex flex-column">
-        <!-- LOGIN -->
-        <form
-            @submit.prevent="login(usuario)"
-            class="paralelogramo-primary p-2 d-flex flex-column flex-sm-row justify-content-between align-items-center"
-        >
-            <span class="mx-1"
-                >User:
-                <input
-                    class="w-50"
-                    type="email"
-                    placeholder="email"
-                    required
-                    v-model="usuario.email"
-            /></span>
-            <span class="mx-1"
-                >Clave:
-                <input
-                    class="w-50"
-                    type="password"
-                    placeholder="pass"
-                    required
-                    v-model="usuario.password"
-            /></span>
-            <div class="mx-1 d-flex flex-column">
-                <button type="submit" class="fw-bold">ENTRAR</button>
-                <button
-                    class="navbar-toggler fs-6 m-0 border-0"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#forgetPass"
-                    aria-controls="forgetPass"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    Olvide mi contraseña
-                </button>
-            </div>
-        </form>
+    <div class="Ingreso">
+        <div class="d-flex flex-column">
+            <!-- LOGIN -->
+            <form
+                @submit.prevent="login(usuario)"
+                class="paralelogramo-primary p-2 d-flex flex-column flex-sm-row justify-content-between align-items-center"
+            >
+                <span class="mx-1"
+                    >User:
+                    <input
+                        class="w-50"
+                        type="email"
+                        placeholder="email"
+                        required
+                        v-model="usuario.email"
+                /></span>
+                <span class="mx-1"
+                    >Clave:
+                    <input
+                        class="w-50"
+                        type="password"
+                        placeholder="pass"
+                        required
+                        v-model="usuario.password"
+                /></span>
+                <div class="mx-1 d-flex flex-column">
+                    <button type="submit" class="fw-bold">ENTRAR</button>
+                    <button
+                        class="btn navbar-toggler fs-6"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#forgetPass"
+                        aria-controls="forgetPass"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        Olvide mi contraseña
+                    </button>
+                </div>
+            </form>
 
-        <!-- RECOVER PASS -->
-        <form
-            @submit.prevent="recoveryPass(forgetPass)"
-            class="collapse paralelogramo-primary p-2 w-auto align-self-end"
-            id="forgetPass"
-        >
-            <input
-                class="w-100"
-                type="email"
-                placeholder="Ingrese correo de recuperación"
-                required
-                v-model="forgetPass.email"
-            />
-            <button type="submit" class="fw-bold">
-                RECUPERAR
-            </button>
-        </form>
+            <!-- RECOVER PASS -->
+            <form
+                @submit.prevent="recoveryPass(forgetPass)"
+                class="collapse paralelogramo-primary p-2 w-auto align-self-end"
+                id="forgetPass"
+            >
+                <input
+                    class="w-100"
+                    type="email"
+                    placeholder="Ingrese correo de recuperación"
+                    required
+                    v-model="forgetPass.email"
+                />
+                <button type="submit" class="fw-bold">
+                    RECUPERAR
+                </button>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -67,11 +69,11 @@ export default {
     data() {
         return {
             usuario: {
-                email: "puma01@gmail.com",
-                password: "puma01",
+                email: "puma02@gmail.com",
+                password: "puma02",
             },
             forgetPass: {
-                email: "puma01@gmail.com",
+                email: "puma02@gmail.com",
             },
         };
     },
