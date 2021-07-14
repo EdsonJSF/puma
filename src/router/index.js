@@ -7,14 +7,10 @@ const routes = [
         name: "Home",
         component: () => import("../views/Home.vue"),
     },
-    {
-        path: "/login",
-        name: "Login",
-        component: () => import("../views/Login.vue"),
-        meta: { rutaProtegida: true },
-    },
 
-    /* RUTAS ADMINISTRADOR */
+    /***************************
+     *** RUTAS ADMINISTRADOR ***
+     **************************/
     {
         path: "/administrador/perfil",
         name: "PerfilAdmin",
@@ -71,7 +67,9 @@ const routes = [
         meta: { rutaProtegida: true },
     },
 
-    /* RUTAS PROMOTOR */
+    /**********************
+     *** RUTAS PROMOTOR ***
+     *********************/
     {
         path: "/promotor/perfil",
         name: "PerfilProm",
@@ -108,8 +106,16 @@ const routes = [
         component: () => import("../views/Promotor/Vendedores.vue"),
         meta: { rutaProtegida: true },
     },
+    {
+        path: "/promotor/mis-solicitudes",
+        name: "MisSolicitudesProm",
+        component: () => import("../views/Promotor/MisSolicitudes.vue"),
+        meta: { rutaProtegida: true },
+    },
 
-    /* RUTAS VENDEDOR */
+    /**********************
+     *** RUTAS VENDEDOR ***
+     *********************/
     {
         path: "/vendedor/perfil",
         name: "PerfilVend",
@@ -134,6 +140,16 @@ const routes = [
         component: () => import("../views/Vendedor/Solicitudes.vue"),
         meta: { rutaProtegida: true },
     },
+    {
+        path: "/vendedor/mis-solicitudes",
+        name: "MisSolicitudesVend",
+        component: () => import("../views/Vendedor/MisSolicitudes.vue"),
+        meta: { rutaProtegida: true },
+    },
+
+    /*********************
+     *** NOT FOUND 404 ***
+     ********************/
     {
         path: "/:pathMatch(.*)*",
         name: "NotFound404",

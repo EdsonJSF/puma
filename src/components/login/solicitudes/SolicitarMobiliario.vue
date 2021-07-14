@@ -45,6 +45,12 @@ export default {
     methods: {
         ...mapActions(["logout", "showPreloader"]),
 
+        clearInput() {
+            this.mobiliario = {
+                MobiliarioSolicitado: "",
+                Ubicacion: "",
+            };
+        },
         async solicitarMobiliario(mobiliario) {
             this.showPreloader(true);
             try {
@@ -65,6 +71,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    this.clearInput();
                 }
             } catch (error) {
                 console.log(error);

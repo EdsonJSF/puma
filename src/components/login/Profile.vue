@@ -22,7 +22,7 @@
                 <h6 class="m-0">Saldo</h6>
                 <p class="m-0">{{ userPerfil.balance }} cop</p>
                 <h6 class="m-0">Credito</h6>
-                <p class="m-0">0.00 cop</p>
+                <p class="m-0">{{ credito }} cop</p>
             </div>
         </div>
     </div>
@@ -36,6 +36,7 @@ export default {
     data() {
         return {
             userPerfil: "",
+            credito: "",
         };
     },
     methods: {
@@ -46,6 +47,7 @@ export default {
     },
     async created() {
         const query = await this.getPerfil();
+        this.credito = query.Credito;
         this.userPerfil = query["Datos del usuario"];
     },
 };

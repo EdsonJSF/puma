@@ -6,15 +6,18 @@ export default createStore({
     state: {
         preloader: false,
 
-        prefix: "http://pumab.neuron.com.co/public",
+        // prefix: "http://pumab.neuron.com.co/public",
         // prefix: "http://127.0.0.1:8000",
-        // prefix: "http://192.168.0.103:8000",
+        prefix: "http://192.168.0.102:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
         dataSorteos: null,
         dataUbicanos: null,
         dataTestimonios: null,
+
+        pass: null,
+        message: null,
         socialMedia: [
             {
                 titulo: "Instagram",
@@ -38,8 +41,7 @@ export default createStore({
         rol: null,
         loginRoutes: null,
 
-        pass: null,
-        message: null,
+        loterias: ["kino", "triple gordo", "no se cual", "emm"],
     },
     mutations: {
         setPreloader(state, show) {
@@ -84,6 +86,7 @@ export default createStore({
                         "vendedores",
                         "solicitudes",
                         "estado-de-cuenta",
+                        "mis-solicitudes",
                     ],
                     userRol: rol,
                 };
@@ -94,6 +97,7 @@ export default createStore({
                         "reportar-ventas",
                         "solicitudes",
                         "estado-de-cuenta",
+                        "mis-solicitudes",
                     ],
                     userRol: rol,
                 };

@@ -4,59 +4,61 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <Finanzas />
             </div>
-            <div class="col-12 col-md-7 col-lg-8 p-0 py-2">
-                <div
-                    class="EstadosCuentas__options table-responsive rounded-3 m-1 py-2"
-                >
-                    <table
-                        class="table table-borderless table-hover align-middle"
-                    >
-                        <thead>
-                            <th><div>Fecha</div></th>
-                            <th><div>Transacción</div></th>
-                            <th><div>Monto</div></th>
-                            <th><div>Referencia</div></th>
-                            <th><div>Salida</div></th>
-                            <th><div>Encargado</div></th>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="(estadoCuenta,
-                                index) in EstadoCuentasReporte"
-                                :key="index"
-                            >
-                                <td>
-                                    <div>
-                                        {{
-                                            arreglarCadena(
-                                                estadoCuenta.created_at
-                                            )
-                                        }}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>{{ estadoCuenta.Transaccion }}</div>
-                                </td>
-                                <td>
-                                    <div>{{ estadoCuenta.Monto }} COP</div>
-                                </td>
-                                <td>
-                                    <div>{{ estadoCuenta.Referencia }}</div>
-                                </td>
-                                <td>
-                                    <div>{{ estadoCuenta.Tipo }}</div>
-                                </td>
-                                <td>
-                                    <div>
-                                        {{
-                                            EstadoCuentasVentas[index]
-                                                .Nombrepromotor
-                                        }}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="col-12 col-md-7 col-lg-8">
+                <div class="EstadosCuentas__options rounded-3 py-2">
+                    <div class="table-responsive">
+                        <table
+                            class="table table-borderless table-hover align-middle"
+                        >
+                            <thead>
+                                <th><div>Fecha</div></th>
+                                <th><div>Transacción</div></th>
+                                <th><div>Monto</div></th>
+                                <th><div>Referencia</div></th>
+                                <th><div>Salida</div></th>
+                                <th><div>Encargado</div></th>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    v-for="(estadoCuenta,
+                                    index) in EstadoCuentasReporte"
+                                    :key="index"
+                                >
+                                    <td>
+                                        <div>
+                                            {{
+                                                arreglarCadena(
+                                                    estadoCuenta.created_at
+                                                )
+                                            }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ estadoCuenta.Transaccion }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>{{ estadoCuenta.Monto }} COP</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ estadoCuenta.Referencia }}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ estadoCuenta.Tipo }}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{
+                                                EstadoCuentasVentas[index]
+                                                    .Nombrepromotor
+                                            }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

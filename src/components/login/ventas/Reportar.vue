@@ -198,9 +198,6 @@ export default {
             total: "",
             promotor: "",
 
-            reportes: 1,
-
-            loterias: ["kino", "triple gordo", "no se cual"],
             tipos: ["Directo", "Combinado"],
         };
     },
@@ -222,7 +219,7 @@ export default {
                 const resData = await res.json();
                 this.showPreloader(false);
 
-                this.total = resData.sumatotal;
+                this.total = resData.ventatotal;
                 this.promotor = resData.promotor[0].name;
 
                 if (resData.status === "Token is Expired") {
@@ -267,7 +264,6 @@ export default {
                     Puntoentregaventas: "",
                 },
             ];
-            this.promotor = "";
             this.reportes = 1;
         },
 
@@ -291,6 +287,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    this.total++;
                     this.clearInput();
                 }
             } catch (error) {
@@ -300,7 +297,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "loterias"]),
     },
     created() {
         this.getPromotor();

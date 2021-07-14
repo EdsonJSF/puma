@@ -159,7 +159,6 @@ export default {
                 );
                 const resData = await res.json();
                 this.showPreloader(false);
-                console.log(resData);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -175,7 +174,6 @@ export default {
             this.crear = false;
         },
         async editSorteo(sorteo) {
-            console.log(sorteo);
             this.clearInput();
             return;
             this.showPreloader(true);
@@ -191,7 +189,6 @@ export default {
                 );
                 const resData = await res.json();
                 this.showPreloader(false);
-                console.log(resData);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -206,7 +203,6 @@ export default {
             this.Sorteos.splice(this.Sorteos.indexOf(sorteo), 1);
             this.clearInput();
 
-            console.log(sorteo);
             return;
             this.showPreloader(true);
             try {
@@ -221,7 +217,6 @@ export default {
                 );
                 const resData = await res.json();
                 this.showPreloader(false);
-                console.log(resData);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
