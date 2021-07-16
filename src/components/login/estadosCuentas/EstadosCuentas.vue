@@ -7,53 +7,88 @@
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="EstadosCuentas__options rounded-3 py-2">
                     <div class="table-responsive">
-                        <table
-                            class="table table-borderless table-hover align-middle"
-                        >
-                            <thead>
-                                <th><div>Fecha</div></th>
-                                <th><div>Transacción</div></th>
-                                <th><div>Monto</div></th>
-                                <th><div>Referencia</div></th>
-                                <th><div>Salida</div></th>
-                                <th><div>Encargado</div></th>
-                            </thead>
+                        <table class="table table-borderless align-middle">
                             <tbody>
                                 <tr
-                                    v-for="(estadoCuenta,
-                                    index) in EstadoCuentasReporte"
-                                    :key="index"
+                                    v-for="(empleado,
+                                    indexEmp) in EstadoCuentas"
+                                    :key="indexEmp"
                                 >
-                                    <td>
-                                        <div>
-                                            {{
-                                                arreglarCadena(
-                                                    estadoCuenta.created_at
-                                                )
-                                            }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{ estadoCuenta.Transaccion }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>{{ estadoCuenta.Monto }} COP</div>
-                                    </td>
-                                    <td>
-                                        <div>{{ estadoCuenta.Referencia }}</div>
-                                    </td>
-                                    <td>
-                                        <div>{{ estadoCuenta.Tipo }}</div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{
-                                                EstadoCuentasVentas[index]
-                                                    .Nombrepromotor
-                                            }}
-                                        </div>
+                                    <td colspan="">
+                                        <table
+                                            class="table table-borderless table-hover align-middle"
+                                        >
+                                            <thead>
+                                                <th
+                                                    v-if="empleado.rol_id === 3"
+                                                >
+                                                    Vendedor
+                                                    {{ empleado.name }}
+                                                </th>
+                                                <th
+                                                    v-else-if="
+                                                        empleado.rol_id === 2
+                                                    "
+                                                >
+                                                    Promotor
+                                                    {{ empleado.name }}
+                                                </th>
+                                                <th v-else>
+                                                    Administrador
+                                                    {{ empleado.name }}
+                                                </th>
+                                            </thead>
+                                            <thead>
+                                                <th><div>Fecha</div></th>
+                                                <th><div>Transacción</div></th>
+                                                <th><div>Monto</div></th>
+                                                <th><div>Referencia</div></th>
+                                                <th><div>Salida</div></th>
+                                                <th><div>Encargado</div></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    v-for="(venta,
+                                                    indexVenta) in empleado.ventas"
+                                                    :key="indexVenta"
+                                                >
+                                                    <td>
+                                                        <div>
+                                                            {{ venta.Fecha }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{ venta.Tipo }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{
+                                                                venta.Valorapuesta
+                                                            }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{
+                                                                venta.Referencia
+                                                            }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{ venta.Tipo }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{ empleado.name }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </td>
                                 </tr>
                             </tbody>
@@ -75,8 +110,7 @@ export default {
     components: { Finanzas },
     data() {
         return {
-            EstadoCuentasReporte: [],
-            EstadoCuentasVentas: [],
+            EstadoCuentas: [],
         };
     },
     methods: {
@@ -86,11 +120,11 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/estadoDeCuenta`,
+                    `${this.prefix}/api/${this.rol}/resumenventas`,
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `bearer ${this.token}`,
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
@@ -100,8 +134,10 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.EstadoCuentasReporte = resData["Modelo Reporte"];
-                    this.EstadoCuentasVentas = resData["Modelo Ventas"];
+                    this.EstadoCuentas = [
+                        ...resData.resumenventasProm,
+                        ...resData.resumenventasVend,
+                    ];
                 }
             } catch (error) {
                 console.log(error);

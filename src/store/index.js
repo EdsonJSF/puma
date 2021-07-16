@@ -8,7 +8,7 @@ export default createStore({
 
         // prefix: "http://pumab.neuron.com.co/public",
         // prefix: "http://127.0.0.1:8000",
-        prefix: "http://192.168.0.102:8000",
+        prefix: "http://192.168.0.108:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -221,7 +221,7 @@ export default createStore({
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `bearer ${this.state.token}`,
+                            Authorization: `Bearer ${this.state.token}`,
                         },
                     }
                 );

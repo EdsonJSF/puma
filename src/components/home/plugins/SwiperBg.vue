@@ -23,17 +23,10 @@
 </template>
 
 <script>
-// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
-
-// Import Swiper styles
 import "swiper/swiper.scss";
 import "swiper/components/pagination/pagination.min.css";
-
-// import Swiper core and required modules
 import SwiperCore, { Mousewheel, Pagination, Autoplay } from "swiper/core";
-
-// install Swiper modules
 SwiperCore.use([Mousewheel, Pagination, Autoplay]);
 
 export default {

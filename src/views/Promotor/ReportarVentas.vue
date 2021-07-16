@@ -179,7 +179,7 @@ export default {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `bearer ${this.token}`,
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
@@ -222,7 +222,7 @@ export default {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `bearer ${this.token}`,
+                            Authorization: `Bearer ${this.token}`,
                         },
                         body: JSON.stringify(reporte),
                     }

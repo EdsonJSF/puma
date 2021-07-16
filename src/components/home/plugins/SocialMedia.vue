@@ -59,8 +59,8 @@ export default {
 <style lang="scss" scoped>
 .pumaFollows {
     position: absolute;
-    bottom: 4.5rem;
-    right: 1rem;
+    bottom: 10vh;
+    right: 3vw;
     z-index: 1;
     img {
         width: 1.5rem;

@@ -214,7 +214,7 @@
                         </table>
                     </div>
                     <button
-                        type="submit"
+                        @click.prevent="clearInput"
                         class="btn text-light align-self-end mx-5"
                     >
                         Agregar +
@@ -271,8 +271,6 @@ export default {
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
-                } else if (resData.status === "Token is Invalid") {
-                    // this.logout();
                 } else {
                     this.PromotoresVendedores = resData;
                 }

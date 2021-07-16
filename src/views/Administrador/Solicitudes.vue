@@ -16,26 +16,35 @@
                                 <th>Nombre Apellido</th>
                                 <th>Solicita</th>
                             </thead>
-                            <tbody>
+                            <tbody
+                                v-for="(empleado, indexEmp) in Solicitudes"
+                                :key="indexEmp"
+                            >
                                 <tr
-                                    v-for="(solicitud, index) in Solicitudes"
-                                    :key="index"
+                                    v-for="(solicitud,
+                                    indexsolicitud) in empleado.solicitudes"
+                                    :key="indexsolicitud"
                                 >
                                     <td>
                                         <div>
-                                            {{ solicitud.Nombre }}
+                                            {{ empleado.name }}
                                         </div>
                                     </td>
                                     <td>
                                         <div>
+                                            {{ solicitud.CantidadSolicitada }}
                                             {{ solicitud.MobiliarioSolicitado }}
+                                            {{ solicitud.Solicitud }}
                                         </div>
                                     </td>
                                     <td>
-                                        <div>
+                                        <div v-if="solicitud.Tipo === 1">
                                             <button
                                                 @click="
-                                                    aprobSolicitudes(solicitud)
+                                                    aprobSolicitudes(
+                                                        solicitud,
+                                                        indexEmp
+                                                    )
                                                 "
                                                 class="btn btn-sm"
                                             >
@@ -46,7 +55,10 @@
                                             </button>
                                             <button
                                                 @click="
-                                                    negarSolicitudes(solicitud)
+                                                    negarSolicitudes(
+                                                        solicitud,
+                                                        indexEmp
+                                                    )
                                                 "
                                                 class="btn btn-sm"
                                             >
@@ -56,12 +68,27 @@
                                                 />
                                             </button>
                                         </div>
+                                        <div
+                                            v-else-if="solicitud.Tipo === 0"
+                                            class="bg-danger text-white"
+                                        >
+                                            Rechazada
+                                        </div>
+                                        <div
+                                            v-else-if="solicitud.Tipo === 2"
+                                            class="bg-success text-white"
+                                        >
+                                            Aprobada
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn text-light  align-self-end mx-5">
+                    <button
+                        @click.prevent="clearInput"
+                        class="btn text-light align-self-end mx-5"
+                    >
                         Agregar +
                     </button>
                 </div>
@@ -81,8 +108,6 @@ export default {
     data() {
         return {
             Solicitudes: [],
-            SolicitudesAceptadas: [],
-            SolicitudesRechazadas: [],
         };
     },
     methods: {
@@ -92,10 +117,10 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/SolicitudesAdministrador?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/SolicitudesAdministrador`,
                     {
                         headers: {
-                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
@@ -105,109 +130,70 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.Solicitudes = resData;
+                    this.Solicitudes = [
+                        ...resData["Solicitudes de promotores"],
+                        ...resData["Solicitudes de vendedores"],
+                    ];
                 }
             } catch (error) {
                 console.log(error);
                 this.showPreloader(false);
             }
         },
-        async getSolicitudesAceptadas() {
+        async aprobSolicitudes(solicitud, indexEmp) {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/solicitudesAceptadas?token=${this.token}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-                const resData = await res.json();
-                this.showPreloader(false);
-
-                if (resData.status === "Token is Expired") {
-                    this.logout();
-                } else {
-                    this.SolicitudesAceptadas =
-                        resData["Solicitudes Aceptadas"];
-                }
-            } catch (error) {
-                console.log(error);
-                this.showPreloader(false);
-            }
-        },
-        async getSolicitudesRechazadas() {
-            this.showPreloader(true);
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/solicitudesRechazadas?token=${this.token}`,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-                const resData = await res.json();
-                this.showPreloader(false);
-
-                if (resData.status === "Token is Expired") {
-                    this.logout();
-                } else {
-                    this.SolicitudesRechazadas =
-                        resData["Solicitudes Rechazadas"];
-                }
-            } catch (error) {
-                console.log(error);
-                this.showPreloader(false);
-            }
-        },
-        async aprobSolicitudes(data) {
-            this.showPreloader(true);
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/modificarsolicitud/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/modificarsolicitud/${solicitud.id}`,
                     {
                         method: "PUT",
                         headers: {
-                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.SolicitudesAceptadas.unshift(data);
-                    this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
+                    this.Solicitudes[indexEmp].solicitudes[
+                        this.Solicitudes[indexEmp].solicitudes.indexOf(
+                            solicitud
+                        )
+                    ].Tipo = 2;
                 }
             } catch (error) {
                 console.log(error);
                 this.showPreloader(false);
             }
         },
-        async negarSolicitudes(data) {
+        async negarSolicitudes(solicitud, indexEmp) {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/eliminarsolicitud/${data.id}?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/eliminarsolicitud/${solicitud.id}`,
                     {
                         method: "DELETE",
                         headers: {
-                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.SolicitudesRechazadas.unshift(data);
-                    this.Solicitudes.splice(this.Solicitudes.indexOf(data), 1);
+                    this.Solicitudes[indexEmp].solicitudes[
+                        this.Solicitudes[indexEmp].solicitudes.indexOf(
+                            solicitud
+                        )
+                    ].Tipo = 0;
                 }
             } catch (error) {
                 console.log(error);
@@ -220,8 +206,6 @@ export default {
     },
     created() {
         this.getSolicitudes();
-        this.getSolicitudesAceptadas();
-        this.getSolicitudesRechazadas();
     },
 };
 </script>
@@ -231,8 +215,8 @@ export default {
     background: var(--bs-dark);
     table {
         td {
-            border-top: 0.5rem solid transparent;
-            border-bottom: 0.5rem solid transparent;
+            border-top: 0.5rem solid transparent !important;
+            border-bottom: 0.5rem solid transparent !important;
             padding: 0;
             div {
                 display: flex;

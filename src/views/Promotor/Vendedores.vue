@@ -158,7 +158,7 @@
                         </table>
                     </div>
                     <button
-                        type="submit"
+                        @click.prevent="clearInput"
                         class="btn text-light align-self-end mx-5"
                     >
                         Agregar +

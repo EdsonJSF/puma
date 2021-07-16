@@ -10,25 +10,25 @@
                     </div>
                     <div>
                         <form
-                            @submit.prevent="addSorteo(newSorteo)"
+                            @submit.prevent="addSorteo(sorteo)"
                             class="d-flex flex-column"
                         >
                             <input
-                                v-model="newSorteo.fecha"
+                                v-model="sorteo.Fecha"
                                 class="border-0 my-1"
                                 type="date"
                                 placeholder="Fecha:"
                                 required
                             />
                             <input
-                                v-model="newSorteo.loteria"
+                                v-model="sorteo.Loteria"
                                 class="border-0 my-1"
                                 type="text"
                                 placeholder="lotería:"
                                 required
                             />
                             <input
-                                v-model="newSorteo.codigo"
+                                v-model="sorteo.Codigo"
                                 class="border-0 my-1"
                                 type="text"
                                 placeholder="Ponga su código:"
@@ -65,16 +65,16 @@
                                 >
                                     <td>
                                         <div>
-                                            {{ sorteo.fecha }}
+                                            {{ sorteo.Fecha }}
                                         </div>
                                     </td>
                                     <td>
                                         <div>
-                                            {{ sorteo.loteria }}
+                                            {{ sorteo.Loteria }}
                                         </div>
                                     </td>
                                     <td>
-                                        <div>
+                                        <div v-if="sorteo.Estado === 1">
                                             <button
                                                 @click="selectSorteo(sorteo)"
                                                 class="btn btn-sm"
@@ -94,12 +94,26 @@
                                                 />
                                             </button>
                                         </div>
+                                        <div v-else>
+                                            <button
+                                                @click="editSorteo(sorteo)"
+                                                class="btn btn-sm"
+                                            >
+                                                <img
+                                                    src="../../assets/img/icons/check-square-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn text-light  align-self-end mx-5">
+                    <button
+                        @click.prevent="clearInput"
+                        class="btn text-light align-self-end mx-5"
+                    >
                         Agregar +
                     </button>
                 </div>
@@ -115,10 +129,10 @@ export default {
     name: "Sorteos",
     data() {
         return {
-            newSorteo: {
-                fecha: "2121-07-07",
-                loteria: "asdas",
-                codigo: "asdas",
+            sorteo: {
+                Fecha: "",
+                Loteria: "",
+                Codigo: "",
             },
             Sorteos: [],
             crear: true,
@@ -126,6 +140,32 @@ export default {
     },
     methods: {
         ...mapActions(["logout", "showPreloader"]),
+
+        async getSorteos() {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/mostrarSorteo`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.Sorteos = resData["Sorteos Activos"];
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
+        },
 
         addSorteo(sorteo) {
             if (this.crear) {
@@ -135,26 +175,30 @@ export default {
             }
         },
         clearInput() {
-            this.newSorteo = {
-                fecha: "",
-                loteria: "",
-                codigo: "",
+            this.sorteo = {
+                Fecha: "",
+                Loteria: "",
+                Codigo: "",
             };
             this.crear = true;
         },
         async sendSorteo(sorteo) {
-            this.Sorteos.push(sorteo);
-            this.clearInput();
-            return;
+            const formData = new FormData();
+
+            formData.append("Fecha", sorteo.Fecha);
+            formData.append("Loteria", sorteo.Loteria);
+            formData.append("Codigo", sorteo.Codigo);
+
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/sorteos`,
+                    `${this.prefix}/api/${this.rol}/generarSorteo`,
                     {
+                        method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
                             Authorization: `Bearer ${this.token}`,
                         },
+                        body: formData,
                     }
                 );
                 const resData = await res.json();
@@ -163,6 +207,8 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    this.Sorteos.unshift(resData.sorteos);
+                    this.clearInput();
                 }
             } catch (error) {
                 console.log(error);
@@ -170,21 +216,22 @@ export default {
             }
         },
         selectSorteo(sorteo) {
-            this.newSorteo = sorteo;
+            this.sorteo = sorteo;
             this.crear = false;
         },
         async editSorteo(sorteo) {
-            this.clearInput();
-            return;
+            sorteo.Estado = 1;
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/sorteos`,
+                    `${this.prefix}/api/${this.rol}/modificarSorteo/${sorteo.id}`,
                     {
+                        method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${this.token}`,
                         },
+                        body: JSON.stringify(sorteo),
                     }
                 );
                 const resData = await res.json();
@@ -193,6 +240,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    this.clearInput();
                 }
             } catch (error) {
                 console.log(error);
@@ -200,15 +248,12 @@ export default {
             }
         },
         async delSorteo(sorteo) {
-            this.Sorteos.splice(this.Sorteos.indexOf(sorteo), 1);
-            this.clearInput();
-
-            return;
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/sorteos`,
+                    `${this.prefix}/api/${this.rol}/eliminarSorteo/${sorteo.id}`,
                     {
+                        method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${this.token}`,
@@ -221,6 +266,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    this.Sorteos[this.Sorteos.indexOf(sorteo)].Estado = 0;
                 }
             } catch (error) {
                 console.log(error);
@@ -230,6 +276,9 @@ export default {
     },
     computed: {
         ...mapState(["token", "rol", "prefix"]),
+    },
+    created() {
+        this.getSorteos();
     },
 };
 </script>

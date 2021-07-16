@@ -1,38 +1,39 @@
 <template>
-    <div class="Testimonios d-flex flex-column py-3">
-        <div>
-            <h1>
-                Testimonios
-            </h1>
-        </div>
-        <HeaderComponents />
-        <swiper
-            :slidesPerView="3"
-            :spaceBetween="30"
-            :loop="true"
-            :autoplay="{
-                delay: 3000,
-                disableOnInteraction: false,
-            }"
-            class="mySwiper testimonios mt-3"
-        >
-            <swiper-slide
-                v-for="(testimonio, index) in dataTestimonios"
-                :key="index"
-                class="d-flex flex-column"
+    <div class="Testimonios">
+        <div class="py-2">
+            <div>
+                <h1>
+                    Testimonios
+                </h1>
+            </div>
+            <HeaderComponents />
+            <swiper
+                :slidesPerView="3"
+                :spaceBetween="30"
+                :loop="true"
+                :autoplay="{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                }"
+                class="mySwiper testimonios mt-3"
             >
-                <img
-                    :src="`${prefix}/images/${testimonio.rutaImagen}`"
-                    :alt="testimonio.titulo"
-                />
-                <h1>{{ testimonio.titulo }}</h1>
-            </swiper-slide>
-        </swiper>
+                <swiper-slide
+                    v-for="(testimonio, index) in dataTestimonios"
+                    :key="index"
+                    class="d-flex flex-column"
+                >
+                    <img
+                        :src="`${prefix}/images/${testimonio.rutaImagen}`"
+                        :alt="testimonio.titulo"
+                    />
+                    <h1>{{ testimonio.titulo }}</h1>
+                </swiper-slide>
+            </swiper>
+        </div>
     </div>
 </template>
 
 <script>
-// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper.scss";
 import "swiper/components/pagination/pagination.min.css";

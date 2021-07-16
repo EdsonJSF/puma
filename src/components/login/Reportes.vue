@@ -6,13 +6,13 @@
             </div>
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="Reportes__options rounded-3 m-1 py-1">
-                    <form @submit.prevent="">
+                    <form @submit.prevent="sendReporte(reporte)">
                         <label>
                             Seleccione
                             <div>
-                                {{ reporte.tipo }}
+                                {{ tipos[reporte.Tipo - 1] }}
                                 <select
-                                    v-model="reporte.tipo"
+                                    v-model="reporte.Tipo"
                                     name="tipo"
                                     class="triangulo-bottom"
                                     required
@@ -20,6 +20,7 @@
                                     <option
                                         v-for="(tipo, index) in tipos"
                                         :key="index"
+                                        :value="index + 1"
                                     >
                                         {{ tipo }}
                                     </option>
@@ -27,12 +28,12 @@
                             </div>
                         </label>
 
-                        <label v-if="reporte.tipo === 'Pago'">
+                        <label v-if="reporte.Tipo === 2">
                             Seleccione empleado
                             <div>
-                                {{ reporte.empleado }}
+                                {{ reporte.user_pago.name }}
                                 <select
-                                    v-model="reporte.empleado"
+                                    v-model="reporte.user_pago"
                                     name="empleado"
                                     class="triangulo-bottom"
                                     required
@@ -40,34 +41,35 @@
                                     <option
                                         v-for="(empleado, index) in empleados"
                                         :key="index"
+                                        :value="empleado"
                                     >
-                                        {{ empleado }}
+                                        {{ empleado.name }}
                                     </option>
                                 </select>
                             </div>
                         </label>
-                        <label v-if="reporte.tipo === 'Pago'">
+                        <label v-if="reporte.Tipo === 2">
                             Editar el monto
                             <input
-                                v-model="reporte.monto"
+                                v-model="reporte.Monto"
                                 type="number"
                                 min="0"
                                 required
                             />
                         </label>
-                        <label v-if="reporte.tipo !== 'Pago'">
+                        <label v-if="reporte.Tipo !== 2">
                             Escriba el monto
                             <input
-                                v-model="reporte.monto"
+                                v-model="reporte.Monto"
                                 type="number"
                                 min="0"
                                 required
                             />
                         </label>
-                        <label v-if="reporte.tipo !== 'Pago'">
+                        <label v-if="reporte.Tipo !== 2">
                             Descripción
                             <input
-                                v-model="reporte.descripcion"
+                                v-model="reporte.Descripcion"
                                 type="text"
                                 required
                             />
@@ -75,9 +77,9 @@
                         <label>
                             Seleccione salida
                             <div>
-                                {{ reporte.salida }}
+                                {{ reporte.Salida }}
                                 <select
-                                    v-model="reporte.salida"
+                                    v-model="reporte.Salida"
                                     name="salida"
                                     class="triangulo-bottom"
                                     required
@@ -105,7 +107,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import Finanzas from "@/components/login/Finanzas.vue";
 
@@ -115,16 +117,97 @@ export default {
     data() {
         return {
             reporte: {
-                tipo: "",
-                monto: "",
-                descripcion: "",
-                empleado: "",
-                salida: "",
+                Tipo: "",
+                Monto: "",
+                Descripcion: "",
+                user_pago: "",
+                Salida: "",
             },
             tipos: ["Gasto", "Pago", "Premio"],
             salidas: ["Acumulado", "Caja"],
-            empleados: ["Edson", "Italo", "Dilson"],
+            empleados: [],
         };
+    },
+    methods: {
+        ...mapActions(["logout", "showPreloader"]),
+
+        async getEmpleados() {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/modulopromotorvendedor`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.empleados = [...resData[0], ...resData[1]];
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
+        },
+        clearInput() {
+            this.reporte = {
+                Tipo: "",
+                Monto: "",
+                Descripcion: "",
+                user_pago: "",
+                Salida: "",
+            };
+        },
+        async sendReporte(reporte) {
+            const formData = new FormData();
+
+            if (reporte.user_pago) {
+                formData.append("user_pago", reporte.user_pago.id);
+            } else {
+                formData.append("Descripcion", reporte.Descripcion);
+            }
+            formData.append("Tipo", reporte.Tipo);
+            formData.append("Monto", reporte.Monto);
+            formData.append("Salida", reporte.Salida);
+
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/${this.rol}/reportes`,
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${this.token}`,
+                        },
+                        body: formData,
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.clearInput();
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
+        },
+    },
+    computed: {
+        ...mapState(["token", "rol", "prefix"]),
+    },
+    created() {
+        this.getEmpleados();
     },
 };
 </script>

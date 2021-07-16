@@ -112,9 +112,12 @@ export default {
             ).swiper;
             nextPumaSwiper.slideTo(eIndex);
         },
+        clearInput() {
+            this.toSearch = "";
+        },
         sendSearch(search) {
             alert(`Voy a buscar: ${search}`);
-            this.toSearch = "";
+            this.clearInput();
         },
     },
 };

@@ -7,43 +7,90 @@
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="Resumenes__data rounded-3 py-2">
                     <div class="table-responsive">
-                        <table
-                            class="table table-borderless table-hover align-middle"
-                        >
-                            <thead>
-                                <th><div>Fecha</div></th>
-                                <th><div>Número</div></th>
-                                <th><div>Valor a aportar</div></th>
-                                <th><div>Lotería</div></th>
-                                <th><div>Tipo</div></th>
-                                <th><div>Vendedor</div></th>
-                            </thead>
+                        <table class="table table-borderless align-middle">
                             <tbody>
                                 <tr
-                                    v-for="(resumen, index) in ResumenVentas"
-                                    :key="index"
+                                    v-for="(empleados,
+                                    indexEmp) in ResumenVentas"
+                                    :key="indexEmp"
                                 >
-                                    <td>
-                                        <div>
-                                            {{
-                                                resumen.Fecha.replace(/-/g, "/")
-                                            }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>{{ resumen.Numero }}</div>
-                                    </td>
-                                    <td>
-                                        <div>{{ resumen.Valorapuesta }}</div>
-                                    </td>
-                                    <td>
-                                        <div>{{ resumen.Loteria }}</div>
-                                    </td>
-                                    <td>
-                                        <div>{{ resumen.Tipo }}</div>
-                                    </td>
-                                    <td>
-                                        <div>{{ resumen.Nombrepromotor }}</div>
+                                    <td colspan="">
+                                        <table
+                                            class="table table-borderless table-hover align-middle"
+                                        >
+                                            <thead>
+                                                <th
+                                                    v-if="
+                                                        empleados.rol_id === 3
+                                                    "
+                                                >
+                                                    Vendedor
+                                                    {{ empleados.name }}
+                                                </th>
+                                                <th
+                                                    v-else-if="
+                                                        empleados.rol_id === 2
+                                                    "
+                                                >
+                                                    Promotor
+                                                    {{ empleados.name }}
+                                                </th>
+                                                <th v-else>
+                                                    Administrador
+                                                    {{ empleados.name }}
+                                                </th>
+                                            </thead>
+                                            <thead>
+                                                <th><div>Fecha</div></th>
+                                                <th><div>Número</div></th>
+                                                <th>
+                                                    <div>Valor a aportar</div>
+                                                </th>
+                                                <th><div>Lotería</div></th>
+                                                <th><div>Tipo</div></th>
+                                                <th><div>Vendedor</div></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    v-for="(venta,
+                                                    indexVenta) in empleados.ventas"
+                                                    :key="indexVenta"
+                                                >
+                                                    <td>
+                                                        <div>
+                                                            {{ venta.Fecha }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{ venta.Numero }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{
+                                                                venta.Valorapuesta
+                                                            }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{ venta.Loteria }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{ venta.Tipo }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            {{ empleados.name }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </td>
                                 </tr>
                             </tbody>
@@ -75,10 +122,10 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/resumenventas?token=${this.token}`,
+                    `${this.prefix}/api/${this.rol}/resumenventas`,
                     {
                         headers: {
-                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
@@ -88,7 +135,10 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.ResumenVentas = resData;
+                    this.ResumenVentas = [
+                        ...resData.resumenventasProm,
+                        ...resData.resumenventasVend,
+                    ];
                 }
             } catch (error) {
                 console.log(error);

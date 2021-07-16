@@ -3,7 +3,7 @@
         <div class="d-flex flex-column">
             <!-- LOGIN -->
             <form
-                @submit.prevent="login(usuario)"
+                @submit.prevent="toLogin(usuario)"
                 class="paralelogramo-primary p-2 d-flex flex-column flex-sm-row justify-content-between align-items-center"
             >
                 <span class="mx-1"
@@ -42,7 +42,7 @@
 
             <!-- RECOVER PASS -->
             <form
-                @submit.prevent="recoveryPass(forgetPass)"
+                @submit.prevent="toRecover(forgetPass)"
                 class="collapse paralelogramo-primary p-2 w-auto align-self-end"
                 id="forgetPass"
             >
@@ -69,16 +69,35 @@ export default {
     data() {
         return {
             usuario: {
-                email: "puma02@gmail.com",
-                password: "puma02",
+                email: "",
+                password: "",
             },
             forgetPass: {
-                email: "puma02@gmail.com",
+                email: "",
             },
         };
     },
     methods: {
         ...mapActions(["login", "recoveryPass"]),
+
+        clearInput() {
+            this.usuario = {
+                email: "",
+                password: "",
+            };
+            this.forgetPass = {
+                email: "",
+            };
+        },
+
+        async toLogin(usuario) {
+            const query = await this.login(usuario);
+            this.clearInput();
+        },
+        async toRecover(email) {
+            const query = await this.recoveryPass(email);
+            this.clearInput();
+        },
     },
     computed: {
         ...mapState(["pass"]),

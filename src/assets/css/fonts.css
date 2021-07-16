@@ -1,0 +1,21 @@
+@font-face {
+    font-family: myPumaFontUI;
+    src: url(../fonts/segoeui.ttf);
+}
+@font-face {
+    font-family: myPumaFontUIB;
+    src: url(../fonts/segoeuib.ttf);
+}
+
+* {
+    font-family: myPumaFontUI, Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: myPumaFontUIB, Verdana, Geneva, Tahoma, sans-serif;
+}

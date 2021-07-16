@@ -68,10 +68,19 @@ export default {
     methods: {
         ...mapActions(["contactanos"]),
 
+        clearInput() {
+            this.contancto = {
+                nombre_contacto: "",
+                correo_contacto: "",
+                mensaje_contacto: "",
+            };
+        },
+
         async contactar(mensaje) {
             const res = await this.contactanos(mensaje);
             if (res) {
                 alert(this.message);
+                this.clearInput();
             }
         },
     },
