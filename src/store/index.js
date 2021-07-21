@@ -6,9 +6,7 @@ export default createStore({
     state: {
         preloader: false,
 
-        // prefix: "http://pumab.neuron.com.co/public",
-        // prefix: "http://127.0.0.1:8000",
-        prefix: "http://192.168.0.108:8000",
+        prefix: "http://pumab.neuron.com.co/public/api",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -31,7 +29,7 @@ export default createStore({
             },
             {
                 titulo: "Whatsapp",
-                url: "https://wa.me/584247469327",
+                url: "https://wa.me/584245555555",
                 img: "/img/whatsapp-brands.a8812701.svg",
             },
         ],
@@ -40,8 +38,9 @@ export default createStore({
         token: null,
         rol: null,
         loginRoutes: null,
+        toSearch: "",
 
-        loterias: ["kino", "triple gordo", "no se cual", "emm"],
+        loterias: ["kino", "triple gordo"],
     },
     mutations: {
         setPreloader(state, show) {
@@ -115,6 +114,10 @@ export default createStore({
         setMessage(state, message) {
             state.message = message;
         },
+
+        setSearch(state, search) {
+            state.toSearch = search;
+        },
     },
     actions: {
         showPreloader({ commit }, show) {
@@ -164,21 +167,22 @@ export default createStore({
                 dispatch("showPreloader", false);
             }
         },
-        // FIXME aun no se ha probado
         async recoveryPass({ dispatch, commit }, forgetPass) {
+            const formData = new FormData();
+
+            formData.append("correo_contacto", forgetPass.email);
+
             dispatch("showPreloader", true);
             try {
                 const res = await fetch(
-                    `${this.state.prefix}/api/recoveryPass`,
+                    `${this.state.prefix}/api/mailRecovery`,
                     {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(forgetPass),
+                        body: formData,
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 commit("setPass", resData);
                 dispatch("showPreloader", false);
             } catch (error) {
@@ -262,6 +266,10 @@ export default createStore({
             commit("setLoginRoutes", null);
 
             router.push("/");
+        },
+        sendSearch({ commit }, search) {
+            search = search.toLowerCase();
+            commit("setSearch", search);
         },
     },
     modules: {},

@@ -71,7 +71,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
                 this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {

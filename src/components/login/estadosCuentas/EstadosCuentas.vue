@@ -5,7 +5,84 @@
                 <Finanzas />
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="EstadosCuentas__options rounded-3 py-2">
+                <div class="EstadosCuentas__options row rounded-3 py-2">
+                    <div
+                        class="EstadosCuentas__options-title col-2 border border-5 border-start-0"
+                    >
+                        Fecha
+                    </div>
+                    <div
+                        class="EstadosCuentas__options-title col-2 border border-5"
+                    >
+                        Transacción
+                    </div>
+                    <div
+                        class="EstadosCuentas__options-title col-2 border border-5"
+                    >
+                        Monto
+                    </div>
+                    <div
+                        class="EstadosCuentas__options-title col-2 border border-5"
+                    >
+                        Referencia
+                    </div>
+                    <div
+                        class="EstadosCuentas__options-title col-2 border border-5"
+                    >
+                        Salida
+                    </div>
+                    <div
+                        class="EstadosCuentas__options-title col-2 border border-5 border-end-0"
+                    >
+                        Encargado
+                    </div>
+                    <div
+                        v-for="(empleado, indexEmp) in EstadoCuentas"
+                        :key="indexEmp"
+                        class="col-12"
+                    >
+                        <div
+                            v-for="(venta, indexVenta) in empleado.ventas"
+                            :key="indexVenta"
+                        >
+                            <div
+                                v-if="generalSearch(venta, empleado)"
+                                class="row align-items-center"
+                            >
+                                <div
+                                    class="EstadosCuentas__options-item col-2 h-100 border border-5 border-start-0"
+                                >
+                                    {{ venta.Fecha }}
+                                </div>
+                                <div
+                                    class="EstadosCuentas__options-item col-2 h-100 border border-5"
+                                >
+                                    {{ venta.Tipo }}
+                                </div>
+                                <div
+                                    class="EstadosCuentas__options-item col-2 h-100 border border-5"
+                                >
+                                    {{ venta.Valorapuesta }}
+                                </div>
+                                <div
+                                    class="EstadosCuentas__options-item col-2 h-100 border border-5"
+                                >
+                                    {{ venta.Referencia }}
+                                </div>
+                                <div
+                                    class="EstadosCuentas__options-item col-2 h-100 border border-5"
+                                >
+                                    {{ venta.Tipo }}
+                                </div>
+                                <div
+                                    class="EstadosCuentas__options-item col-2 h-100 border border-5 border-end-0"
+                                >
+                                    {{ empleado.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-borderless align-middle">
                             <tbody>
@@ -14,7 +91,7 @@
                                     indexEmp) in EstadoCuentas"
                                     :key="indexEmp"
                                 >
-                                    <td colspan="">
+                                    <td>
                                         <table
                                             class="table table-borderless table-hover align-middle"
                                         >
@@ -46,11 +123,18 @@
                                                 <th><div>Salida</div></th>
                                                 <th><div>Encargado</div></th>
                                             </thead>
-                                            <tbody>
+                                            <tbody
+                                                v-for="(venta,
+                                                indexVenta) in empleado.ventas"
+                                                :key="indexVenta"
+                                            >
                                                 <tr
-                                                    v-for="(venta,
-                                                    indexVenta) in empleado.ventas"
-                                                    :key="indexVenta"
+                                                    v-if="
+                                                        generalSearch(
+                                                            venta,
+                                                            empleado
+                                                        )
+                                                    "
                                                 >
                                                     <td>
                                                         <div>
@@ -114,7 +198,12 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions([
+            "logout",
+            "showPreloader",
+            "sendSearch",
+            "generalSearch",
+        ]),
 
         async getEstadoCuentas() {
             this.showPreloader(true);
@@ -129,6 +218,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
@@ -148,12 +238,26 @@ export default {
             let newCadena = cadena.split("T");
             return newCadena[0].replace(/-/g, "/");
         },
+        generalSearch(element, empleado) {
+            if (
+                empleado.name.toLowerCase().includes(this.toSearch) ||
+                element.Fecha.includes(this.toSearch) ||
+                element.Tipo.toLowerCase().includes(this.toSearch) ||
+                element.Valorapuesta.toString().includes(this.toSearch) ||
+                element.Referencia.toLowerCase().includes(this.toSearch)
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
     },
     created() {
         this.getEstadoCuentas();
+        this.sendSearch("");
     },
 };
 </script>
@@ -164,7 +268,7 @@ export default {
     table {
         th,
         td {
-            border: 0.5rem solid transparent;
+            border: 0.5rem solid transparent !important;
             padding: 0;
             div {
                 display: flex;
@@ -183,11 +287,11 @@ export default {
         }
         th:first-child,
         td:first-child {
-            border-left: none;
+            border-left: none !important;
         }
         th:last-child,
         td:last-child {
-            border-right: none;
+            border-right: none !important;
         }
     }
 }

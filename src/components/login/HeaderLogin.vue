@@ -15,14 +15,35 @@
 
             <!-- SEARCH BTN -->
             <div class="d-flex align-self-end mt-3">
-                <div class="paralelogramo-primary">
-                    <div class="btn btn-sm">
+                <div class="paralelogramo-primary d-flex align-items-center">
+                    <form
+                        @submit.prevent="sendSearch(search), (search = '')"
+                        id="search"
+                        class="collapse"
+                    >
+                        <input
+                            v-model="search"
+                            class="bg-transparent"
+                            type="text"
+                            placeholder="Buscar"
+                        />
+                        {{ toSearch }}
+                    </form>
+                    <button
+                        class="btn btn-sm navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#search"
+                        aria-controls="search"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
                         <img
                             class="ico-search"
                             src="../../assets/img/icons/search-solid.svg"
                             alt=""
                         />
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -30,12 +51,24 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Routes from "./Routes.vue";
 
 export default {
     name: "HeaderLogin",
     components: {
         Routes,
+    },
+    data() {
+        return {
+            search: "",
+        };
+    },
+    methods: {
+        ...mapActions(["sendSearch"]),
+    },
+    computed: {
+        ...mapState(["toSearch"]),
     },
 };
 </script>

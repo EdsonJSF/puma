@@ -98,6 +98,23 @@
                         <option value="2">Promotor</option>
                         <option value="3">Vendedor</option>
                     </select>
+                    <select
+                        v-if="usuario.rol_id == 3"
+                        v-model="usuario.user_id"
+                        class="form-control"
+                        required
+                    >
+                        <option value="" class="form-control" disabled selected
+                            >Seleccione promotor</option
+                        >
+                        <option
+                            v-for="(promotor,
+                            indexPro) in PromotoresVendedores[1]"
+                            :key="indexPro"
+                            :value="promotor.id"
+                            >{{ promotor.name }}</option
+                        >
+                    </select>
                     <input
                         v-model="usuario.codigo"
                         class="form-control"
@@ -246,6 +263,7 @@ export default {
                 telefono: "",
                 rol_id: "",
                 codigo: "",
+                user_id: "",
             },
             imagenSeleccionada: "",
             fileInputKey: 0,
@@ -305,6 +323,7 @@ export default {
                 telefono: "",
                 rol_id: "",
                 codigo: "",
+                user_id: "",
             };
             this.imagenSeleccionada = "";
             this.fileInputKey++;
@@ -334,6 +353,7 @@ export default {
             formData.append("direccion", usuario.direccion);
             formData.append("telefono", usuario.telefono);
             formData.append("codigo", usuario.codigo);
+            formData.append("nuevo_id", usuario.user_id);
 
             try {
                 const res = await fetch(`${this.prefix}/api/register`, {
@@ -386,6 +406,7 @@ export default {
             formData.append("direccion", usuario.direccion);
             formData.append("telefono", usuario.telefono);
             formData.append("codigo", usuario.codigo);
+            formData.append("nuevo_id", usuario.user_id);
             formData.append("tipo", 1);
 
             try {
