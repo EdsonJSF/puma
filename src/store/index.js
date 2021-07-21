@@ -6,7 +6,7 @@ export default createStore({
     state: {
         preloader: false,
 
-        prefix: "http://pumab.neuron.com.co/public/api",
+        prefix: "http://pumab.neuron.com.co/public",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -127,7 +127,7 @@ export default createStore({
             dispatch("showPreloader", true);
             try {
                 const res = await fetch(
-                    `${this.state.prefix}/api/HomeCustomize`,
+                    `${this.state.prefix}/api/api/HomeCustomize`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -146,7 +146,7 @@ export default createStore({
             dispatch("showPreloader", true);
             try {
                 const res = await fetch(
-                    `${this.state.prefix}/api/contactanos`,
+                    `${this.state.prefix}/api/api/contactanos`,
                     {
                         method: "POST",
                         headers: {
@@ -175,7 +175,7 @@ export default createStore({
             dispatch("showPreloader", true);
             try {
                 const res = await fetch(
-                    `${this.state.prefix}/api/mailRecovery`,
+                    `${this.state.prefix}/api/api/mailRecovery`,
                     {
                         method: "POST",
                         body: formData,
@@ -193,7 +193,7 @@ export default createStore({
         async login({ dispatch, commit }, usuario) {
             dispatch("showPreloader", true);
             try {
-                const res = await fetch(`${this.state.prefix}/api/login`, {
+                const res = await fetch(`${this.state.prefix}/api/api/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -221,7 +221,7 @@ export default createStore({
             dispatch("showPreloader", true);
             try {
                 const res = await fetch(
-                    `${this.state.prefix}/api/${this.state.rol}/perfil`,
+                    `${this.state.prefix}/api/api/${this.state.rol}/perfil`,
                     {
                         headers: {
                             "Content-Type": "application/json",

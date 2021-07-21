@@ -187,7 +187,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/customize?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -273,7 +273,7 @@ export default {
             formData.append("tipo", galeria.tipo);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/customize?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/customize?token=${this.token}`,
                     {
                         method: "POST",
                         // headers: {
@@ -308,7 +308,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasResultados/${galeria[1].id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/galeriasResultados/${galeria[1].id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {
@@ -331,7 +331,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasSorteos/${galeria[1].id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/galeriasSorteos/${galeria[1].id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {
@@ -354,7 +354,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasUbicanos/${galeria[1].id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/galeriasUbicanos/${galeria[1].id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {
@@ -377,7 +377,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/galeriasTestimonios/${galeria[1].id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/galeriasTestimonios/${galeria[1].id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {
@@ -414,7 +414,7 @@ export default {
             formData.append("link", galeria.link);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/customizeUpdate/${galeria.id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/customizeUpdate/${galeria.id}?token=${this.token}`,
                     {
                         method: "POST",
                         // headers: {
@@ -449,7 +449,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/customize/${galeria.id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/customize/${galeria.id}?token=${this.token}`,
                     {
                         method: "DELETE",
                         // headers: {
@@ -475,7 +475,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/UpdateEstado/${galeria.id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/UpdateEstado/${galeria.id}?token=${this.token}`,
                     {
                         // headers: {
                         //     "Content-Type": "application/json",

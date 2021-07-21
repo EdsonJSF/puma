@@ -111,7 +111,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/metricas`,
+                    `${this.prefix}/api/api/${this.rol}/metricas`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -144,7 +144,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/bloquearNumero/${numero.id}`,
+                    `${this.prefix}/api/api/${this.rol}/bloquearNumero/${numero.id}`,
                     {
                         method: "DELETE",
                         headers: {
@@ -177,7 +177,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/desbloquearNumero/${numero.id}?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/desbloquearNumero/${numero.id}?token=${this.token}`,
                     {
                         method: "PUT",
                         headers: {

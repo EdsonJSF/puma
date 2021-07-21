@@ -135,7 +135,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/modulopromotorvendedor`,
+                    `${this.prefix}/api/api/${this.rol}/modulopromotorvendedor`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -180,7 +180,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/reportes`,
+                    `${this.prefix}/api/api/${this.rol}/reportes`,
                     {
                         method: "POST",
                         headers: {

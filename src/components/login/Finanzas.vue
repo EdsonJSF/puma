@@ -46,7 +46,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/finanzas?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/finanzas?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",

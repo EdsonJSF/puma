@@ -277,7 +277,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/modulopromotorvendedor`,
+                    `${this.prefix}/api/api/${this.rol}/modulopromotorvendedor`,
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`,
@@ -356,7 +356,7 @@ export default {
             formData.append("nuevo_id", usuario.user_id);
 
             try {
-                const res = await fetch(`${this.prefix}/api/register`, {
+                const res = await fetch(`${this.prefix}/api/api/register`, {
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${this.token}`,
@@ -411,7 +411,7 @@ export default {
 
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/moduloPromotorVendedorUpdate/${usuario.id}`,
+                    `${this.prefix}/api/api/${this.rol}/moduloPromotorVendedorUpdate/${usuario.id}`,
                     {
                         method: "POST",
                         headers: {
@@ -440,7 +440,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/modulopromotorvendedor/${usuario.id}`,
+                    `${this.prefix}/api/api/${this.rol}/modulopromotorvendedor/${usuario.id}`,
                     {
                         method: "DELETE",
                         headers: {

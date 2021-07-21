@@ -203,7 +203,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/mostrarvendedor`,
+                    `${this.prefix}/api/api/${this.rol}/mostrarvendedor`,
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`,
@@ -280,7 +280,7 @@ export default {
             formData.append("codigo", usuario.codigo);
 
             try {
-                const res = await fetch(`${this.prefix}/api/register`, {
+                const res = await fetch(`${this.prefix}/api/api/register`, {
                     method: "POST",
                     headers: {
                         Authorization: `Bearer ${this.token}`,
@@ -326,7 +326,7 @@ export default {
 
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/modificarvendedor/${usuario.id}`,
+                    `${this.prefix}/api/api/${this.rol}/modificarvendedor/${usuario.id}`,
                     {
                         method: "POST",
                         headers: {
@@ -355,7 +355,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/eliminarvendedor/${usuario.id}`,
+                    `${this.prefix}/api/api/${this.rol}/eliminarvendedor/${usuario.id}`,
                     {
                         method: "DELETE",
                         headers: {

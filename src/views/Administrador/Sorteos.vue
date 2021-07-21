@@ -145,7 +145,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/mostrarSorteo`,
+                    `${this.prefix}/api/api/${this.rol}/mostrarSorteo`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -192,7 +192,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/generarSorteo`,
+                    `${this.prefix}/api/api/${this.rol}/generarSorteo`,
                     {
                         method: "POST",
                         headers: {
@@ -224,7 +224,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/modificarSorteo/${sorteo.id}`,
+                    `${this.prefix}/api/api/${this.rol}/modificarSorteo/${sorteo.id}`,
                     {
                         method: "PUT",
                         headers: {
@@ -251,7 +251,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/eliminarSorteo/${sorteo.id}`,
+                    `${this.prefix}/api/api/${this.rol}/eliminarSorteo/${sorteo.id}`,
                     {
                         method: "DELETE",
                         headers: {

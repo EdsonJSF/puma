@@ -55,7 +55,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/crearsolicitud`,
+                    `${this.prefix}/api/api/${this.rol}/crearsolicitud`,
                     {
                         method: "POST",
                         headers: {

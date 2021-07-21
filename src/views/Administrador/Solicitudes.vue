@@ -117,7 +117,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/SolicitudesAdministrador`,
+                    `${this.prefix}/api/api/${this.rol}/SolicitudesAdministrador`,
                     {
                         headers: {
                             Authorization: `Bearer ${this.token}`,
@@ -144,7 +144,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/modificarsolicitud/${solicitud.id}`,
+                    `${this.prefix}/api/api/${this.rol}/modificarsolicitud/${solicitud.id}`,
                     {
                         method: "PUT",
                         headers: {
@@ -173,7 +173,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/${this.rol}/eliminarsolicitud/${solicitud.id}`,
+                    `${this.prefix}/api/api/${this.rol}/eliminarsolicitud/${solicitud.id}`,
                     {
                         method: "DELETE",
                         headers: {
