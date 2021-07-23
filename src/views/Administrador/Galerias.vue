@@ -81,7 +81,7 @@
                                         />
                                     </figure>
                                 </div>
-                                <input
+                                <!-- <input
                                     type="file"
                                     @change="onVideoSelected"
                                     :key="fileInputKey"
@@ -94,7 +94,7 @@
                                         width="150"
                                         controls
                                     ></video>
-                                </div>
+                                </div> -->
                                 <div>
                                     <select
                                         v-if="crear"

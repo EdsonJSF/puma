@@ -4,7 +4,7 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <form
                     @submit.prevent="addUsuario(usuario)"
-                    class="Vendedores__form d-flex flex-column rounded-3 my-2 py-2"
+                    class="Vendedores__form d-flex flex-column rounded-3 py-2"
                 >
                     <input
                         @change="onFileSelected"
@@ -104,9 +104,7 @@
                 </form>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div
-                    class="Vendedores__data d-flex flex-column rounded-3 my-2 py-2"
-                >
+                <div class="Vendedores__data d-flex flex-column rounded-3 py-2">
                     <div class="table-responsive">
                         <table
                             class="table table-borderless table-hover align-middle"
@@ -116,11 +114,11 @@
                                 <th>NIT</th>
                                 <th>Ganancia</th>
                             </thead>
-                            <tbody>
-                                <tr
-                                    v-for="(vendedor, index) in Vendedores"
-                                    :key="index"
-                                >
+                            <tbody
+                                v-for="(vendedor, index) in Vendedores"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(vendedor)">
                                     <td>
                                         <div>{{ vendedor.name }}</div>
                                     </td>
@@ -197,7 +195,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getVendedores() {
             this.showPreloader(true);
@@ -379,9 +377,20 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(vendedor) {
+            if (
+                vendedor.name.toLowerCase().includes(this.toSearch) ||
+                vendedor.dni.toString().includes(this.toSearch) ||
+                vendedor.porcentaje.toString().includes(this.toSearch)
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
 
         imagen() {
             return this.imagenSeleccionada;
@@ -389,6 +398,7 @@ export default {
     },
     created() {
         this.getVendedores();
+        this.sendSearch("");
     },
 };
 </script>

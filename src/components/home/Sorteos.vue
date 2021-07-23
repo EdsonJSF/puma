@@ -32,7 +32,7 @@
             </swiper>
 
             <div>
-                <!-- {{ dataSorteos[0].rutaVideo }} -->
+                <!-- TODO configurar el video -->
                 <iframe
                     width="auto"
                     height="auto"

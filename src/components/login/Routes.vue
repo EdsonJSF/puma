@@ -1,15 +1,17 @@
 <template>
     <div class="Routes d-flex flex-column mx-2">
-        <div class=" d-flex flex-wrap justify-content-center">
+        <div
+            class="paralelogramo d-flex flex-wrap justify-content-center px-3 px-md-0"
+        >
             <router-link
                 v-for="(ruta, index) in loginRoutes.rutas"
                 :key="index"
-                class="paralelogramo text-capitalize d-flex align-items-center mt-1 px-2 py-1"
+                class="paralelogramo text-capitalize d-flex align-items-center h-auto px-2 py-1"
                 :to="`/${loginRoutes.userRol}/${ruta}`"
                 >{{ ruta.replace(/-/g, " ") }}</router-link
             >
             <a
-                class="paralelogramo d-flex align-items-center h-auto mt-1 px-2 py-1"
+                class="paralelogramo d-flex align-items-center h-auto px-2 py-1"
                 @click="logout"
                 >Salir</a
             >

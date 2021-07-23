@@ -3,7 +3,7 @@
         <div class="rounded-3">
             <form @submit.prevent="sendReporte(reporte)" class="row">
                 <div class="ReportarVentas__data col-12 col-md-8">
-                    <div class="table-responsive my-1 py-2">
+                    <div class="table-responsive py-2">
                         <table
                             class="table table-borderless table-hover align-middle"
                         >
@@ -95,7 +95,7 @@
                 </div>
                 <div class="ReportarVentas__total col-12 col-md-4">
                     <div
-                        class="d-flex flex-column justify-content-between text-start my-1 py-2"
+                        class="d-flex flex-column justify-content-between text-start py-2"
                     >
                         <div>
                             <div class="ReportarVentas__total-item my-1 p-2">

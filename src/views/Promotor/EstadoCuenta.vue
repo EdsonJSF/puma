@@ -2,7 +2,7 @@
     <div class="EstadoCuenta">
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
-                <div class="d-flex justify-content-center m-1 py-1">
+                <div class="d-flex justify-content-center py-2">
                     <table>
                         <tbody class="text-start">
                             <tr>
@@ -49,11 +49,11 @@
                                 <th><div>Salida</div></th>
                                 <th><div>Encargado</div></th>
                             </thead>
-                            <tbody>
-                                <tr
-                                    v-for="(venta, index) in EstadoCuentaVentas"
-                                    :key="index"
-                                >
+                            <tbody
+                                v-for="(venta, index) in EstadoCuentaVentas"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(venta)">
                                     <td>
                                         <div>
                                             {{
@@ -102,7 +102,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getEstadoCuentas() {
             this.showPreloader(true);
@@ -135,12 +135,37 @@ export default {
             let newCadena = cadena.split("T");
             return newCadena[0].replace(/-/g, "/");
         },
+        generalSearch(venta) {
+            const Created_at = this.arreglarCadena(venta.created_at);
+            const Transaccion = venta.Transaccion
+                ? venta.Transaccion.toLowerCase().includes(this.toSearch)
+                : false;
+            const Monto = venta.Monto
+                ? venta.Monto.toString().includes(this.toSearch)
+                : false;
+            const Nombrepromotor = venta.Nombrepromotor
+                ? venta.Nombrepromotor.toLowerCase().includes(this.toSearch)
+                : false;
+            if (
+                Created_at.toLowerCase().includes(this.toSearch) ||
+                Transaccion ||
+                Monto ||
+                venta.Referencia.toLowerCase().includes(this.toSearch) ||
+                venta.Tipo.toLowerCase().includes(this.toSearch) ||
+                Nombrepromotor
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
     },
     created() {
         this.getEstadoCuentas();
+        this.sendSearch("");
     },
 };
 </script>
@@ -151,7 +176,7 @@ export default {
     table {
         th,
         td {
-            border: 0.5rem solid transparent;
+            border: 0.5rem solid transparent !important;
             padding: 0;
             div {
                 display: flex;
@@ -170,11 +195,11 @@ export default {
         }
         th:first-child,
         td:first-child {
-            border-left: none;
+            border-left: none !important;
         }
         th:last-child,
         td:last-child {
-            border-right: none;
+            border-right: none !important;
         }
     }
 }

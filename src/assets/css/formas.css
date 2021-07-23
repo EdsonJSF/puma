@@ -67,7 +67,7 @@
 }
 
 /* PARALELOGRAMO Welcome & Routes */
-.Routes a.paralelogramo::before,
+.Routes .paralelogramo::before,
 .Welcome a.paralelogramo::before {
     background-color: var(--bs-secondary);
 }

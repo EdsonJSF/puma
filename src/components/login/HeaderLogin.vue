@@ -17,7 +17,8 @@
             <div
                 v-if="
                     $route.path != `/${rol}/perfil` &&
-                        $route.path != `/${rol}/reportar-gastos`
+                        $route.path != `/${rol}/reportar-gastos` &&
+                        $route.path != `/${rol}/reportar-ventas`
                 "
                 class="d-flex align-self-end mt-3"
             >

@@ -72,7 +72,7 @@
                     v-for="(navigation, index) in navigations"
                     :key="index"
                     :data-item="index"
-                    class="paralelogramo pt-2 px-1 mx-1 px-md-2 mx-md-2"
+                    class="paralelogramo text-uppercase pt-2 px-1 mx-1 px-md-2 mx-md-2"
                     >{{ navigation }}</a
                 >
             </div>
