@@ -2,57 +2,59 @@
     <div class="Galerias">
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
-                <div
-                    class="Galerias__lista d-flex flex-column rounded-3 m-1 py-2"
-                >
+                <div class="Galerias__lista d-flex flex-column rounded-3">
                     <div
                         v-for="(galeria, indexGaleria) in Galerias"
                         :key="indexGaleria"
                     >
-                        <h2 class="my-2">{{ tituloGaleria(indexGaleria) }}</h2>
+                        <h5 class="my-2">{{ tituloGaleria(indexGaleria) }}</h5>
                         <div
                             v-for="(item, indexItem) in galeria"
                             :key="indexItem"
-                            class="Galerias__lista-item d-flex justify-content-between align-items-center px-2 my-2"
                         >
-                            <p class="m-0">{{ item.titulo }}</p>
-                            <div v-if="item.estado === 1">
-                                <button
-                                    @click="selectGaleria(item)"
-                                    class="btn"
-                                >
-                                    <img
-                                        src="../../assets/img/icons/pen-solid.svg"
-                                        alt=""
-                                    />
-                                </button>
-                                <button
-                                    @click="deleteGaleria(item)"
-                                    class="btn"
-                                >
-                                    <img
-                                        src="../../assets/img/icons/trash-solid.svg"
-                                        alt=""
-                                    />
-                                </button>
-                            </div>
-                            <div v-else>
-                                <button
-                                    @click="activarGaleria(item)"
-                                    class="btn"
-                                >
-                                    <img
-                                        src="../../assets/img/icons/check-square-solid.svg"
-                                        alt=""
-                                    />
-                                </button>
+                            <div
+                                v-if="generalSearch(item)"
+                                class="Galerias__lista-item d-flex justify-content-between align-items-center px-2 my-2"
+                            >
+                                <p class="m-0">{{ item.titulo }}</p>
+                                <div v-if="item.estado === 1">
+                                    <button
+                                        @click="selectGaleria(item)"
+                                        class="btn"
+                                    >
+                                        <img
+                                            src="../../assets/img/icons/pen-solid.svg"
+                                            alt=""
+                                        />
+                                    </button>
+                                    <button
+                                        @click="deleteGaleria(item)"
+                                        class="btn"
+                                    >
+                                        <img
+                                            src="../../assets/img/icons/trash-solid.svg"
+                                            alt=""
+                                        />
+                                    </button>
+                                </div>
+                                <div v-else>
+                                    <button
+                                        @click="activarGaleria(item)"
+                                        class="btn"
+                                    >
+                                        <img
+                                            src="../../assets/img/icons/check-square-solid.svg"
+                                            alt=""
+                                        />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="Galerias__module rounded-3 m-1 py-2">
+                <div class="Galerias__module rounded-3">
                     <form
                         @submit.prevent="addGaleria(galeria, galeriaTipo)"
                         class="row"
@@ -128,19 +130,19 @@
                             <div
                                 class="d-flex flex-column align-items-start p-2"
                             >
-                                <h4>Titulo</h4>
+                                <h5>Titulo</h5>
                                 <textarea
                                     v-model="galeria.titulo"
                                     class="w-100"
                                     required
                                 ></textarea>
-                                <h4>Descripción</h4>
+                                <h5>Descripción</h5>
                                 <textarea
                                     v-model="galeria.contenido"
                                     class="w-100"
                                     required
                                 ></textarea>
-                                <h4>Link de enlace</h4>
+                                <h5>Link de enlace</h5>
                                 <textarea
                                     v-model="galeria.link"
                                     class="w-100"
@@ -181,17 +183,16 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getGalerias() {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/customize?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/customizeGeneral?token=${this.token}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            // Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
@@ -497,9 +498,16 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(galeria) {
+            if (galeria.titulo.toLowerCase().includes(this.toSearch)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
         imagen() {
             return this.imagenSeleccionada;
         },
@@ -509,6 +517,7 @@ export default {
     },
     created() {
         this.getGalerias();
+        this.sendSearch("");
     },
 };
 </script>

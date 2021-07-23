@@ -4,7 +4,7 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <form
                     @submit.prevent="addUsuario(usuario)"
-                    class="ListaUsuarios__form d-flex flex-column rounded-3 my-2 py-2"
+                    class="ListaUsuarios__form d-flex flex-column rounded-3"
                 >
                     <input
                         @change="onFileSelected"
@@ -133,9 +133,7 @@
                 </form>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div
-                    class="ListaUsuarios__data d-flex flex-column rounded-3 my-2 py-2"
-                >
+                <div class="ListaUsuarios__data d-flex flex-column rounded-3">
                     <div class="table-responsive">
                         <table class="table table-borderless align-middle">
                             <tbody>
@@ -164,11 +162,15 @@
                                                 <th>NIT</th>
                                                 <th>Ganancia</th>
                                             </thead>
-                                            <tbody>
+                                            <tbody
+                                                v-for="(empleado,
+                                                indexEmp) in rolEmpleado"
+                                                :key="indexEmp"
+                                            >
                                                 <tr
-                                                    v-for="(empleado,
-                                                    indexEmp) in rolEmpleado"
-                                                    :key="indexEmp"
+                                                    v-if="
+                                                        generalSearch(empleado)
+                                                    "
                                                 >
                                                     <td>
                                                         <div>
@@ -271,7 +273,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getPromotoresVendedores() {
             this.showPreloader(true);
@@ -473,9 +475,23 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(empleado) {
+            const balance = empleado.balance
+                ? empleado.balance.toString().includes(this.toSearch)
+                : false;
+            if (
+                empleado.name.toLowerCase().includes(this.toSearch) ||
+                empleado.dni.toString().includes(this.toSearch) ||
+                balance
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
 
         imagen() {
             return this.imagenSeleccionada;
@@ -483,6 +499,7 @@ export default {
     },
     created() {
         this.getPromotoresVendedores();
+        this.sendSearch("");
     },
 };
 </script>

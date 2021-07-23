@@ -13,19 +13,6 @@
                                 <th><div>Valor a apostar</div></th>
                                 <th><div>Loteria</div></th>
                                 <th><div>Tipo</div></th>
-                                <!-- <th>
-                                    <div>
-                                        <button
-                                            @click.prevent="pushReporte()"
-                                            class="btn btn-sm"
-                                        >
-                                            <img
-                                                src="../../../assets/img/icons/plus-solid.svg"
-                                                alt=""
-                                            />
-                                        </button>
-                                    </div>
-                                </th> -->
                             </thead>
                             <tbody>
                                 <tr>
@@ -101,21 +88,6 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <!-- <td>
-                                        <div>
-                                            <button
-                                                @click.prevent="
-                                                    clearReportes(index)
-                                                "
-                                                class="btn btn-sm"
-                                            >
-                                                <img
-                                                    src="../../../assets/img/icons/trash-solid.svg"
-                                                    alt=""
-                                                />
-                                            </button>
-                                        </div>
-                                    </td> -->
                                 </tr>
                             </tbody>
                         </table>
@@ -195,7 +167,7 @@ export default {
                 Puntoentregaventas: "",
             },
 
-            total: "",
+            total: 0,
             promotor: "",
 
             tipos: ["Directo", "Combinado"],
@@ -219,7 +191,7 @@ export default {
                 const resData = await res.json();
                 this.showPreloader(false);
 
-                this.total = resData.ventatotal;
+                this.total = Number(resData.sumatotal);
                 this.promotor = resData.promotor[0].name;
 
                 if (resData.status === "Token is Expired") {
@@ -231,26 +203,6 @@ export default {
                 this.showPreloader(false);
             }
         },
-
-        // pushReporte() {
-        //     this.reportes++;
-        //     this.reporte.push({
-        //         Fecha: "",
-        //         Numero: "",
-        //         Valorapuesta: "",
-        //         Loteria: "",
-        //         Tipo: "",
-        //         Referencia: "",
-        //         Puntoventas: "",
-        //         Puntoentregaventas: "",
-        //     });
-        // },
-
-        // clearReportes(index) {
-        //     this.reportes--;
-        //     this.reporte.splice(index, 1);
-        // },
-
         clearInput() {
             this.reporte = [
                 {
@@ -282,12 +234,13 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.total++;
+                    this.total += Number(reporte.Valorapuesta);
                     this.clearInput();
                 }
             } catch (error) {

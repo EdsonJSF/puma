@@ -2,9 +2,7 @@
     <div class="Sorteos">
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
-                <div
-                    class="Sorteos__input d-flex flex-column rounded-3 my-2 py-2"
-                >
+                <div class="Sorteos__input d-flex flex-column rounded-3">
                     <div>
                         <h5>Nuevo Sorteo</h5>
                     </div>
@@ -47,9 +45,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div
-                    class="Sorteos__data d-flex flex-column rounded-3 my-2 py-2"
-                >
+                <div class="Sorteos__data d-flex flex-column rounded-3">
                     <div class="table-responsive">
                         <table
                             class="table table-borderless table-hover align-middle"
@@ -58,11 +54,11 @@
                                 <th>Fecha</th>
                                 <th>Loteria</th>
                             </thead>
-                            <tbody>
-                                <tr
-                                    v-for="(sorteo, index) in Sorteos"
-                                    :key="index"
-                                >
+                            <tbody
+                                v-for="(sorteo, index) in Sorteos"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(sorteo)">
                                     <td>
                                         <div>
                                             {{ sorteo.Fecha }}
@@ -139,7 +135,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getSorteos() {
             this.showPreloader(true);
@@ -273,12 +269,23 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(sorteo) {
+            if (
+                sorteo.Fecha.toLowerCase().includes(this.toSearch) ||
+                sorteo.Loteria.toLowerCase().includes(this.toSearch)
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
     },
     created() {
         this.getSorteos();
+        this.sendSearch("");
     },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="HeaderLogin">
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column mb-3">
             <!-- LOGO & NAV -->
             <div class="d-flex flex-column flex-md-row">
                 <div class="paralelogramo-primary mt-2 mt-md-4">
@@ -14,7 +14,13 @@
             </div>
 
             <!-- SEARCH BTN -->
-            <div class="d-flex align-self-end mt-3">
+            <div
+                v-if="
+                    $route.path != `/${rol}/perfil` &&
+                        $route.path != `/${rol}/reportar-gastos`
+                "
+                class="d-flex align-self-end mt-3"
+            >
                 <div class="paralelogramo-primary d-flex align-items-center">
                     <form
                         @submit.prevent="sendSearch(search), (search = '')"
@@ -25,9 +31,8 @@
                             v-model="search"
                             class="bg-transparent"
                             type="text"
-                            placeholder="Buscar"
+                            :placeholder="toSearch || 'Buscar'"
                         />
-                        {{ toSearch }}
                     </form>
                     <button
                         class="btn btn-sm navbar-toggler"
@@ -68,7 +73,7 @@ export default {
         ...mapActions(["sendSearch"]),
     },
     computed: {
-        ...mapState(["toSearch"]),
+        ...mapState(["toSearch", "rol"]),
     },
 };
 </script>

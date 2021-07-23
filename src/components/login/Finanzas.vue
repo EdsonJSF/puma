@@ -1,6 +1,6 @@
 <template>
     <div class="Finanzas">
-        <div class="d-flex justify-content-center m-1 py-1">
+        <div class="d-flex justify-content-center">
             <table>
                 <tbody class="text-start">
                     <tr>

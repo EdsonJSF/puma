@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
                 <div
-                    class="Metricas__numeros d-flex flex-column border border-dark rounded-3 m-1 py-2"
+                    class="Metricas__numeros d-flex flex-column border border-dark rounded-3"
                 >
                     <div class="my-2"><h4>Números Bloqueados</h4></div>
                     <div
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="Metricas__Info table-responsive rounded-3 m-1 py-2">
+                <div class="Metricas__Info table-responsive rounded-3">
                     <table
                         class="table table-borderless table-hover align-middle"
                     >
@@ -52,11 +52,11 @@
                             <th><div>Tipo</div></th>
                             <th><div>Vendedor</div></th>
                         </thead>
-                        <tbody>
-                            <tr
-                                v-for="(metrica, index) in Metricas"
-                                :key="index"
-                            >
+                        <tbody
+                            v-for="(metrica, index) in Metricas"
+                            :key="index"
+                        >
+                            <tr v-if="generalSearch(metrica)">
                                 <td @click="addNumero(metrica)">
                                     <div>
                                         <button class="btn btn-sm">
@@ -105,7 +105,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getMetricas() {
             this.showPreloader(true);
@@ -203,12 +203,25 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(metrica) {
+            if (
+                metrica.Loteria.toLowerCase().includes(this.toSearch) ||
+                metrica.Numero.toString().includes(this.toSearch) ||
+                metrica.Tipo.toLowerCase().includes(this.toSearch) ||
+                metrica.Valorapuesta.toString().includes(this.toSearch)
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
     },
     created() {
         this.getMetricas();
+        this.sendSearch("");
     },
 };
 </script>
@@ -222,7 +235,7 @@ export default {
     table {
         th,
         td {
-            border: 0.5rem solid transparent;
+            border: 0.5rem solid transparent !important;
             padding: 0;
             div {
                 display: flex;
@@ -241,11 +254,11 @@ export default {
         }
         th:first-child,
         td:first-child {
-            border-left: none;
+            border-left: none !important;
         }
         th:last-child,
         td:last-child {
-            border-right: none;
+            border-right: none !important;
         }
     }
 }

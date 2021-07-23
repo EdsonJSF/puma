@@ -10,7 +10,7 @@
                         <table class="table table-borderless align-middle">
                             <tbody>
                                 <tr
-                                    v-for="(empleados,
+                                    v-for="(empleado,
                                     indexEmp) in ResumenVentas"
                                     :key="indexEmp"
                                 >
@@ -20,24 +20,22 @@
                                         >
                                             <thead>
                                                 <th
-                                                    v-if="
-                                                        empleados.rol_id === 3
-                                                    "
+                                                    v-if="empleado.rol_id === 3"
                                                 >
                                                     Vendedor
-                                                    {{ empleados.name }}
+                                                    {{ empleado.name }}
                                                 </th>
                                                 <th
                                                     v-else-if="
-                                                        empleados.rol_id === 2
+                                                        empleado.rol_id === 2
                                                     "
                                                 >
                                                     Promotor
-                                                    {{ empleados.name }}
+                                                    {{ empleado.name }}
                                                 </th>
                                                 <th v-else>
                                                     Administrador
-                                                    {{ empleados.name }}
+                                                    {{ empleado.name }}
                                                 </th>
                                             </thead>
                                             <thead>
@@ -50,11 +48,18 @@
                                                 <th><div>Tipo</div></th>
                                                 <th><div>Vendedor</div></th>
                                             </thead>
-                                            <tbody>
+                                            <tbody
+                                                v-for="(venta,
+                                                indexVenta) in empleado.ventas"
+                                                :key="indexVenta"
+                                            >
                                                 <tr
-                                                    v-for="(venta,
-                                                    indexVenta) in empleados.ventas"
-                                                    :key="indexVenta"
+                                                    v-if="
+                                                        generalSearch(
+                                                            venta,
+                                                            empleado
+                                                        )
+                                                    "
                                                 >
                                                     <td>
                                                         <div>
@@ -85,7 +90,7 @@
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            {{ empleados.name }}
+                                                            {{ empleado.name }}
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -116,7 +121,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getResumenVentas() {
             this.showPreloader(true);
@@ -145,12 +150,27 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(element, empleado) {
+            if (
+                empleado.name.toLowerCase().includes(this.toSearch) ||
+                element.Fecha.includes(this.toSearch) ||
+                element.Tipo.toLowerCase().includes(this.toSearch) ||
+                element.Numero.toString().includes(this.toSearch) ||
+                element.Valorapuesta.toString().includes(this.toSearch) ||
+                element.Loteria.toLowerCase().includes(this.toSearch)
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
     },
     created() {
         this.getResumenVentas();
+        this.sendSearch("");
     },
 };
 </script>
@@ -161,7 +181,7 @@ export default {
     table {
         th,
         td {
-            border: 0.5rem solid transparent;
+            border: 0.5rem solid transparent !important;
             padding: 0;
             div {
                 display: flex;
@@ -180,11 +200,11 @@ export default {
         }
         th:first-child,
         td:first-child {
-            border-left: none;
+            border-left: none !important;
         }
         th:last-child,
         td:last-child {
-            border-right: none;
+            border-right: none !important;
         }
     }
 }

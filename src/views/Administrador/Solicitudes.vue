@@ -5,9 +5,7 @@
                 <Profile />
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div
-                    class="Solicitudes__data d-flex flex-column rounded-3 my-2 py-2"
-                >
+                <div class="Solicitudes__data d-flex flex-column rounded-3">
                     <div class="table-responsive">
                         <table
                             class="table table-borderless table-hover align-middle"
@@ -17,17 +15,13 @@
                                 <th>Solicita</th>
                             </thead>
                             <tbody
-                                v-for="(empleado, indexEmp) in Solicitudes"
-                                :key="indexEmp"
+                                v-for="(solicitud, index) in Solicitudes"
+                                :key="index"
                             >
-                                <tr
-                                    v-for="(solicitud,
-                                    indexsolicitud) in empleado.solicitudes"
-                                    :key="indexsolicitud"
-                                >
+                                <tr v-if="generalSearch(solicitud)">
                                     <td>
                                         <div>
-                                            {{ empleado.name }}
+                                            {{ solicitud.name }}
                                         </div>
                                     </td>
                                     <td>
@@ -111,7 +105,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getSolicitudes() {
             this.showPreloader(true);
@@ -130,10 +124,18 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.Solicitudes = [
-                        ...resData["Solicitudes de promotores"],
-                        ...resData["Solicitudes de vendedores"],
-                    ];
+                    resData["Solicitudes de promotores"].map((empleado) =>
+                        empleado.solicitudes.map((solicitud) => {
+                            solicitud.name = empleado.name;
+                            this.Solicitudes.push(solicitud);
+                        })
+                    );
+                    resData["Solicitudes de vendedores"].map((empleado) =>
+                        empleado.solicitudes.map((solicitud) => {
+                            solicitud.name = empleado.name;
+                            this.Solicitudes.push(solicitud);
+                        })
+                    );
                 }
             } catch (error) {
                 console.log(error);
@@ -198,12 +200,40 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(solicitud) {
+            const CantidadSolicitada = solicitud.CantidadSolicitada
+                ? solicitud.CantidadSolicitada.toString().includes(
+                      this.toSearch
+                  )
+                : false;
+            const MobiliarioSolicitado = solicitud.MobiliarioSolicitado
+                ? solicitud.MobiliarioSolicitado.toLowerCase().includes(
+                      this.toSearch
+                  )
+                : false;
+            const Solicitud = solicitud.Solicitud
+                ? solicitud.Solicitud.toLowerCase().includes(this.toSearch)
+                : false;
+            if (
+                solicitud.name.toLowerCase().includes(this.toSearch) ||
+                // TODO habilita la busqueda para solicitudes por categoria
+                // solicitud.Categoria.toLowerCase().includes(this.toSearch) ||
+                CantidadSolicitada ||
+                MobiliarioSolicitado ||
+                Solicitud
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
     },
     created() {
         this.getSolicitudes();
+        this.sendSearch("");
     },
 };
 </script>
