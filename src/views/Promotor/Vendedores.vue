@@ -290,6 +290,10 @@ export default {
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
+                } else if (JSON.parse(resData).email) {
+                    alert("Ya existe el email");
+                } else if (JSON.parse(resData).codigo) {
+                    alert("Ya existe el codigo");
                 } else if (resData.token) {
                     this.Vendedores.unshift(resData.user);
                     this.clearInput();

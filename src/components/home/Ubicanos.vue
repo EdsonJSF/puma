@@ -3,23 +3,16 @@
         <div class="py-2">
             <div class="d-flex flex-wrap">
                 <div
-                    class="paralelogramo-primary d-flex align-items-end ms-3 mt-2 mt-md-4 p-1 px-3"
+                    class="paralelogramo-primary position-relative row justify-content-center align-items-center ms-3 mt-2 mt-md-4 p-1 px-3"
                 >
                     <img
-                        class="logo-home"
-                        src="../../assets/img/logo/tigre.png"
+                        class="logo-home p-0 me-2"
+                        src="../../assets/img/logo/logo-simple-sm.png"
                         alt="Logo Puma"
                     />
-                    <div>
-                        <h3>UBICANOS</h3>
-                        <div class="d-flex justify-content-around">
-                            <h5>★</h5>
-                            <h5>★</h5>
-                            <h5>★</h5>
-                            <h5>★</h5>
-                            <h5>★</h5>
-                        </div>
-                    </div>
+                    <h3 class="position-absolute col-auto ms-5 ps-5">
+                        UBICANOS
+                    </h3>
                 </div>
                 <div class="paralelogramo-secondary d-flex ps-5 py-1">
                     <button
@@ -34,7 +27,7 @@
             </div>
             <div class="paralelogramo-gray"></div>
             <swiper
-                :slidesPerView="3"
+                :slidesPerView="2"
                 :spaceBetween="30"
                 :loop="true"
                 :autoplay="{

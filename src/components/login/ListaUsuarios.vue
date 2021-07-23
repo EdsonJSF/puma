@@ -254,17 +254,17 @@ export default {
             PromotoresVendedores: [],
 
             usuario: {
-                name: "",
-                email: "",
-                password: "",
-                dni: "",
-                ganancia: "",
-                porcentaje: "",
+                name: "edson",
+                email: "puma02@gmail.com",
+                password: "123456",
+                dni: "123456",
+                ganancia: "13",
+                porcentaje: "12",
                 foto: "",
-                direccion: "",
-                telefono: "",
-                rol_id: "",
-                codigo: "",
+                direccion: "123456",
+                telefono: "123456",
+                rol_id: "3",
+                codigo: "puma-02",
                 user_id: "",
             },
             imagenSeleccionada: "",
@@ -370,6 +370,10 @@ export default {
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
+                } else if (JSON.parse(resData).email) {
+                    alert("Ya existe el email");
+                } else if (JSON.parse(resData).codigo) {
+                    alert("Ya existe el codigo");
                 } else if (resData.token) {
                     let position = "";
                     if (usuario.rol_id == 1) {

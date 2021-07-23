@@ -34,7 +34,7 @@
                         class="paralelogramo-primary d-flex align-items-center"
                     >
                         <form
-                            @submit.prevent="sendSearch(toSearch)"
+                            @submit.prevent="sendSearch(toSearch.toLowerCase())"
                             id="search"
                             class="collapse"
                         >
@@ -116,7 +116,22 @@ export default {
             this.toSearch = "";
         },
         sendSearch(search) {
-            alert(`Voy a buscar: ${search}`);
+            const nextPumaSwiper = document.querySelector(
+                ".swiper-container.pumaSwiper"
+            ).swiper;
+            if (search === "resultados") {
+                nextPumaSwiper.slideTo(2);
+            } else if (search === "sorteos") {
+                nextPumaSwiper.slideTo(3);
+            } else if (search === "ubicanos") {
+                nextPumaSwiper.slideTo(4);
+            } else if (search === "testimonios") {
+                nextPumaSwiper.slideTo(5);
+            } else if (search === "contactanos") {
+                nextPumaSwiper.slideTo(6);
+            } else {
+                alert(`La busqueda ("${search}") es incorrecta`);
+            }
             this.clearInput();
         },
     },

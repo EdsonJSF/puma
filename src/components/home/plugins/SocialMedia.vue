@@ -1,7 +1,7 @@
 <template>
     <div class="SocialMedia pumaFollows">
         <div class="collapse" id="menuSocialMedia">
-            <div class="d-flex flex-column bg-dark ms-3 me-2 py-2">
+            <div class="d-flex flex-column ms-3 me-2 py-2">
                 <a
                     class="mb-2"
                     href="https://www.instagram.com/"
@@ -62,7 +62,13 @@ export default {
     bottom: 10vh;
     right: 3vw;
     z-index: 1;
-    img {
+    #menuSocialMedia .d-flex {
+        background: #e9da00;
+        img {
+            width: 1.5rem;
+        }
+    }
+    .pumaFollows__btn img {
         width: 1.5rem;
         filter: invert(1);
     }

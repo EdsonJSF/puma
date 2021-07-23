@@ -10,11 +10,11 @@
                             <th><div>Fecha</div></th>
                             <th><div>Ventas</div></th>
                         </thead>
-                        <tbody>
-                            <tr
-                                v-for="(estado, index) in VerMiEstadosCuentas"
-                                :key="index"
-                            >
+                        <tbody
+                            v-for="(estado, index) in VerMiEstadosCuentas"
+                            :key="index"
+                        >
+                            <tr v-if="generalSearch(estado)">
                                 <td>
                                     <div>{{ estado.Fecha }}</div>
                                 </td>
@@ -67,7 +67,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["logout", "showPreloader"]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getMiEstadosCuentas() {
             this.showPreloader(true);
@@ -99,12 +99,20 @@ export default {
                 this.showPreloader(false);
             }
         },
+        generalSearch(estado) {
+            if (estado.Fecha.toLowerCase().includes(this.toSearch)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "toSearch"]),
     },
     created() {
         this.getMiEstadosCuentas();
+        this.sendSearch("");
     },
 };
 </script>
