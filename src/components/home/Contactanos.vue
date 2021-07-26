@@ -11,7 +11,7 @@
                 @submit.prevent="contactar(contacto)"
                 class="row d-flex justify-content-center align-items-center mx-2 my-auto"
             >
-                <div class="col-6 d-flex flex-column">
+                <div class="col-12 col-md-6 d-flex flex-column">
                     <input
                         v-model="contacto.nombre_contacto"
                         type="text"
@@ -27,7 +27,7 @@
                 </div>
                 <textarea
                     v-model="contacto.mensaje_contacto"
-                    class="col-6"
+                    class="col-12 col-md-6"
                     cols="auto"
                     rows="3"
                     placeholder="Tu mensaje"
@@ -40,8 +40,19 @@
                     ENVIAR
                 </button>
             </form>
-            <div class="paralelogramo-primary mb-3">
+            <div
+                class="paralelogramo-primary row justify-content-center align-items-center"
+            >
+                <div class="position-absolute"></div>
                 2021 Chance Puma derechos reservados
+            </div>
+            <div
+                class="paralelogramo paralelogramo-dark d-flex justify-content-center align-items-center my-4 w-25 mx-auto"
+            >
+                <div
+                    @click="toTopSwiper"
+                    class="triangulo-top bg-transparent"
+                ></div>
             </div>
         </div>
     </div>
@@ -83,6 +94,13 @@ export default {
                 this.clearInput();
             }
         },
+
+        toTopSwiper() {
+            const topPumaSwiper = document.querySelector(
+                ".swiper-container.pumaSwiper"
+            ).swiper;
+            topPumaSwiper.slideTo(1);
+        },
     },
     computed: {
         ...mapState(["message"]),
@@ -105,5 +123,12 @@ button.paralelogramo-primary:hover::before {
 }
 button.paralelogramo-primary:hover {
     color: var(--bs-white) !important;
+}
+.paralelogramo-primary .position-absolute {
+    max-width: 75vw;
+    width: 20rem;
+    height: 3rem;
+    background: var(--bs-secondary);
+    z-index: -2;
 }
 </style>

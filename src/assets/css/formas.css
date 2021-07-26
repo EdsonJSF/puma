@@ -59,6 +59,9 @@
 .paralelogramo-secondary::before {
     background-color: var(--bs-secondary);
 }
+.paralelogramo-dark::before {
+    background-color: var(--bs-gray);
+}
 .paralelogramo-gray::before {
     width: auto;
     height: 0.5rem;

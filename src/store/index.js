@@ -85,7 +85,6 @@ export default createStore({
                         "vendedores",
                         "solicitudes",
                         "estado-de-cuenta",
-                        "mis-solicitudes",
                     ],
                     userRol: rol,
                 };
@@ -96,7 +95,6 @@ export default createStore({
                         "reportar-ventas",
                         "solicitudes",
                         "estado-de-cuenta",
-                        "mis-solicitudes",
                     ],
                     userRol: rol,
                 };
@@ -135,6 +133,7 @@ export default createStore({
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 commit("setDataHome", resData);
                 dispatch("showPreloader", false);
             } catch (error) {

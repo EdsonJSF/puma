@@ -121,12 +121,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions([
-            "logout",
-            "showPreloader",
-            "sendSearch",
-            "generalSearch",
-        ]),
+        ...mapActions(["logout", "showPreloader", "sendSearch"]),
 
         async getEstadoCuentas() {
             this.showPreloader(true);

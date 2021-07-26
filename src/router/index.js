@@ -106,12 +106,6 @@ const routes = [
         component: () => import("../views/Promotor/Vendedores.vue"),
         meta: { rutaProtegida: true },
     },
-    {
-        path: "/promotor/mis-solicitudes",
-        name: "MisSolicitudesProm",
-        component: () => import("../views/Promotor/MisSolicitudes.vue"),
-        meta: { rutaProtegida: true },
-    },
 
     /**********************
      *** RUTAS VENDEDOR ***
@@ -138,12 +132,6 @@ const routes = [
         path: "/vendedor/solicitudes",
         name: "SolicitudesVend",
         component: () => import("../views/Vendedor/Solicitudes.vue"),
-        meta: { rutaProtegida: true },
-    },
-    {
-        path: "/vendedor/mis-solicitudes",
-        name: "MisSolicitudesVend",
-        component: () => import("../views/Vendedor/MisSolicitudes.vue"),
         meta: { rutaProtegida: true },
     },
 

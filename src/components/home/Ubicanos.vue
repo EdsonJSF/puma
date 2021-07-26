@@ -45,13 +45,13 @@
                         :src="`${prefix}/images/${ubicacion.rutaImagen}`"
                         :alt="ubicacion.titulo"
                     />
-                    <div class="d-flex align-items-end">
+                    <div class="d-flex flex-wrap align-items-end">
                         <h1 class="paralelogramo-primary pe-5">
                             {{ ubicacion.titulo }}
                         </h1>
                         <a
                             class="paralelogramo-primary text-reset text-nowrap text-decoration-none px-2"
-                            :href="resultado.link"
+                            :href="ubicacion.link"
                             target="_blank"
                             >Ver mas...</a
                         >

@@ -59,7 +59,7 @@ export default {
 <style lang="scss" scoped>
 .pumaFollows {
     position: absolute;
-    bottom: 10vh;
+    bottom: 15vh;
     right: 3vw;
     z-index: 1;
     #menuSocialMedia .d-flex {
