@@ -5,7 +5,7 @@
                 <a
                     class="mb-2"
                     href="https://www.instagram.com/"
-                    target="_blanck"
+                    target="_blank"
                 >
                     <img
                         src="../../../assets/img/icons/instagram-brands.svg"
@@ -15,7 +15,7 @@
                 <a
                     class="mb-2"
                     href="https://www.facebook.com/"
-                    target="_blanck"
+                    target="_blank"
                 >
                     <img
                         src="../../../assets/img/icons/facebook-square-brands.svg"
@@ -25,7 +25,7 @@
                 <a
                     class="mb-2"
                     href="https://wa.me/5842455555555"
-                    target="_blanck"
+                    target="_blank"
                 >
                     <img
                         src="../../../assets/img/icons/whatsapp-brands.svg"

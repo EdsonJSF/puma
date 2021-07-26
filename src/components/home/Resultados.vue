@@ -50,9 +50,9 @@
                             {{ resultado.titulo }}
                         </h1>
                         <a
-                            @click.prevent=""
                             class="paralelogramo-primary text-reset text-nowrap text-decoration-none px-2"
-                            href=""
+                            :href="resultado.link"
+                            target="_blank"
                             >Ver mas...</a
                         >
                     </div>
