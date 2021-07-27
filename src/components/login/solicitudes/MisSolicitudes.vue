@@ -139,7 +139,7 @@ export default {
 .MisSolicitudes__options {
     background: var(--bs-dark);
     .table-responsive {
-        max-height: 65vh;
+        max-height: var(--max-height);
         overflow: auto;
     }
     table {

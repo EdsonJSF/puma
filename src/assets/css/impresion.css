@@ -1,0 +1,15 @@
+@media print {
+    * {
+        background: none !important;
+        page-break-after: avoid;
+        page-break-before: avoid;
+    }
+    .HeaderLogin,
+    .Reportar__data,
+    .ReportarVentas__data {
+        display: none;
+    }
+    .ReportarVentas__Imprimir {
+        display: block !important;
+    }
+}

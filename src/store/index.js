@@ -39,8 +39,6 @@ export default createStore({
         rol: null,
         loginRoutes: null,
         toSearch: "",
-
-        loterias: ["kino", "triple gordo"],
     },
     mutations: {
         setPreloader(state, show) {
@@ -133,7 +131,6 @@ export default createStore({
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
                 commit("setDataHome", resData);
                 dispatch("showPreloader", false);
             } catch (error) {
@@ -181,9 +178,9 @@ export default createStore({
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
                 commit("setPass", resData);
                 dispatch("showPreloader", false);
+                return true;
             } catch (error) {
                 console.log(error);
                 dispatch("showPreloader", false);
@@ -211,6 +208,7 @@ export default createStore({
                 commit("setLoginRoutes", rol);
                 router.push(`/${rol}/perfil`);
                 dispatch("showPreloader", false);
+                return true;
             } catch (error) {
                 console.log(error);
                 dispatch("showPreloader", false);

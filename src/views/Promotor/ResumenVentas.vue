@@ -124,7 +124,8 @@ export default {
                 } else {
                     this.EstadoCuenta = resData;
                     this.EstadoCuentaVentas =
-                        resData["Datos y ventas del promotor"].ventas;
+                        // resData["Datos y ventas del promotor"].ventas;
+                        resData["VENTAS PRUEBA"];
                 }
             } catch (error) {
                 console.log(error);
@@ -171,6 +172,10 @@ export default {
 <style lang="scss" scoped>
 .ResumenVentas__options {
     background: var(--bs-dark);
+    .table-responsive {
+        max-height: var(--max-height);
+        overflow: auto;
+    }
     table {
         th,
         td {

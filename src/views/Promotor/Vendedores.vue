@@ -418,6 +418,10 @@ export default {
     }
     .Vendedores__data {
         background: var(--bs-dark);
+        .table-responsive {
+            max-height: var(--max-height);
+            overflow: auto;
+        }
         table {
             td {
                 border-top: 0.5rem solid transparent;

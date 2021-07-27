@@ -135,7 +135,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/modulopromotorvendedor`,
+                    `${this.prefix}/api/api/${this.rol}/vendedores/general`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -149,7 +149,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.empleados = [...resData[0], ...resData[1]];
+                    this.empleados = resData;
                 }
             } catch (error) {
                 console.log(error);

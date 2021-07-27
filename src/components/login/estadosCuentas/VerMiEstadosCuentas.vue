@@ -2,28 +2,30 @@
     <div class="VerMiEstadosCuentas">
         <div class="row rounded-3">
             <div class="col-6">
-                <div class="VerMiEstadosCuentas__fechas table-responsive my-3">
-                    <table
-                        class="table table-borderless table-hover align-middle text-start mt-1"
-                    >
-                        <thead>
-                            <th><div>Fecha</div></th>
-                            <th><div>Ventas</div></th>
-                        </thead>
-                        <tbody
-                            v-for="(estado, index) in VerMiEstadosCuentas"
-                            :key="index"
+                <div class="VerMiEstadosCuentas__fechas py-2">
+                    <div class="table-responsive">
+                        <table
+                            class="table table-borderless table-hover align-middle text-start mt-1"
                         >
-                            <tr v-if="generalSearch(estado)">
-                                <td>
-                                    <div>{{ estado.Fecha }}</div>
-                                </td>
-                                <td>
-                                    <div>{{ estado.Estado }}</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <thead>
+                                <th><div>Fecha</div></th>
+                                <th><div>Ventas</div></th>
+                            </thead>
+                            <tbody
+                                v-for="(estado, index) in VerMiEstadosCuentas"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(estado)">
+                                    <td>
+                                        <div>{{ estado.Fecha }}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ estado.Estado }}</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="col-6">
@@ -122,6 +124,10 @@ export default {
     background: var(--bs-dark);
 
     .VerMiEstadosCuentas__fechas {
+        .table-responsive {
+            max-height: var(--max-height);
+            overflow: auto;
+        }
         table {
             th,
             td {

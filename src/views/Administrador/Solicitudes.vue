@@ -5,7 +5,9 @@
                 <Profile />
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="Solicitudes__data d-flex flex-column rounded-3">
+                <div
+                    class="Solicitudes__data d-flex flex-column rounded-3 py-2"
+                >
                     <div class="table-responsive">
                         <table
                             class="table table-borderless table-hover align-middle"
@@ -241,6 +243,10 @@ export default {
 <style lang="scss" scoped>
 .Solicitudes__data {
     background: var(--bs-dark);
+    .table-responsive {
+        max-height: var(--max-height);
+        overflow: auto;
+    }
     table {
         td {
             border-top: 0.5rem solid transparent !important;

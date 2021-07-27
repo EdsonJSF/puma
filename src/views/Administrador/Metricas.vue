@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
                 <div
-                    class="Metricas__numeros d-flex flex-column border border-dark rounded-3"
+                    class="Metricas__numeros d-flex flex-column border border-dark rounded-3 py-2"
                 >
-                    <div class="my-2"><h4>Números Bloqueados</h4></div>
+                    <div><h4>Números Bloqueados</h4></div>
                     <div
                         v-for="(numero, index) in NumerosBloqueados"
                         :key="index"
@@ -40,51 +40,53 @@
                 </div>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="Metricas__Info table-responsive rounded-3">
-                    <table
-                        class="table table-borderless table-hover align-middle"
-                    >
-                        <thead>
-                            <th><div>Agregar</div></th>
-                            <th><div>Más vendidos</div></th>
-                            <th><div>Valor a apostar</div></th>
-                            <th><div>Lotería</div></th>
-                            <th><div>Tipo</div></th>
-                            <th><div>Vendedor</div></th>
-                        </thead>
-                        <tbody
-                            v-for="(metrica, index) in Metricas"
-                            :key="index"
+                <div class="Metricas__Info rounded-3 py-2">
+                    <div class="table-responsive">
+                        <table
+                            class="table table-borderless table-hover align-middle"
                         >
-                            <tr v-if="generalSearch(metrica)">
-                                <td @click="addNumero(metrica)">
-                                    <div>
-                                        <button class="btn btn-sm">
-                                            <img
-                                                src="../../assets/img/icons/plus-solid.svg"
-                                                alt=""
-                                            />
-                                        </button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>{{ metrica.Numero }}</div>
-                                </td>
-                                <td>
-                                    <div>{{ metrica.Valorapuesta }}</div>
-                                </td>
-                                <td>
-                                    <div>{{ metrica.Loteria }}</div>
-                                </td>
-                                <td>
-                                    <div>{{ metrica.Tipo }}</div>
-                                </td>
-                                <td>
-                                    <div>{{ metrica.Nombrepromotor }}</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <thead>
+                                <th><div>Agregar</div></th>
+                                <th><div>Más vendidos</div></th>
+                                <th><div>Valor a apostar</div></th>
+                                <th><div>Lotería</div></th>
+                                <th><div>Tipo</div></th>
+                                <th><div>Vendedor</div></th>
+                            </thead>
+                            <tbody
+                                v-for="(metrica, index) in Metricas"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(metrica)">
+                                    <td @click="addNumero(metrica)">
+                                        <div>
+                                            <button class="btn btn-sm">
+                                                <img
+                                                    src="../../assets/img/icons/plus-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>{{ metrica.Numero }}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ metrica.Valorapuesta }}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ metrica.Loteria }}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ metrica.Tipo }}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ metrica.Nombrepromotor }}</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -227,11 +229,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.Metricas__numeros-numero {
-    background: var(--bs-dark);
+.Metricas__numeros {
+    max-height: var(--max-height);
+    overflow: auto;
+    .Metricas__numeros-numero {
+        background: var(--bs-dark);
+    }
 }
 .Metricas__Info {
     background: var(--bs-dark);
+    .table-responsive {
+        max-height: var(--max-height);
+        overflow: auto;
+    }
     table {
         th,
         td {

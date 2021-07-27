@@ -92,11 +92,20 @@ export default {
 
         async toLogin(usuario) {
             const query = await this.login(usuario);
-            this.clearInput();
+            if (query) {
+                this.clearInput();
+            } else {
+                alert("Alguno de los datos es erroneo");
+            }
         },
         async toRecover(email) {
             const query = await this.recoveryPass(email);
-            this.clearInput();
+            if (query) {
+                this.clearInput();
+                alert(this.pass);
+            } else {
+                alert("Alguno de los datos es erroneo");
+            }
         },
     },
     computed: {

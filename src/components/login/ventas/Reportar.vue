@@ -1,9 +1,9 @@
 <template>
     <div class="Reportar">
-        <div class="rounded-3">
+        <div class="Reportar__data rounded-3">
             <form @submit.prevent="sendReporte(reporte)" class="row">
-                <div class="Reportar__data col-12 col-md-8">
-                    <div class="table-responsive my-1 py-2">
+                <div class="Reportar__data-input col-12 col-md-8">
+                    <div class="table-responsive py-2">
                         <table
                             class="table table-borderless table-hover align-middle"
                         >
@@ -54,7 +54,7 @@
                                     </td>
                                     <td>
                                         <div>
-                                            {{ reporte.Loteria }}
+                                            {{ reporte.Loteria.Loteria }}
                                             <select
                                                 v-model="reporte.Loteria"
                                                 class="triangulo-bottom"
@@ -65,7 +65,9 @@
                                                     index) in loterias"
                                                     :key="index"
                                                     :value="loteria"
-                                                    >{{ loteria }}</option
+                                                    >{{
+                                                        loteria.Loteria
+                                                    }}</option
                                                 >
                                             </select>
                                         </div>
@@ -93,16 +95,16 @@
                         </table>
                     </div>
                 </div>
-                <div class="Reportar__total col-12 col-md-4">
+                <div class="Reportar__data-total col-12 col-md-4">
                     <div
-                        class="d-flex flex-column justify-content-between text-start my-1 py-2"
+                        class="d-flex flex-column justify-content-between text-start py-2"
                     >
                         <div>
-                            <div class="Reportar__total-item my-1 p-2">
+                            <div class="Reportar__data-item my-1 p-2">
                                 <h6>Suma total de las ventas</h6>
                                 <div>{{ total }}</div>
                             </div>
-                            <div class="Reportar__total-item my-1 p-2">
+                            <div class="Reportar__data-item my-1 p-2">
                                 <h6>Puntos de venta</h6>
                                 <input
                                     v-model="reporte.Puntoventas"
@@ -111,11 +113,11 @@
                                     required
                                 />
                             </div>
-                            <div class="Reportar__total-item my-1 p-2">
+                            <div class="Reportar__data-item my-1 p-2">
                                 <h6>Nombre del Promotor</h6>
                                 <div>{{ promotor }}</div>
                             </div>
-                            <div class="Reportar__total-item my-1 p-2">
+                            <div class="Reportar__data-item my-1 p-2">
                                 <h6>Punto de entrega de las ventas</h6>
                                 <input
                                     v-model="reporte.Puntoentregaventas"
@@ -124,7 +126,7 @@
                                     required
                                 />
                             </div>
-                            <div class="Reportar__total-item my-1 p-2">
+                            <div class="Reportar__data-item my-1 p-2">
                                 <h6>Referencia</h6>
                                 <input
                                     v-model="reporte.Referencia"
@@ -136,7 +138,7 @@
                         </div>
                         <div class="align-self-end">
                             <button
-                                class="btn btn-light btn-outline-dark btn-sm rounded-pill me-4"
+                                class="btn btn-sm btn-light btn-outline-dark rounded-pill me-4"
                                 type="submit"
                             >
                                 ENVIAR
@@ -145,15 +147,36 @@
                     </div>
                 </div>
             </form>
+            <button
+                @click="imprimir"
+                class="btn btn-sm btn-dark btn-outline-light rounded-pill m-2"
+            >
+                IMPRIMIR
+            </button>
+            <button
+                @click="limpiar"
+                class="btn btn-sm btn-dark btn-outline-light rounded-pill m-2"
+            >
+                LIMPIAR
+            </button>
+        </div>
+        <div class="ReportarVentas__Imprimir d-none">
+            <div class="container">
+                <Factura :ventas="facturaVentas" :data="facturaData" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import Factura from "@/components/login/Factura.vue";
 
 export default {
     name: "Reportar",
+    components: {
+        Factura,
+    },
     data() {
         return {
             reporte: {
@@ -169,13 +192,60 @@ export default {
 
             total: 0,
             promotor: "",
-
+            loterias: "",
             tipos: ["Directo", "Combinado"],
+
+            facturaVentas: [],
+            facturaData: {
+                codigo: "",
+                fecha: "",
+                hora: "",
+                total: 0,
+            },
         };
     },
     methods: {
         ...mapActions(["logout", "showPreloader"]),
 
+        imprimir() {
+            print();
+        },
+        limpiar() {
+            this.facturaVentas = [];
+            this.facturaData = {
+                codigo: "",
+                fecha: "",
+                hora: "",
+                total: 0,
+            };
+            this.clearInput();
+        },
+
+        async getLoterias() {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/api/${this.rol}/sorteos/general`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${this.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+                this.showPreloader(false);
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.loterias = resData;
+                }
+            } catch (error) {
+                console.log(error);
+                this.showPreloader(false);
+            }
+        },
         async getPromotor() {
             this.showPreloader(true);
             try {
@@ -191,35 +261,48 @@ export default {
                 const resData = await res.json();
                 this.showPreloader(false);
 
-                this.total = Number(resData.sumatotal);
-                this.promotor = resData.promotor[0].name;
-
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    this.total = Number(resData.sumatotal);
+                    this.promotor = resData.promotor[0].name;
                 }
             } catch (error) {
                 console.log(error);
                 this.showPreloader(false);
             }
         },
-        clearInput() {
-            this.reporte = [
-                {
-                    Fecha: "",
-                    Numero: "",
-                    Valorapuesta: "",
-                    Loteria: "",
-                    Tipo: "",
-                    Referencia: "",
-                    Puntoventas: "",
-                    Puntoentregaventas: "",
-                },
-            ];
-            this.reportes = 1;
-        },
 
+        clearInput() {
+            this.reporte = {
+                Fecha: "",
+                Numero: "",
+                Valorapuesta: "",
+                Loteria: "",
+                Tipo: "",
+                Referencia: "",
+                Puntoventas: "",
+                Puntoentregaventas: "",
+            };
+        },
+        arreglarString(string) {
+            const date = {
+                fecha: "",
+                hora: "",
+            };
+            string = string.split("T");
+            date.fecha = string[0]
+                .split("-")
+                .reverse()
+                .join("/");
+            date.hora = string[1].split(".")[0];
+            return date;
+        },
         async sendReporte(reporte) {
+            const id = reporte.Loteria.id;
+            const loteria = reporte.Loteria.Loteria;
+
+            reporte.Loteria = id;
             this.showPreloader(true);
             try {
                 const res = await fetch(
@@ -234,14 +317,25 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
+                    this.showPreloader(false);
                 } else {
+                    const date = await this.arreglarString(
+                        resData.ventas.created_at
+                    );
+                    reporte.Loteria = loteria;
+                    this.facturaVentas.push(reporte);
+                    this.facturaData.codigo = resData.Vendedor.codigo;
+                    this.facturaData.fecha = date.fecha;
+                    this.facturaData.hora = date.hora;
+                    this.facturaData.total += Number(reporte.Valorapuesta);
+
                     this.total += Number(reporte.Valorapuesta);
+
                     this.clearInput();
+                    this.showPreloader(false);
                 }
             } catch (error) {
                 console.log(error);
@@ -250,19 +344,20 @@ export default {
         },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix", "loterias"]),
+        ...mapState(["token", "rol", "prefix"]),
     },
     created() {
         this.getPromotor();
+        this.getLoterias();
     },
 };
 </script>
 
 <style lang="scss" scoped>
-.Reportar {
+.Reportar__data {
     background: var(--bs-dark);
 
-    .Reportar__data {
+    .Reportar__data-input {
         table {
             th,
             td {
@@ -294,7 +389,7 @@ export default {
         }
     }
 
-    .Reportar__total-item {
+    .Reportar__data-item {
         background: var(--bs-light);
     }
 }

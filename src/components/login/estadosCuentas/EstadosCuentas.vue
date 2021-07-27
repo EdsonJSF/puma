@@ -182,6 +182,10 @@ export default {
 <style lang="scss" scoped>
 .EstadosCuentas__options {
     background: var(--bs-dark);
+    .table-responsive {
+        max-height: var(--max-height);
+        overflow: auto;
+    }
     table {
         th,
         td {

@@ -15,4 +15,6 @@
     --bs-white: #fff;
     --bs-gray: #b5b5b5;
     --bs-gray-dark: #66666642;
+
+    --max-height: 65vh;
 }

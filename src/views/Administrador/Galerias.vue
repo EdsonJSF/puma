@@ -1,8 +1,8 @@
 <template>
     <div class="Galerias">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
-                <div class="Galerias__lista d-flex flex-column rounded-3">
+            <div class="col-12 col-md-5 col-lg-4 mb-4 mb-md-0">
+                <div class="Galerias__lista d-flex flex-column rounded-3 py-2">
                     <div
                         v-for="(galeria, indexGaleria) in Galerias"
                         :key="indexGaleria"
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="Galerias__module rounded-3">
+                <div class="Galerias__module rounded-3 py-2">
                     <form
                         @submit.prevent="addGaleria(galeria, galeriaTipo)"
                         class="row"
@@ -62,25 +62,35 @@
                     >
                         <div class="col-12 col-md-6">
                             <div
-                                class="d-flex flex-column justify-content-between h-100 p-2"
+                                class="d-flex flex-column justify-content-between align-items-center h-100 p-2"
                             >
-                                <input
-                                    type="file"
-                                    @change="onFileSelected"
-                                    :key="fileInputKey"
-                                    accept="image/*"
-                                    :required="crear"
-                                />
-                                <div class="d-flex justify-content-around">
-                                    <figure v-if="imagenSeleccionada">
+                                <label
+                                    class="inputFile d-flex justify-content-center align-items-center w-100 h-50"
+                                >
+                                    <input
+                                        type="file"
+                                        @change="onFileSelected"
+                                        :key="fileInputKey"
+                                        accept="image/*"
+                                        :required="crear"
+                                    />
+                                    <img
+                                        v-if="!imagenSeleccionada"
+                                        class="imgPlus"
+                                        src="../../assets/img/icons/plus-solid.svg"
+                                        alt=""
+                                    />
+                                    <figure
+                                        v-if="imagenSeleccionada"
+                                        class="m-0 w-100 h-100"
+                                    >
                                         <img
                                             :src="imagen"
-                                            width="150"
-                                            height="150"
+                                            class="w-auto h-100"
                                             alt="Imagen Seleccionada"
                                         />
                                     </figure>
-                                </div>
+                                </label>
                                 <!-- <input
                                     type="file"
                                     @change="onVideoSelected"
@@ -99,6 +109,7 @@
                                     <select
                                         v-if="crear"
                                         v-model="galeriaTipo"
+                                        class="form-control border border-1"
                                         required
                                     >
                                         <option value="" disabled selected
@@ -116,10 +127,12 @@
                                         >
                                     </select>
                                 </div>
-                                <div class="d-flex align-items-start p-2">
+                                <div
+                                    class="align-self-start d-flex align-items-start  p-2"
+                                >
                                     <button
                                         type="submit"
-                                        class="btn btn-light btn-outline-dark btn-sm rounded-pill border-0"
+                                        class="fw-bold btn btn-light btn-outline-dark rounded-pill border-0 px-4"
                                     >
                                         {{ crear ? "Guardar" : "Editar" }}
                                     </button>
@@ -526,6 +539,8 @@ export default {
 .Galerias {
     .Galerias__lista {
         background: var(--bs-dark);
+        max-height: var(--max-height);
+        overflow-y: auto;
         .Galerias__lista-item {
             background: var(--bs-light);
             &:hover {
@@ -535,6 +550,26 @@ export default {
     }
     .Galerias__module {
         background: var(--bs-dark);
+        .inputFile {
+            background: var(--bs-light);
+            border: 1px solid var(--bs-gray);
+            border-radius: 1rem;
+            cursor: pointer;
+            input[type="file"] {
+                display: none;
+            }
+            .imgPlus {
+                height: 10%;
+            }
+            figure {
+                img {
+                    border-radius: 1rem;
+                }
+            }
+        }
+        select {
+            border-color: var(--bs-gray) !important;
+        }
         textarea {
             background: {
                 color: transparent;

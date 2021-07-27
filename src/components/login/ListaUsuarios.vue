@@ -4,7 +4,7 @@
             <div class="col-12 col-md-5 col-lg-4">
                 <form
                     @submit.prevent="addUsuario(usuario)"
-                    class="ListaUsuarios__form d-flex flex-column rounded-3"
+                    class="ListaUsuarios__form d-flex flex-column rounded-3 py-2"
                 >
                     <input
                         @change="onFileSelected"
@@ -133,7 +133,9 @@
                 </form>
             </div>
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="ListaUsuarios__data d-flex flex-column rounded-3">
+                <div
+                    class="ListaUsuarios__data d-flex flex-column rounded-3 py-2"
+                >
                     <div class="table-responsive">
                         <table class="table table-borderless align-middle">
                             <tbody>
@@ -254,17 +256,17 @@ export default {
             PromotoresVendedores: [],
 
             usuario: {
-                name: "edson",
-                email: "puma02@gmail.com",
-                password: "123456",
-                dni: "123456",
-                ganancia: "13",
-                porcentaje: "12",
+                name: "",
+                email: "",
+                password: "",
+                dni: "",
+                ganancia: "",
+                porcentaje: "",
                 foto: "",
-                direccion: "123456",
-                telefono: "123456",
-                rol_id: "3",
-                codigo: "puma-02",
+                direccion: "",
+                telefono: "",
+                rol_id: "",
+                codigo: "",
                 user_id: "",
             },
             imagenSeleccionada: "",
@@ -519,6 +521,10 @@ export default {
     }
     .ListaUsuarios__data {
         background: var(--bs-dark);
+        .table-responsive {
+            max-height: var(--max-height);
+            overflow: auto;
+        }
         table {
             td {
                 border-top: 0.5rem solid transparent;

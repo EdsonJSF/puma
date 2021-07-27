@@ -173,6 +173,10 @@ export default {
 <style lang="scss" scoped>
 .EstadoCuenta__options {
     background: var(--bs-dark);
+    .table-responsive {
+        max-height: var(--max-height);
+        overflow: auto;
+    }
     table {
         th,
         td {
