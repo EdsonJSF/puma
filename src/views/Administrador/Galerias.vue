@@ -86,7 +86,7 @@
                                     >
                                         <img
                                             :src="imagen"
-                                            class="w-auto h-100"
+                                            class="w-auto mw-100 h-auto mh-100"
                                             alt="Imagen Seleccionada"
                                         />
                                     </figure>

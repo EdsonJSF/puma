@@ -207,7 +207,9 @@ export default {
         },
         generalSearch(metrica) {
             if (
-                metrica.Loteria.toLowerCase().includes(this.toSearch) ||
+                metrica.Loteria.toString()
+                    .toLowerCase()
+                    .includes(this.toSearch) ||
                 metrica.Numero.toString().includes(this.toSearch) ||
                 metrica.Tipo.toLowerCase().includes(this.toSearch) ||
                 metrica.Valorapuesta.toString().includes(this.toSearch)

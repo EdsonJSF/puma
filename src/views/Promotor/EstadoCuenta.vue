@@ -47,7 +47,7 @@
                                 <th><div>Monto</div></th>
                                 <th><div>Referencia</div></th>
                                 <th><div>Salida</div></th>
-                                <th><div>Encargado</div></th>
+                                <!-- <th><div>Encargado</div></th> -->
                             </thead>
                             <tbody
                                 v-for="(venta, index) in EstadoCuentaVentas"
@@ -63,11 +63,11 @@
                                     </td>
                                     <td>
                                         <div>
-                                            {{ venta.Transaccion }}
+                                            {{ venta.id }}
                                         </div>
                                     </td>
                                     <td>
-                                        <div>{{ venta.Monto }} COP</div>
+                                        <div>{{ venta.Valorapuesta }} COP</div>
                                     </td>
                                     <td>
                                         <div>{{ venta.Referencia }}</div>
@@ -75,11 +75,11 @@
                                     <td>
                                         <div>{{ venta.Tipo }}</div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div>
                                             {{ venta.Nombrepromotor }}
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </tbody>
                         </table>
@@ -137,22 +137,12 @@ export default {
         },
         generalSearch(venta) {
             const Created_at = this.arreglarCadena(venta.created_at);
-            const Transaccion = venta.Transaccion
-                ? venta.Transaccion.toLowerCase().includes(this.toSearch)
-                : false;
-            const Monto = venta.Monto
-                ? venta.Monto.toString().includes(this.toSearch)
-                : false;
-            const Nombrepromotor = venta.Nombrepromotor
-                ? venta.Nombrepromotor.toLowerCase().includes(this.toSearch)
-                : false;
             if (
                 Created_at.toLowerCase().includes(this.toSearch) ||
-                Transaccion ||
-                Monto ||
+                venta.id.toString().includes(this.toSearch) ||
+                venta.Valorapuesta.toString().includes(this.toSearch) ||
                 venta.Referencia.toLowerCase().includes(this.toSearch) ||
-                venta.Tipo.toLowerCase().includes(this.toSearch) ||
-                Nombrepromotor
+                venta.Tipo.toLowerCase().includes(this.toSearch)
             ) {
                 return true;
             } else {

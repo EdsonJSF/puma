@@ -313,8 +313,11 @@ export default {
                 const resData = await res.json();
 
                 if (resData.status === "Token is Expired") {
-                    this.logout();
                     this.showPreloader(false);
+                    this.logout();
+                } else if (resData === "Numero bloqueado") {
+                    this.showPreloader(false);
+                    alert(resData);
                 } else {
                     const date = await this.arreglarString(
                         resData.ventas.created_at

@@ -47,7 +47,7 @@
                                 <th><div>Valor a aportar</div></th>
                                 <th><div>Lotería</div></th>
                                 <th><div>Tipo</div></th>
-                                <th><div>Vendedor</div></th>
+                                <!-- <th><div>Vendedor</div></th> -->
                             </thead>
                             <tbody
                                 v-for="(venta, index) in EstadoCuentaVentas"
@@ -75,11 +75,11 @@
                                     <td>
                                         <div>{{ venta.Tipo }}</div>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <div>
                                             {{ venta.Nombrepromotor }}
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </tbody>
                         </table>
