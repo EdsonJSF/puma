@@ -141,17 +141,13 @@ export default {
             const Monto = venta.Monto
                 ? venta.Monto.toString().includes(this.toSearch)
                 : false;
-            const Nombrepromotor = venta.Nombrepromotor
-                ? venta.Nombrepromotor.toLowerCase().includes(this.toSearch)
-                : false;
 
             if (
                 Created_at.toLowerCase().includes(this.toSearch) ||
                 venta.Numero.toString().includes(this.toSearch) ||
                 Monto ||
                 venta.Loteria.toLowerCase().includes(this.toSearch) ||
-                venta.Tipo.toLowerCase().includes(this.toSearch) ||
-                Nombrepromotor
+                venta.Tipo.toLowerCase().includes(this.toSearch)
             ) {
                 return true;
             } else {

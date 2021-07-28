@@ -37,6 +37,9 @@
                                     name="empleado"
                                     class="triangulo-bottom"
                                     required
+                                    @change="
+                                        mutarMonto(reporte.user_pago.balance)
+                                    "
                                 >
                                     <option
                                         v-for="(empleado, index) in empleados"
@@ -48,17 +51,12 @@
                                 </select>
                             </div>
                         </label>
-                        <label v-if="reporte.Tipo === 2">
-                            Editar el monto
-                            <input
-                                v-model="reporte.Monto"
-                                type="number"
-                                min="0"
-                                required
-                            />
-                        </label>
-                        <label v-if="reporte.Tipo !== 2">
-                            Escriba el monto
+                        <label>
+                            {{
+                                reporte.Tipo === 2
+                                    ? "Editar el monto"
+                                    : "Escriba el monto"
+                            }}
                             <input
                                 v-model="reporte.Monto"
                                 type="number"
@@ -118,7 +116,7 @@ export default {
         return {
             reporte: {
                 Tipo: "",
-                Monto: "",
+                Monto: 0,
                 Descripcion: "",
                 user_pago: "",
                 Salida: "",
@@ -130,7 +128,11 @@ export default {
     },
     methods: {
         ...mapActions(["logout", "showPreloader"]),
-
+        mutarMonto(monto) {
+            if (monto > 0) {
+                this.reporte.Monto += monto;
+            }
+        },
         async getEmpleados() {
             this.showPreloader(true);
             try {
@@ -159,7 +161,7 @@ export default {
         clearInput() {
             this.reporte = {
                 Tipo: "",
-                Monto: "",
+                Monto: 0,
                 Descripcion: "",
                 user_pago: "",
                 Salida: "",
