@@ -75,9 +75,6 @@ SwiperCore.use([Pagination, Autoplay]);
 import { mapState } from "vuex";
 export default {
     name: "Ubicanos",
-    data() {
-        return {};
-    },
     components: {
         Swiper,
         SwiperSlide,

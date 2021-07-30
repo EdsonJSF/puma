@@ -47,8 +47,10 @@ export default {
     },
     async created() {
         const query = await this.getPerfil();
-        this.credito = query.Credito;
-        this.userPerfil = query["Datos del usuario"];
+        if (query) {
+            this.credito = query.Credito;
+            this.userPerfil = query["Datos del usuario"];
+        }
     },
 };
 </script>

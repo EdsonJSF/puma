@@ -79,9 +79,6 @@ export default {
         Swiper,
         SwiperSlide,
     },
-    data() {
-        return {};
-    },
     methods: {
         nextReults() {
             const nextPumaSwiper = document.querySelector(

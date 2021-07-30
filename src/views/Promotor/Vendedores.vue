@@ -93,10 +93,16 @@
                         placeholder="codígo"
                         required
                     />
-                    <div>
+                    <div class="d-flex justify-content-around">
+                        <button
+                            @click.prevent="clearInput"
+                            class="btn btn-sm btn-light btn-outline-dark rounded-pill border-0 my-1"
+                        >
+                            Limpiar
+                        </button>
                         <button
                             type="submit"
-                            class="btn btn-sm btn-light btn-outline-dark border-0 rounded-pill my-1"
+                            class="btn btn-sm btn-light btn-outline-dark rounded-pill border-0 my-1"
                         >
                             {{ crear ? "Crear" : "Editar" }}
                         </button>
@@ -155,12 +161,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <button
-                        @click.prevent="clearInput"
-                        class="btn text-light align-self-end mx-5"
-                    >
-                        Agregar +
-                    </button>
                 </div>
             </div>
         </div>
@@ -209,7 +209,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -218,8 +217,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
 
         onFileSelected(event) {
@@ -286,22 +285,22 @@ export default {
                     body: formData,
                 });
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
+                } else if (resData.token) {
+                    this.Vendedores.unshift(resData.user);
+                    this.clearInput();
+                    alert("Usuario creado");
                 } else if (JSON.parse(resData).email) {
                     alert("Ya existe el email");
                 } else if (JSON.parse(resData).codigo) {
                     alert("Ya existe el codigo");
-                } else if (resData.token) {
-                    this.Vendedores.unshift(resData.user);
-                    this.clearInput();
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
 
         selectUsuario(usuario) {
@@ -338,7 +337,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -347,11 +345,12 @@ export default {
                     this.usuario.foto =
                         resData["El objeto fue actualizado con exito!"].foto;
                     this.clearInput();
+                    alert("Usuario editado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async delUsuario(usuario) {
             this.showPreloader(true);
@@ -366,7 +365,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -375,11 +373,12 @@ export default {
                         resData["Objeto eliminado con exito!"];
 
                     this.clearInput();
+                    alert("Usuario eliminado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         generalSearch(vendedor) {
             if (
@@ -437,9 +436,6 @@ export default {
                     white-space: nowrap;
                 }
             }
-        }
-        .text-light {
-            text-shadow: 2px 2px 1.5px #222;
         }
     }
 }

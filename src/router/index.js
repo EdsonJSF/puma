@@ -106,6 +106,12 @@ const routes = [
         component: () => import("../views/Promotor/Vendedores.vue"),
         meta: { rutaProtegida: true },
     },
+    {
+        path: "/promotor/reportar-gastos",
+        name: "ReportarGastosProm",
+        component: () => import("../views/Administrador/ReportarGastos.vue"),
+        meta: { rutaProtegida: true },
+    },
 
     /**********************
      *** RUTAS VENDEDOR ***

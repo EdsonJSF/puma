@@ -66,21 +66,26 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
                     this.clearInput();
+                    this.MisSolicitudes.push(
+                        resData[
+                            "La solicitud ha sido creada y enviada con exito!"
+                        ]
+                    );
+                    alert("Solicitud enviada");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix"]),
+        ...mapState(["token", "rol", "prefix", "MisSolicitudes"]),
     },
 };
 </script>

@@ -58,13 +58,13 @@
 import { mapActions, mapState } from "vuex";
 export default {
     name: "MisSolicitudes",
-    data() {
-        return {
-            MisSolicitudes: [],
-        };
-    },
     methods: {
-        ...mapActions(["logout", "showPreloader", "sendSearch"]),
+        ...mapActions([
+            "logout",
+            "showPreloader",
+            "sendSearch",
+            "mutarSolicitud",
+        ]),
         async getMisSolicitudes() {
             this.showPreloader(true);
             try {
@@ -77,32 +77,44 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.MisSolicitudes =
+                    this.mutarSolicitud(
                         resData.solicitudes ||
-                        resData["Solicitudes del promotor"];
+                            resData["Solicitudes del promotor"]
+                    );
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         arreglarCadena(cadena) {
             let newCadena = cadena.split("T");
             return newCadena[0].replace(/-/g, "/");
         },
         generalSearch(solicitud) {
+            let cop = "cop";
+            let string = "";
+            if (solicitud.Tipo == 1) {
+                string = "en espera";
+            } else if (solicitud.Tipo == 2) {
+                string = "aprobado";
+            } else {
+                string = "rechazada";
+            }
+
             const Created_at = this.arreglarCadena(solicitud.created_at);
             const CantidadSolicitada = solicitud.CantidadSolicitada
                 ? solicitud.CantidadSolicitada.toString().includes(
                       this.toSearch
                   )
                 : false;
-            const Cop = solicitud.CantidadSolicitada ? "cop" : false;
+            const Cop = solicitud.CantidadSolicitada
+                ? cop.includes(this.toSearch)
+                : false;
             const MobiliarioSolicitado = solicitud.MobiliarioSolicitado
                 ? solicitud.MobiliarioSolicitado.toLowerCase().includes(
                       this.toSearch
@@ -113,11 +125,12 @@ export default {
                 : false;
             if (
                 Created_at.toLowerCase().includes(this.toSearch) ||
-                // solicitud.Categoria.toLowerCase().includes(this.toSearch) ||
+                solicitud.Categoria.toLowerCase().includes(this.toSearch) ||
                 CantidadSolicitada ||
                 MobiliarioSolicitado ||
                 Solicitud ||
-                Cop === this.toSearch
+                Cop ||
+                string.includes(this.toSearch)
             ) {
                 return true;
             } else {
@@ -126,7 +139,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(["token", "rol", "prefix", "toSearch"]),
+        ...mapState(["token", "rol", "prefix", "toSearch", "MisSolicitudes"]),
     },
     created() {
         this.getMisSolicitudes();

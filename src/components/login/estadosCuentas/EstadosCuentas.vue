@@ -7,95 +7,55 @@
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="EstadosCuentas__options rounded-3 py-2">
                     <div class="table-responsive">
-                        <table class="table table-borderless align-middle">
-                            <tbody>
-                                <tr
-                                    v-for="(empleado,
-                                    indexEmp) in EstadoCuentas"
-                                    :key="indexEmp"
-                                >
+                        <table
+                            class="table table-borderless table-hover align-middle"
+                        >
+                            <thead>
+                                <th><div>Fecha</div></th>
+                                <th><div>Transacción</div></th>
+                                <th><div>Monto</div></th>
+                                <th><div>Referencia</div></th>
+                                <th><div>Salida</div></th>
+                                <th><div>Encargado</div></th>
+                            </thead>
+                            <tbody
+                                v-for="(estadoCuenta, index) in EstadoCuentas"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(estadoCuenta)">
                                     <td>
-                                        <table
-                                            class="table table-borderless table-hover align-middle"
-                                        >
-                                            <thead>
-                                                <th
-                                                    v-if="empleado.rol_id === 3"
-                                                >
-                                                    Vendedor
-                                                    {{ empleado.name }}
-                                                </th>
-                                                <th
-                                                    v-else-if="
-                                                        empleado.rol_id === 2
-                                                    "
-                                                >
-                                                    Promotor
-                                                    {{ empleado.name }}
-                                                </th>
-                                                <th v-else>
-                                                    Administrador
-                                                    {{ empleado.name }}
-                                                </th>
-                                            </thead>
-                                            <thead>
-                                                <th><div>Fecha</div></th>
-                                                <th><div>Transacción</div></th>
-                                                <th><div>Monto</div></th>
-                                                <th><div>Referencia</div></th>
-                                                <th><div>Salida</div></th>
-                                                <th><div>Encargado</div></th>
-                                            </thead>
-                                            <tbody
-                                                v-for="(venta,
-                                                indexVenta) in empleado.ventas"
-                                                :key="indexVenta"
-                                            >
-                                                <tr
-                                                    v-if="
-                                                        generalSearch(
-                                                            venta,
-                                                            empleado
-                                                        )
-                                                    "
-                                                >
-                                                    <td>
-                                                        <div>
-                                                            {{ venta.Fecha }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{ venta.Tipo }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{
-                                                                venta.Valorapuesta
-                                                            }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{
-                                                                venta.Referencia
-                                                            }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{ venta.Tipo }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{ empleado.name }}
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <div>
+                                            {{
+                                                arreglarCadena(
+                                                    estadoCuenta.created_at
+                                                )
+                                            }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ estadoCuenta.Tipo }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ estadoCuenta.Monto }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ estadoCuenta.Salida }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ estadoCuenta.Salida }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ estadoCuenta.user_id }}
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -127,7 +87,7 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/resumenventas`,
+                    `${this.prefix}/api/api/${this.rol}/estadoDeCuenta`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -136,32 +96,37 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.EstadoCuentas = [
-                        ...resData.resumenventasProm,
-                        ...resData.resumenventasVend,
-                    ];
+                    this.EstadoCuentas = resData["Modelo Reporte"];
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         arreglarCadena(cadena) {
             let newCadena = cadena.split("T");
             return newCadena[0].replace(/-/g, "/");
         },
-        generalSearch(element, empleado) {
+        generalSearch(estadoCuenta) {
+            const Created_at = this.arreglarCadena(estadoCuenta.created_at);
+            const user = estadoCuenta.user_id
+                ? estadoCuenta.user_id
+                      .toString()
+                      .toLowerCase()
+                      .includes(this.toSearch)
+                : false;
+
             if (
-                empleado.name.toLowerCase().includes(this.toSearch) ||
-                element.Fecha.includes(this.toSearch) ||
-                element.Tipo.toLowerCase().includes(this.toSearch) ||
-                element.Valorapuesta.toString().includes(this.toSearch) ||
-                element.Referencia.toLowerCase().includes(this.toSearch)
+                Created_at.includes(this.toSearch) ||
+                estadoCuenta.Tipo.toLowerCase().includes(this.toSearch) ||
+                estadoCuenta.Monto.toString().includes(this.toSearch) ||
+                estadoCuenta.Salida.toLowerCase().includes(this.toSearch) ||
+                estadoCuenta.Salida.toLowerCase().includes(this.toSearch) ||
+                user
             ) {
                 return true;
             } else {

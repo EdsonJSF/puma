@@ -210,7 +210,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -219,8 +218,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         tituloGaleria(titulo) {
             return titulo.split(": ")[1];
@@ -298,7 +297,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 // TODO revisar la consulta if
                 if (tipo === "Resultados") {
@@ -315,8 +313,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async setResultados(galeria) {
             this.showPreloader(true);
@@ -332,14 +330,14 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 1: Resultados"].push(galeria[1]);
                 this.clearInput();
+                alert("Galeria enviada");
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async setSorteos(galeria) {
             this.showPreloader(true);
@@ -355,14 +353,14 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 2: Sorteos"].push(galeria[1]);
                 this.clearInput();
+                alert("Galeria enviada");
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async setUbicanos(galeria) {
             this.showPreloader(true);
@@ -378,14 +376,14 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 3: Ubicanos"].push(galeria[1]);
                 this.clearInput();
+                alert("Galeria enviada");
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async setTestimonios(galeria) {
             this.showPreloader(true);
@@ -401,14 +399,14 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 this.Galerias["Datos tipo 4: Testimonios"].push(galeria[1]);
                 this.clearInput();
+                alert("Galeria enviada");
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
 
         selectGaleria(galeria) {
@@ -439,7 +437,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -453,11 +450,12 @@ export default {
                             "El objeto fue actualizado con exito!"
                         ].rutaVideo;
                     this.clearInput();
+                    alert("Galeria editada");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async deleteGaleria(galeria) {
             this.showPreloader(true);
@@ -473,17 +471,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
                     galeria.estado = 0;
+                    alert("Galeria eliminada");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async activarGaleria(galeria) {
             this.showPreloader(true);
@@ -498,18 +496,18 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
                     galeria.estado = 1;
                     this.selectGaleria(galeria);
+                    alert("Galeria activada");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         generalSearch(galeria) {
             if (galeria.titulo.toLowerCase().includes(this.toSearch)) {

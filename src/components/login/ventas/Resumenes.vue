@@ -135,7 +135,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -147,17 +146,21 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         generalSearch(element, empleado) {
+            const Loteria = element.Loteria
+                ? element.Loteria.toLowerCase().includes(this.toSearch)
+                : false;
+
             if (
                 empleado.name.toLowerCase().includes(this.toSearch) ||
                 element.Fecha.includes(this.toSearch) ||
                 element.Tipo.toLowerCase().includes(this.toSearch) ||
                 element.Numero.toString().includes(this.toSearch) ||
                 element.Valorapuesta.toString().includes(this.toSearch) ||
-                element.Loteria.toLowerCase().includes(this.toSearch)
+                Loteria
             ) {
                 return true;
             } else {

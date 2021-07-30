@@ -51,7 +51,6 @@
                                 <th><div>Valor a apostar</div></th>
                                 <th><div>Lotería</div></th>
                                 <th><div>Tipo</div></th>
-                                <th><div>Vendedor</div></th>
                             </thead>
                             <tbody
                                 v-for="(metrica, index) in Metricas"
@@ -79,9 +78,6 @@
                                     </td>
                                     <td>
                                         <div>{{ metrica.Tipo }}</div>
-                                    </td>
-                                    <td>
-                                        <div>{{ metrica.Nombrepromotor }}</div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -122,7 +118,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -135,8 +130,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         addNumero(numero) {
             this.NumerosBloqueados.push(numero);
@@ -156,7 +151,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -169,11 +163,12 @@ export default {
                         ...this.NumerosBloqueados,
                         ...resData["El objeto fue eliminado con exito!"],
                     ];
+                    alert("Numero bloqueado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async desBlockNumero(numero) {
             this.showPreloader(true);
@@ -188,7 +183,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -199,17 +193,21 @@ export default {
                         1
                     );
                     this.Metricas.unshift(numero);
+                    alert("Numero desbloqueado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         generalSearch(metrica) {
+            const Loteria = metrica.Loteria
+                ? metrica.Loteria.toString()
+                      .toLowerCase()
+                      .includes(this.toSearch)
+                : false;
             if (
-                metrica.Loteria.toString()
-                    .toLowerCase()
-                    .includes(this.toSearch) ||
+                Loteria ||
                 metrica.Numero.toString().includes(this.toSearch) ||
                 metrica.Tipo.toLowerCase().includes(this.toSearch) ||
                 metrica.Valorapuesta.toString().includes(this.toSearch)

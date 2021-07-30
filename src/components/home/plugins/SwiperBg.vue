@@ -35,9 +35,5 @@ export default {
         Swiper,
         SwiperSlide,
     },
-    data() {
-        return {};
-    },
-    methods: {},
 };
 </script>

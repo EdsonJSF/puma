@@ -84,7 +84,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -98,8 +97,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         generalSearch(estado) {
             if (estado.Fecha.toLowerCase().includes(this.toSearch)) {

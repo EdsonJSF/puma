@@ -78,7 +78,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["login", "recoveryPass"]),
+        ...mapActions(["login", "recoveryPass", "showPreloader"]),
 
         clearInput() {
             this.usuario = {
@@ -97,6 +97,7 @@ export default {
             } else {
                 alert("Alguno de los datos es erroneo");
             }
+            this.showPreloader(false);
         },
         async toRecover(email) {
             const query = await this.recoveryPass(email);
@@ -106,6 +107,7 @@ export default {
             } else {
                 alert("Alguno de los datos es erroneo");
             }
+            this.showPreloader(false);
         },
     },
     computed: {

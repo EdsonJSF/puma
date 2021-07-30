@@ -32,9 +32,15 @@
                                 placeholder="Ponga su código:"
                                 required
                             />
-                            <div class="align-self-end mx-5 my-2">
+                            <div class="d-flex justify-content-around">
                                 <button
-                                    class="btn btn-sm btn-light btn-outline-dark rounded-pill border-0"
+                                    @click.prevent="clearInput"
+                                    class="btn btn-sm btn-light btn-outline-dark rounded-pill border-0 my-1"
+                                >
+                                    Limpiar
+                                </button>
+                                <button
+                                    class="btn btn-sm btn-light btn-outline-dark rounded-pill border-0 my-1"
                                     type="submit"
                                 >
                                     {{ crear ? "GUARDAR" : "EDITAR" }}
@@ -106,12 +112,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <button
-                        @click.prevent="clearInput"
-                        class="btn text-light align-self-end mx-5"
-                    >
-                        Agregar +
-                    </button>
                 </div>
             </div>
         </div>
@@ -150,7 +150,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -159,8 +158,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
 
         addSorteo(sorteo) {
@@ -198,18 +197,18 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
                     this.Sorteos.unshift(resData.sorteos);
                     this.clearInput();
+                    alert("Sorteo enviado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         selectSorteo(sorteo) {
             this.sorteo = sorteo;
@@ -231,17 +230,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
                     this.clearInput();
+                    alert("Sorteo editado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async delSorteo(sorteo) {
             this.showPreloader(true);
@@ -257,17 +256,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
                     this.Sorteos[this.Sorteos.indexOf(sorteo)].Estado = 0;
+                    alert("Sorteo eliminado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         generalSearch(sorteo) {
             if (
@@ -321,9 +320,6 @@ export default {
                     white-space: nowrap;
                 }
             }
-        }
-        .text-light {
-            text-shadow: 2px 2px 1.5px #222;
         }
     }
 }

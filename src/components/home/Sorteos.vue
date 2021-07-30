@@ -65,9 +65,6 @@ export default {
         Swiper,
         SwiperSlide,
     },
-    data() {
-        return {};
-    },
     computed: {
         ...mapState(["dataSorteos", "prefix"]),
     },

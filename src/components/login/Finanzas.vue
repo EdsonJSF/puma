@@ -46,16 +46,15 @@ export default {
             this.showPreloader(true);
             try {
                 const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/finanzas?token=${this.token}`,
+                    `${this.prefix}/api/api/${this.rol}/finanzas`,
                     {
                         headers: {
-                            "Content-Type": "application/json",
+                            // "Content-Type": "application/json",
                             Authorization: `Bearer ${this.token}`,
                         },
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -64,8 +63,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
     },
     computed: {

@@ -6,7 +6,8 @@ export default createStore({
     state: {
         preloader: false,
 
-        prefix: "http://pumab.neuron.com.co/public",
+        // prefix: "http://pumab.neuron.com.co/public",
+        prefix: "http://192.168.0.109:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -39,6 +40,7 @@ export default createStore({
         rol: null,
         loginRoutes: null,
         toSearch: "",
+        MisSolicitudes: [],
     },
     mutations: {
         setPreloader(state, show) {
@@ -83,6 +85,7 @@ export default createStore({
                         "vendedores",
                         "solicitudes",
                         "estado-de-cuenta",
+                        "reportar-gastos",
                     ],
                     userRol: rol,
                 };
@@ -111,6 +114,13 @@ export default createStore({
             state.message = message;
         },
 
+        setSolicitud(state, solicitudes) {
+            state.MisSolicitudes = [];
+            solicitudes.map((solicitud) => {
+                state.MisSolicitudes.push(solicitud);
+            });
+        },
+
         setSearch(state, search) {
             state.toSearch = search;
         },
@@ -131,12 +141,12 @@ export default createStore({
                     }
                 );
                 const resData = await res.json();
+
                 commit("setDataHome", resData);
-                dispatch("showPreloader", false);
             } catch (error) {
                 console.log(error);
-                dispatch("showPreloader", false);
             }
+            dispatch("showPreloader", false);
         },
         async contactanos({ dispatch, commit }, contacto) {
             dispatch("showPreloader", true);
@@ -151,10 +161,10 @@ export default createStore({
                         body: JSON.stringify(contacto),
                     }
                 );
-                // TODO probar con JSON
                 const resData = await res.text();
 
                 commit("setMessage", resData);
+
                 dispatch("showPreloader", false);
 
                 return true;
@@ -178,8 +188,11 @@ export default createStore({
                     }
                 );
                 const resData = await res.json();
+
                 commit("setPass", resData);
+
                 dispatch("showPreloader", false);
+
                 return true;
             } catch (error) {
                 console.log(error);
@@ -206,8 +219,11 @@ export default createStore({
                 commit("setToken", token);
                 commit("setRol", rol);
                 commit("setLoginRoutes", rol);
-                router.push(`/${rol}/perfil`);
+
                 dispatch("showPreloader", false);
+
+                router.push(`/${rol}/perfil`);
+
                 return true;
             } catch (error) {
                 console.log(error);
@@ -228,17 +244,16 @@ export default createStore({
                 );
                 const resData = await res.json();
 
-                dispatch("showPreloader", false);
-
                 if (resData.status === "Token is Expired") {
                     dispatch("logout");
                 } else {
+                    dispatch("showPreloader", false);
                     return resData;
                 }
             } catch (error) {
                 console.log(error);
-                dispatch("showPreloader", false);
             }
+            dispatch("showPreloader", false);
         },
         readToken({ commit }) {
             const token = localStorage.getItem("token");
@@ -264,6 +279,11 @@ export default createStore({
 
             router.push("/");
         },
+
+        mutarSolicitud({ commit }, solicitud) {
+            commit("setSolicitud", solicitud);
+        },
+
         sendSearch({ commit }, search) {
             search = search.toLowerCase();
             commit("setSearch", search);

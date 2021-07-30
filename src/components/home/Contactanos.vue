@@ -77,7 +77,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["contactanos"]),
+        ...mapActions(["contactanos", "showPreloader"]),
 
         clearInput() {
             this.contancto = {
@@ -88,11 +88,12 @@ export default {
         },
 
         async contactar(mensaje) {
-            const res = await this.contactanos(mensaje);
-            if (res) {
+            const query = await this.contactanos(mensaje);
+            if (query) {
                 alert(this.message);
                 this.clearInput();
             }
+            this.showPreloader(false);
         },
 
         toTopSwiper() {

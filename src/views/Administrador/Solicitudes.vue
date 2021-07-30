@@ -39,7 +39,7 @@
                                                 @click="
                                                     aprobSolicitudes(
                                                         solicitud,
-                                                        indexEmp
+                                                        index
                                                     )
                                                 "
                                                 class="btn btn-sm"
@@ -53,7 +53,7 @@
                                                 @click="
                                                     negarSolicitudes(
                                                         solicitud,
-                                                        indexEmp
+                                                        index
                                                     )
                                                 "
                                                 class="btn btn-sm"
@@ -81,12 +81,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <button
-                        @click.prevent="clearInput"
-                        class="btn text-light align-self-end mx-5"
-                    >
-                        Agregar +
-                    </button>
                 </div>
             </div>
         </div>
@@ -121,7 +115,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -141,8 +134,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async aprobSolicitudes(solicitud, indexEmp) {
             this.showPreloader(true);
@@ -157,21 +150,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.Solicitudes[indexEmp].solicitudes[
-                        this.Solicitudes[indexEmp].solicitudes.indexOf(
-                            solicitud
-                        )
-                    ].Tipo = 2;
+                    this.Solicitudes[indexEmp].Tipo = 2;
+                    alert("Solicitud aprobada");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async negarSolicitudes(solicitud, indexEmp) {
             this.showPreloader(true);
@@ -186,21 +175,17 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.Solicitudes[indexEmp].solicitudes[
-                        this.Solicitudes[indexEmp].solicitudes.indexOf(
-                            solicitud
-                        )
-                    ].Tipo = 0;
+                    this.Solicitudes[indexEmp].Tipo = 0;
+                    alert("Solicitud negada");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         generalSearch(solicitud) {
             const CantidadSolicitada = solicitud.CantidadSolicitada
@@ -262,9 +247,6 @@ export default {
                 white-space: nowrap;
             }
         }
-    }
-    .text-light {
-        text-shadow: 2px 2px 1.5px #222;
     }
 }
 </style>

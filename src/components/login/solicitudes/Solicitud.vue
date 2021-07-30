@@ -6,13 +6,13 @@
             </div>
             <div class="col-12 col-lg-8 mt-4 mt-lg-0">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-sm-6 col-md-4 my-2 my-md-0">
+                    <div class="col-12 col-sm-6 col-lg-4 my-2 my-lg-0">
                         <SolicitarCredito />
                     </div>
-                    <div class="col-12 col-sm-6 col-md-4 my-2 my-md-0">
+                    <div class="col-12 col-sm-6 col-lg-4 my-2 my-lg-0">
                         <SolicitarMobiliario />
                     </div>
-                    <div class="col-12 col-sm-6 col-md-4 my-2 my-md-0">
+                    <div class="col-12 col-sm-6 col-lg-4 my-2 my-lg-0">
                         <OtrasSolicitudes />
                     </div>
                 </div>

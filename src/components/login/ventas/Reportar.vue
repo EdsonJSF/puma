@@ -148,16 +148,16 @@
                 </div>
             </form>
             <button
-                @click="imprimir"
-                class="btn btn-sm btn-dark btn-outline-light rounded-pill m-2"
-            >
-                IMPRIMIR
-            </button>
-            <button
                 @click="limpiar"
                 class="btn btn-sm btn-dark btn-outline-light rounded-pill m-2"
             >
-                LIMPIAR
+                LIMPIAR FACTURA
+            </button>
+            <button
+                @click="imprimir"
+                class="btn btn-sm btn-success btn-outline-light rounded-pill m-2"
+            >
+                IMPRIMIR FACTURA
             </button>
         </div>
         <div class="ReportarVentas__Imprimir d-none">
@@ -234,7 +234,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -243,8 +242,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
         async getPromotor() {
             this.showPreloader(true);
@@ -259,7 +258,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -269,8 +267,8 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
 
         clearInput() {
@@ -320,7 +318,6 @@ export default {
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
-                    this.showPreloader(false);
                 } else {
                     const date = await this.arreglarString(
                         resData.ventas.created_at
@@ -335,12 +332,12 @@ export default {
                     this.total += Number(reporte.Valorapuesta);
 
                     this.clearInput();
-                    this.showPreloader(false);
+                    alert("Reporte enviado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
     },
     computed: {

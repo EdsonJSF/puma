@@ -1,9 +1,10 @@
 <template>
     <div class="Reportes">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
+            <div v-if="rol !== 'promotor'" class="col-12 col-md-5 col-lg-4">
                 <Finanzas />
             </div>
+            <div v-else class="col-12 col-md-5 col-lg-4"></div>
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="Reportes__options rounded-3 m-1 py-1">
                     <form @submit.prevent="sendReporte(reporte)">
@@ -130,7 +131,9 @@ export default {
         ...mapActions(["logout", "showPreloader"]),
         mutarMonto(monto) {
             if (monto > 0) {
-                this.reporte.Monto += monto;
+                this.reporte.Monto = monto;
+            } else {
+                this.reporte.Monto = 0;
             }
         },
         async getEmpleados() {
@@ -146,7 +149,6 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -155,8 +157,32 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
+        },
+        async getVendedores() {
+            this.showPreloader(true);
+            try {
+                const res = await fetch(
+                    `${this.prefix}/api/api/${this.rol}/vendedores/promotor`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `bearer ${this.token}`,
+                        },
+                    }
+                );
+                const resData = await res.json();
+
+                if (resData.status === "Token is Expired") {
+                    this.logout();
+                } else {
+                    this.empleados = resData;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+            this.showPreloader(false);
         },
         clearInput() {
             this.reporte = {
@@ -192,24 +218,28 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                this.showPreloader(false);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
                     this.clearInput();
+                    alert("Reporte enviado");
                 }
             } catch (error) {
                 console.log(error);
-                this.showPreloader(false);
             }
+            this.showPreloader(false);
         },
     },
     computed: {
         ...mapState(["token", "rol", "prefix"]),
     },
     created() {
-        this.getEmpleados();
+        if (this.rol === "administrador") {
+            this.getEmpleados();
+        } else {
+            this.getVendedores();
+        }
     },
 };
 </script>
