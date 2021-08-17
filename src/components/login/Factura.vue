@@ -1,11 +1,6 @@
 <template>
     <div class="Factura">
         <div class="d-flex flex-column align-items-center">
-            <img
-                class="w-50 h-auto"
-                src="../../assets/img/logo/logo-sm.png"
-                alt=""
-            />
             <h1>Código del vendedor: {{ data.codigo }}</h1>
             <h1>Fecha: {{ data.fecha }} Hora: {{ data.hora }}</h1>
             <table class="table table-borderless align-middle">
@@ -25,6 +20,9 @@
                 </tbody>
             </table>
             <h1 class="align-self-end">Total a pagar: {{ data.total }}</h1>
+            <p class="mt-auto text-muted fw-lighter fst-italic">
+                Vencimiento del ticket 8 días
+            </p>
         </div>
     </div>
 </template>
@@ -38,5 +36,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped></style>

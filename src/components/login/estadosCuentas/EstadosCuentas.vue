@@ -38,7 +38,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div>
+                                        <div class="text-danger">
                                             {{ estadoCuenta.Monto }}
                                         </div>
                                     </td>

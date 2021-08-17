@@ -6,8 +6,7 @@ export default createStore({
     state: {
         preloader: false,
 
-        // prefix: "http://pumab.neuron.com.co/public",
-        prefix: "http://192.168.0.109:8000",
+        prefix: "http://pumab.neuron.com.co/public",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,

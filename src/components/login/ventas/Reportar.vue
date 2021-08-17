@@ -1,7 +1,11 @@
 <template>
     <div class="Reportar">
         <div class="Reportar__data rounded-3">
-            <form @submit.prevent="sendReporte(reporte)" class="row">
+            <form
+                @submit.prevent="submitReporte(reportes[reportes.length - 1])"
+                id="formulario"
+                class="row"
+            >
                 <div class="Reportar__data-input col-12 col-md-8">
                     <div class="table-responsive py-2">
                         <table
@@ -15,11 +19,20 @@
                                 <th><div>Tipo</div></th>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr
+                                    v-for="(reporte, index) in reportes"
+                                    :key="index"
+                                >
                                     <td>
                                         <div>
                                             <input
                                                 v-model="reporte.Fecha"
+                                                :disabled="
+                                                    typeof reporte.Valorapuesta ===
+                                                        'number' ||
+                                                        typeof reporte.Numero ===
+                                                            'number'
+                                                "
                                                 class="bg-transparent w-100"
                                                 type="date"
                                                 placeholder="Fecha"
@@ -31,6 +44,16 @@
                                         <div>
                                             <input
                                                 v-model="reporte.Numero"
+                                                :class="
+                                                    typeof reporte.Valorapuesta ===
+                                                    'number'
+                                                        ? 'text-danger'
+                                                        : ''
+                                                "
+                                                :disabled="
+                                                    typeof reporte.Numero ===
+                                                        'number'
+                                                "
                                                 class="bg-transparent w-100"
                                                 type="number"
                                                 min="0"
@@ -44,6 +67,12 @@
                                         <div>
                                             <input
                                                 v-model="reporte.Valorapuesta"
+                                                :disabled="
+                                                    typeof reporte.Valorapuesta ===
+                                                        'number' ||
+                                                        typeof reporte.Numero ===
+                                                            'number'
+                                                "
                                                 class="bg-transparent w-100"
                                                 type="number"
                                                 min="0"
@@ -57,6 +86,12 @@
                                             {{ reporte.Loteria.Loteria }}
                                             <select
                                                 v-model="reporte.Loteria"
+                                                :disabled="
+                                                    typeof reporte.Valorapuesta ===
+                                                        'number' ||
+                                                        typeof reporte.Numero ===
+                                                            'number'
+                                                "
                                                 class="triangulo-bottom"
                                                 required
                                             >
@@ -77,6 +112,12 @@
                                             {{ reporte.Tipo }}
                                             <select
                                                 v-model="reporte.Tipo"
+                                                :disabled="
+                                                    typeof reporte.Valorapuesta ===
+                                                        'number' ||
+                                                        typeof reporte.Numero ===
+                                                            'number'
+                                                "
                                                 class="triangulo-bottom"
                                                 required
                                             >
@@ -88,6 +129,23 @@
                                                     >{{ tipo }}</option
                                                 >
                                             </select>
+                                        </div>
+                                    </td>
+                                    <td
+                                        v-if="
+                                            typeof reporte.Valorapuesta ===
+                                                'number'
+                                        "
+                                    >
+                                        <div>
+                                            <button
+                                                @click.prevent="
+                                                    sendReporte(reporte)
+                                                "
+                                                class="btn btn-sm btn-danger"
+                                            >
+                                                REPARAR
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -107,7 +165,10 @@
                             <div class="Reportar__data-item my-1 p-2">
                                 <h6>Puntos de venta</h6>
                                 <input
-                                    v-model="reporte.Puntoventas"
+                                    v-model="
+                                        reportes[reportes.length - 1]
+                                            .Puntoventas
+                                    "
                                     class="bg-transparent w-100"
                                     type="text"
                                     required
@@ -120,7 +181,10 @@
                             <div class="Reportar__data-item my-1 p-2">
                                 <h6>Punto de entrega de las ventas</h6>
                                 <input
-                                    v-model="reporte.Puntoentregaventas"
+                                    v-model="
+                                        reportes[reportes.length - 1]
+                                            .Puntoentregaventas
+                                    "
                                     class="bg-transparent w-100"
                                     type="text"
                                     required
@@ -129,7 +193,9 @@
                             <div class="Reportar__data-item my-1 p-2">
                                 <h6>Referencia</h6>
                                 <input
-                                    v-model="reporte.Referencia"
+                                    v-model="
+                                        reportes[reportes.length - 1].Referencia
+                                    "
                                     class="bg-transparent w-100"
                                     type="text"
                                     required
@@ -138,6 +204,14 @@
                         </div>
                         <div class="align-self-end">
                             <button
+                                @click="setAgregar(true)"
+                                class="btn btn-sm btn-light btn-outline-dark rounded-pill me-4"
+                                type="submit"
+                            >
+                                Agregar +
+                            </button>
+                            <button
+                                @click="setAgregar(false)"
                                 class="btn btn-sm btn-light btn-outline-dark rounded-pill me-4"
                                 type="submit"
                             >
@@ -151,7 +225,7 @@
                 @click="limpiar"
                 class="btn btn-sm btn-dark btn-outline-light rounded-pill m-2"
             >
-                LIMPIAR FACTURA
+                LIMPIAR
             </button>
             <button
                 @click="imprimir"
@@ -179,16 +253,18 @@ export default {
     },
     data() {
         return {
-            reporte: {
-                Fecha: "",
-                Numero: "",
-                Valorapuesta: "",
-                Loteria: "",
-                Tipo: "",
-                Referencia: "",
-                Puntoventas: "",
-                Puntoentregaventas: "",
-            },
+            reportes: [
+                {
+                    Fecha: "",
+                    Numero: "",
+                    Valorapuesta: "",
+                    Loteria: "",
+                    Tipo: "",
+                    Referencia: "",
+                    Puntoventas: "",
+                    Puntoentregaventas: "",
+                },
+            ],
 
             total: 0,
             promotor: "",
@@ -202,11 +278,33 @@ export default {
                 hora: "",
                 total: 0,
             },
+            agregar: false,
         };
     },
     methods: {
         ...mapActions(["logout", "showPreloader"]),
 
+        setAgregar(estado) {
+            this.agregar = estado;
+        },
+        submitReporte(reporte) {
+            if (this.agregar) {
+                this.sendReporte(reporte);
+                this.showPreloader(false);
+                this.reportes.push({
+                    Fecha: "",
+                    Numero: "",
+                    Valorapuesta: "",
+                    Loteria: "",
+                    Tipo: "",
+                    Referencia: reporte.Referencia,
+                    Puntoventas: reporte.Puntoventas,
+                    Puntoentregaventas: reporte.Puntoentregaventas,
+                });
+            } else {
+                this.sendReporte(reporte);
+            }
+        },
         imprimir() {
             print();
         },
@@ -270,20 +368,7 @@ export default {
             }
             this.showPreloader(false);
         },
-
-        clearInput() {
-            this.reporte = {
-                Fecha: "",
-                Numero: "",
-                Valorapuesta: "",
-                Loteria: "",
-                Tipo: "",
-                Referencia: "",
-                Puntoventas: "",
-                Puntoentregaventas: "",
-            };
-        },
-        arreglarString(string) {
+        async arreglarString(string) {
             const date = {
                 fecha: "",
                 hora: "",
@@ -296,12 +381,30 @@ export default {
             date.hora = string[1].split(".")[0];
             return date;
         },
-        async sendReporte(reporte) {
-            const id = reporte.Loteria.id;
-            const loteria = reporte.Loteria.Loteria;
 
-            reporte.Loteria = id;
+        clearInput() {
+            this.reportes = [
+                {
+                    Fecha: "",
+                    Numero: "",
+                    Valorapuesta: "",
+                    Loteria: "",
+                    Tipo: "",
+                    Referencia: "",
+                    Puntoventas: "",
+                    Puntoentregaventas: "",
+                },
+            ];
+        },
+        async sendReporte(reporte) {
             this.showPreloader(true);
+
+            const completo = reporte.Loteria;
+            const id = reporte.Loteria.id;
+
+            reporte.Valorapuesta = reporte.Valorapuesta.toString();
+            reporte.Loteria = id;
+
             try {
                 const res = await fetch(
                     `${this.prefix}/api/api/${this.rol}/venta`,
@@ -315,15 +418,21 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                reporte.Loteria = completo;
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
+                } else if (resData === "Numero bloqueado") {
+                    reporte.Valorapuesta = Number(reporte.Valorapuesta);
+                    alert(`El numero: ${reporte.Numero} esta bloqueado !`);
                 } else {
+                    reporte.Numero = Number(reporte.Numero);
+
                     const date = await this.arreglarString(
                         resData.ventas.created_at
                     );
-                    reporte.Loteria = loteria;
-                    this.facturaVentas.push(reporte);
+
+                    this.facturaVentas.push(resData.ventas);
                     this.facturaData.codigo = resData.Vendedor.codigo;
                     this.facturaData.fecha = date.fecha;
                     this.facturaData.hora = date.hora;
@@ -331,8 +440,10 @@ export default {
 
                     this.total += Number(reporte.Valorapuesta);
 
-                    this.clearInput();
-                    alert("Reporte enviado");
+                    if (!this.agregar) {
+                        this.clearInput();
+                        alert("Reporte enviado");
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -355,6 +466,10 @@ export default {
     background: var(--bs-dark);
 
     .Reportar__data-input {
+        .table-responsive {
+            max-height: var(--max-height);
+            overflow: auto;
+        }
         table {
             th,
             td {

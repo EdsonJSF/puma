@@ -8,13 +8,15 @@
     /* --bs-warning: ; */
     /* --bs-danger: ; */
     --bs-light: #ffffff80;
-    --bs-dark: #66666642;
+    /* --bs-dark: #66666642; */
+    --bs-dark: #666666bf;
 
     --bs-yellow: #e9da00;
     --bs-green: #0a6500;
     --bs-white: #fff;
     --bs-gray: #b5b5b5;
-    --bs-gray-dark: #66666642;
+    /* --bs-gray-dark: #66666642; */
+    --bs-gray-dark: #666666bf;
 
     --max-height: 65vh;
 }

@@ -17,3 +17,12 @@
     height: 100%;
     object-fit: cover;
 }
+
+/* .mySwiper.resultados img,
+.mySwiper.sorteos img,
+.mySwiper.testimonios img,
+.mySwiper.ubicanos img {
+    width: auto;
+    height: auto;
+    max-height: 10vh;
+} */

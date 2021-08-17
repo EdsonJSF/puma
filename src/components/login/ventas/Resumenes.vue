@@ -159,6 +159,11 @@ export default {
                 element.Fecha.includes(this.toSearch) ||
                 element.Tipo.toLowerCase().includes(this.toSearch) ||
                 element.Numero.toString().includes(this.toSearch) ||
+                element.Numero.toString()
+                    .split("")
+                    .reverse()
+                    .join("")
+                    .includes(this.toSearch) ||
                 element.Valorapuesta.toString().includes(this.toSearch) ||
                 Loteria
             ) {

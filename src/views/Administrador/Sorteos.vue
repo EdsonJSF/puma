@@ -32,6 +32,13 @@
                                 placeholder="Ponga su código:"
                                 required
                             />
+                            <input
+                                v-model="sorteo.Max"
+                                class="border-0 my-1"
+                                type="number"
+                                placeholder="Monto límite"
+                                required
+                            />
                             <div class="d-flex justify-content-around">
                                 <button
                                     @click.prevent="clearInput"
@@ -129,6 +136,7 @@ export default {
                 Fecha: "",
                 Loteria: "",
                 Codigo: "",
+                Max: "",
             },
             Sorteos: [],
             crear: true,
@@ -174,6 +182,7 @@ export default {
                 Fecha: "",
                 Loteria: "",
                 Codigo: "",
+                Max: "",
             };
             this.crear = true;
         },
@@ -183,6 +192,7 @@ export default {
             formData.append("Fecha", sorteo.Fecha);
             formData.append("Loteria", sorteo.Loteria);
             formData.append("Codigo", sorteo.Codigo);
+            formData.append("Max", sorteo.Max);
 
             this.showPreloader(true);
             try {
@@ -197,6 +207,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
@@ -211,6 +222,7 @@ export default {
             this.showPreloader(false);
         },
         selectSorteo(sorteo) {
+            console.log(sorteo);
             this.sorteo = sorteo;
             this.crear = false;
         },
