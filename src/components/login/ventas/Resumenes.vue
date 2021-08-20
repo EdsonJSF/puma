@@ -161,9 +161,14 @@ export default {
                 element.Numero.toString().includes(this.toSearch) ||
                 element.Numero.toString()
                     .split("")
-                    .reverse()
+                    .sort()
                     .join("")
-                    .includes(this.toSearch) ||
+                    .includes(
+                        this.toSearch
+                            .split("")
+                            .sort()
+                            .join("")
+                    ) ||
                 element.Valorapuesta.toString().includes(this.toSearch) ||
                 Loteria
             ) {

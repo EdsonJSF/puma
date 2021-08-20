@@ -49,7 +49,6 @@ export default {
                     `${this.prefix}/api/api/${this.rol}/finanzas`,
                     {
                         headers: {
-                            // "Content-Type": "application/json",
                             Authorization: `Bearer ${this.token}`,
                         },
                     }

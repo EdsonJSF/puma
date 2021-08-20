@@ -7,7 +7,6 @@ export default createStore({
         preloader: false,
 
         prefix: "http://pumab.neuron.com.co/public",
-        // prefix: "http://192.168.0.117:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
@@ -249,7 +248,6 @@ export default createStore({
                 commit("setToken", token);
                 commit("setRol", rol);
                 commit("setLoginRoutes", rol);
-                // router.push("/login");
             } else {
                 commit("setToken", null);
                 commit("setRol", null);

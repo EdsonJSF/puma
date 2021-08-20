@@ -451,9 +451,11 @@ export default {
                     this.facturaData.codigo = resData.Vendedor.codigo;
                     this.facturaData.fecha = date.fecha;
                     this.facturaData.hora = date.hora;
-                    this.facturaData.total += resData.ventas.Valorapuesta;
+                    this.facturaData.total += Number(
+                        resData.ventas.Valorapuesta
+                    );
 
-                    this.total += resData.ventas.Valorapuesta;
+                    this.total += Number(resData.ventas.Valorapuesta);
 
                     if (!this.agregar) {
                         this.clearInput();

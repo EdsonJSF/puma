@@ -61,7 +61,7 @@ export default {
         SocialMedia,
         SwiperBg,
 
-        // Swiper Module
+        /* Swiper Module */
         Swiper,
         SwiperSlide,
     },

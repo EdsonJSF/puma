@@ -179,6 +179,16 @@ export default {
             if (
                 Created_at.toLowerCase().includes(this.toSearch) ||
                 venta.Numero.toString().includes(this.toSearch) ||
+                venta.Numero.toString()
+                    .split("")
+                    .sort()
+                    .join("")
+                    .includes(
+                        this.toSearch
+                            .split("")
+                            .sort()
+                            .join("")
+                    ) ||
                 Monto ||
                 venta.Loteria.toLowerCase().includes(this.toSearch) ||
                 venta.Tipo.toLowerCase().includes(this.toSearch)
