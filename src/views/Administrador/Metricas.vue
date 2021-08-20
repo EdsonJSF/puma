@@ -14,6 +14,9 @@
                         <p class="fw-bolder m-0">
                             {{ numero.Numero }}
                         </p>
+                        <p class="fw-bolder m-0">
+                            {{ numero.Loteria }}
+                        </p>
                         <div>
                             <button
                                 v-if="numero.Estado != 0"
@@ -39,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-7 col-lg-8">
+            <div class="col-12 col-md-7 col-lg-8 mt-2 mt-md-0">
                 <div class="Metricas__Info rounded-3 py-2">
                     <div class="table-responsive">
                         <table
@@ -155,14 +158,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.NumerosBloqueados.splice(
-                        this.NumerosBloqueados.indexOf(numero),
-                        1
-                    );
-                    this.NumerosBloqueados = [
-                        ...this.NumerosBloqueados,
-                        ...resData["El objeto fue eliminado con exito!"],
-                    ];
+                    numero.Estado = 0;
                     alert("Numero bloqueado");
                 }
             } catch (error) {

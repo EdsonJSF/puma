@@ -31,17 +31,13 @@
                 </swiper-slide>
             </swiper>
 
-            <div>
-                <!-- TODO configurar el video -->
-                <iframe
-                    width="auto"
-                    height="auto"
-                    src="https://www.youtube.com/embed/Hq24_r9Cuig"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
+            <div v-for="(video, index) in dataVideo" :key="index">
+                <video
+                    v-if="!index"
+                    :src="`${prefix}/videos/${video.rutaVideo}`"
+                    class="videoSorteo w-auto mw-100"
+                    controls
+                ></video>
             </div>
         </div>
     </div>
@@ -66,7 +62,13 @@ export default {
         SwiperSlide,
     },
     computed: {
-        ...mapState(["dataSorteos", "prefix"]),
+        ...mapState(["dataSorteos", "dataVideo", "prefix"]),
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.videoSorteo {
+    max-height: 30vh;
+}
+</style>

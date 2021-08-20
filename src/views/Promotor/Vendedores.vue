@@ -213,7 +213,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.Vendedores = resData.tiene_usuarios;
+                    this.Vendedores = resData;
                 }
             } catch (error) {
                 console.log(error);

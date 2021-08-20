@@ -56,7 +56,7 @@
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="Galerias__module rounded-3 py-2">
                     <form
-                        @submit.prevent="addGaleria(galeria, galeriaTipo)"
+                        @submit.prevent="addGaleria(galeria)"
                         class="row"
                         enctype="multipart/form-data"
                     >
@@ -65,20 +65,16 @@
                                 class="d-flex flex-column justify-content-between align-items-center h-100 p-2"
                             >
                                 <label
-                                    class="inputFile d-flex justify-content-center align-items-center w-100 h-50"
+                                    v-if="galeria.tipo != 6"
+                                    class="inputFile d-flex flex-column justify-content-center align-items-center w-100 h-50"
                                 >
                                     <input
-                                        type="file"
                                         @change="onFileSelected"
                                         :key="fileInputKey"
-                                        accept="image/*"
                                         :required="crear"
-                                    />
-                                    <img
-                                        v-if="!imagenSeleccionada"
-                                        class="imgPlus"
-                                        src="../../assets/img/icons/plus-solid.svg"
-                                        alt=""
+                                        type="file"
+                                        accept="image/*"
+                                        class="invisible"
                                     />
                                     <figure
                                         v-if="imagenSeleccionada"
@@ -90,51 +86,74 @@
                                             alt="Imagen Seleccionada"
                                         />
                                     </figure>
+                                    <img
+                                        v-if="!imagenSeleccionada"
+                                        class="imgPlus"
+                                        src="../../assets/img/icons/plus-solid.svg"
+                                        alt=""
+                                    />
                                 </label>
-                                <!-- <input
-                                    type="file"
-                                    @change="onVideoSelected"
-                                    :key="fileInputKey"
-                                    accept="video/*"
-                                />
-                                <div class="d-flex justify-content-around">
-                                    <video
+                                <label
+                                    v-if="galeria.tipo == 6"
+                                    class="inputFile d-flex flex-column justify-content-center align-items-center w-100 h-50"
+                                >
+                                    <input
+                                        @change="onVideoSelected"
+                                        :key="fileInputKey"
+                                        :required="crear"
+                                        type="file"
+                                        accept="video/*"
+                                        class="invisible"
+                                    />
+                                    <div
                                         v-if="videoSeleccionado"
-                                        :src="video"
-                                        width="150"
-                                        controls
-                                    ></video>
-                                </div> -->
+                                        class="m-0 w-100 h-100"
+                                    >
+                                        <video
+                                            :src="video"
+                                            class="w-auto mw-100 h-auto mh-100"
+                                            controls
+                                        ></video>
+                                    </div>
+                                    <img
+                                        v-if="!videoSeleccionado"
+                                        class="imgPlus"
+                                        src="../../assets/img/icons/plus-solid.svg"
+                                        alt=""
+                                    />
+                                </label>
                                 <div>
                                     <select
                                         v-if="crear"
-                                        v-model="galeriaTipo"
+                                        v-model="galeria.tipo"
                                         class="form-control border border-1"
                                         required
                                     >
                                         <option value="" disabled selected
                                             >Seleccione</option
                                         >
-                                        <option value="Resultados"
-                                            >Resultados</option
-                                        >
-                                        <option value="Sorteos">Sorteos</option>
-                                        <option value="Ubicanos"
-                                            >Ubicanos</option
-                                        >
-                                        <option value="Testimonios"
-                                            >Testimonios</option
-                                        >
+                                        <option value="1">Resultados</option>
+                                        <option value="2">Sorteos</option>
+                                        <option value="3">Ubicanos</option>
+                                        <option value="4">Testimonios</option>
+                                        <option value="5">Slider</option>
+                                        <option value="6">Video</option>
                                     </select>
                                 </div>
                                 <div
-                                    class="align-self-start d-flex align-items-start  p-2"
+                                    class="align-self-start d-flex flex-wrap align-items-start p-2"
                                 >
                                     <button
                                         type="submit"
-                                        class="fw-bold btn btn-light btn-outline-dark rounded-pill border-0 px-4"
+                                        class="fw-bold btn btn-light btn-outline-dark rounded-pill border-0 px-4 m-1"
                                     >
                                         {{ crear ? "Guardar" : "Editar" }}
+                                    </button>
+                                    <button
+                                        @click.prevent="clearInput"
+                                        class="fw-bold btn btn-light btn-outline-dark rounded-pill border-0 px-4 m-1"
+                                    >
+                                        Limpiar
                                     </button>
                                 </div>
                             </div>
@@ -149,14 +168,32 @@
                                     class="w-100"
                                     required
                                 ></textarea>
-                                <h5>Descripción</h5>
+                                <h5
+                                    v-if="
+                                        galeria.tipo != 5 && galeria.tipo != 6
+                                    "
+                                >
+                                    Descripción
+                                </h5>
                                 <textarea
+                                    v-if="
+                                        galeria.tipo != 5 && galeria.tipo != 6
+                                    "
                                     v-model="galeria.contenido"
                                     class="w-100"
                                     required
                                 ></textarea>
-                                <h5>Link de enlace</h5>
+                                <h5
+                                    v-if="
+                                        galeria.tipo != 5 && galeria.tipo != 6
+                                    "
+                                >
+                                    Link de enlace
+                                </h5>
                                 <textarea
+                                    v-if="
+                                        galeria.tipo != 5 && galeria.tipo != 6
+                                    "
                                     v-model="galeria.link"
                                     class="w-100"
                                     required
@@ -179,17 +216,16 @@ export default {
         return {
             galeria: {
                 rutaImagen: "",
-                titulo: "",
-                contenido: "",
                 rutaVideo: "",
+                contenido: "",
+                titulo: "",
                 orden: "1",
-                tipo: "1",
+                tipo: "",
                 link: "",
             },
             imagenSeleccionada: "",
             videoSeleccionado: "",
             fileInputKey: 0,
-            galeriaTipo: "",
             crear: true,
 
             Galerias: [],
@@ -252,31 +288,30 @@ export default {
         clearInput() {
             this.galeria = {
                 rutaImagen: "",
-                titulo: "",
-                contenido: "",
                 rutaVideo: "",
+                contenido: "",
+                titulo: "",
                 orden: "1",
-                tipo: "1",
+                tipo: "",
                 link: "",
             };
             this.imagenSeleccionada = "";
             this.videoSeleccionado = "";
             this.fileInputKey++;
-            this.galeriaTipo = "";
             this.crear = true;
         },
 
-        addGaleria(galeria, tipo) {
+        addGaleria(galeria) {
             if (this.crear) {
-                this.sendGalerias(galeria, tipo);
+                this.sendGalerias(galeria);
             } else {
                 this.editGaleria(galeria);
             }
         },
-        async sendGalerias(galeria, tipo) {
+        async sendGalerias(galeria) {
             this.showPreloader(true);
-            const formData = new FormData();
 
+            const formData = new FormData();
             formData.append("rutaImagen", galeria.rutaImagen);
             formData.append("rutaVideo", galeria.rutaVideo);
             formData.append("titulo", galeria.titulo);
@@ -289,118 +324,28 @@ export default {
                     `${this.prefix}/api/api/${this.rol}/customize?token=${this.token}`,
                     {
                         method: "POST",
-                        // headers: {
-                        //     "Content-Type": "application/json",
-                        //     Authorization: `Bearer ${this.token}`,
-                        // },
                         body: formData,
                     }
                 );
                 const resData = await res.json();
 
-                // TODO revisar la consulta if
-                if (tipo === "Resultados") {
-                    this.setResultados(resData);
-                } else if (tipo === "Sorteos") {
-                    this.setSorteos(resData);
-                } else if (tipo === "Ubicanos") {
-                    this.setUbicanos(resData);
-                } else if (tipo === "Testimonios") {
-                    this.setTestimonios(resData);
-                } else if (resData.status === "Token is Expired") {
+                if (resData.status === "Token is Expired") {
                     this.logout();
+                } else if (galeria.tipo === "1") {
+                    this.Galerias["Datos tipo 1: Resultados"].push(resData[1]);
+                } else if (galeria.tipo === "2") {
+                    this.Galerias["Datos tipo 2: Sorteos"].push(resData[1]);
+                } else if (galeria.tipo === "3") {
+                    this.Galerias["Datos tipo 3: Ubicanos"].push(resData[1]);
+                } else if (galeria.tipo === "4") {
+                    this.Galerias["Datos tipo 4: Testimonios"].push(resData[1]);
+                } else if (galeria.tipo === "5") {
+                    this.Galerias["Datos tipo 5: Slider"].push(resData[1]);
+                } else if (galeria.tipo === "6") {
+                    this.Galerias["Datos tipo 6: Video"].push(resData[1]);
                 } else {
                 }
-            } catch (error) {
-                console.log(error);
-            }
-            this.showPreloader(false);
-        },
-        async setResultados(galeria) {
-            this.showPreloader(true);
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/galeriasResultados/${galeria[1].id}?token=${this.token}`,
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(galeria),
-                    }
-                );
-                const resData = await res.json();
 
-                this.Galerias["Datos tipo 1: Resultados"].push(galeria[1]);
-                this.clearInput();
-                alert("Galeria enviada");
-            } catch (error) {
-                console.log(error);
-            }
-            this.showPreloader(false);
-        },
-        async setSorteos(galeria) {
-            this.showPreloader(true);
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/galeriasSorteos/${galeria[1].id}?token=${this.token}`,
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(galeria),
-                    }
-                );
-                const resData = await res.json();
-
-                this.Galerias["Datos tipo 2: Sorteos"].push(galeria[1]);
-                this.clearInput();
-                alert("Galeria enviada");
-            } catch (error) {
-                console.log(error);
-            }
-            this.showPreloader(false);
-        },
-        async setUbicanos(galeria) {
-            this.showPreloader(true);
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/galeriasUbicanos/${galeria[1].id}?token=${this.token}`,
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(galeria),
-                    }
-                );
-                const resData = await res.json();
-
-                this.Galerias["Datos tipo 3: Ubicanos"].push(galeria[1]);
-                this.clearInput();
-                alert("Galeria enviada");
-            } catch (error) {
-                console.log(error);
-            }
-            this.showPreloader(false);
-        },
-        async setTestimonios(galeria) {
-            this.showPreloader(true);
-            try {
-                const res = await fetch(
-                    `${this.prefix}/api/api/${this.rol}/galeriasTestimonios/${galeria[1].id}?token=${this.token}`,
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(galeria),
-                    }
-                );
-                const resData = await res.json();
-
-                this.Galerias["Datos tipo 4: Testimonios"].push(galeria[1]);
                 this.clearInput();
                 alert("Galeria enviada");
             } catch (error) {
@@ -417,8 +362,8 @@ export default {
         },
         async editGaleria(galeria) {
             this.showPreloader(true);
-            const formData = new FormData();
 
+            const formData = new FormData();
             formData.append("rutaImagen", galeria.rutaImagen);
             formData.append("rutaVideo", galeria.rutaVideo);
             formData.append("titulo", galeria.titulo);
@@ -429,10 +374,6 @@ export default {
                     `${this.prefix}/api/api/${this.rol}/customizeUpdate/${galeria.id}?token=${this.token}`,
                     {
                         method: "POST",
-                        // headers: {
-                        //     "Content-Type": "application/json",
-                        //     Authorization: `Bearer ${this.token}`,
-                        // },
                         body: formData,
                     }
                 );
@@ -441,14 +382,26 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    galeria.rutaImagen =
-                        resData[
-                            "El objeto fue actualizado con exito!"
-                        ].rutaImagen;
-                    galeria.rutaVideo =
-                        resData[
-                            "El objeto fue actualizado con exito!"
-                        ].rutaVideo;
+                    if (
+                        resData["El objeto fue actualizado con exito!"]
+                            .rutaImagen
+                    ) {
+                        galeria.rutaImagen =
+                            resData[
+                                "El objeto fue actualizado con exito!"
+                            ].rutaImagen;
+                    }
+
+                    if (
+                        resData["El objeto fue actualizado con exito!"]
+                            .rutaVideo
+                    ) {
+                        galeria.rutaVideo =
+                            resData[
+                                "El objeto fue actualizado con exito!"
+                            ].rutaVideo;
+                    }
+
                     this.clearInput();
                     alert("Galeria editada");
                 }
@@ -464,10 +417,6 @@ export default {
                     `${this.prefix}/api/api/${this.rol}/customize/${galeria.id}?token=${this.token}`,
                     {
                         method: "DELETE",
-                        // headers: {
-                        //     "Content-Type": "application/json",
-                        //     Authorization: `Bearer ${this.token}`,
-                        // },
                     }
                 );
                 const resData = await res.json();
@@ -488,12 +437,7 @@ export default {
             try {
                 const res = await fetch(
                     `${this.prefix}/api/api/${this.rol}/UpdateEstado/${galeria.id}?token=${this.token}`,
-                    {
-                        // headers: {
-                        //     "Content-Type": "application/json",
-                        //     Authorization: `Bearer ${this.token}`,
-                        // },
-                    }
+                    {}
                 );
                 const resData = await res.json();
 
@@ -510,8 +454,10 @@ export default {
             this.showPreloader(false);
         },
         generalSearch(galeria) {
-            if (galeria.titulo.toLowerCase().includes(this.toSearch)) {
-                return true;
+            if (galeria.titulo) {
+                if (galeria.titulo.toLowerCase().includes(this.toSearch)) {
+                    return true;
+                }
             } else {
                 return false;
             }
@@ -553,9 +499,6 @@ export default {
             border: 1px solid var(--bs-gray);
             border-radius: 1rem;
             cursor: pointer;
-            input[type="file"] {
-                display: none;
-            }
             .imgPlus {
                 height: 10%;
             }

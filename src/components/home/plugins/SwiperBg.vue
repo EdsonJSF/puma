@@ -9,15 +9,12 @@
             }"
             class="mySwiper position-absolute"
         >
-            <swiper-slide
-                ><img src="../../../assets/img/background/1.jpg" alt=""
-            /></swiper-slide>
-            <swiper-slide
-                ><img src="../../../assets/img/background/2.jpg" alt=""
-            /></swiper-slide>
-            <swiper-slide
-                ><img src="../../../assets/img/background/3.jpg" alt=""
-            /></swiper-slide>
+            <swiper-slide v-for="(imagen, index) in dataSlider" :key="index">
+                <img
+                    :src="`${prefix}/images/${imagen.rutaImagen}`"
+                    :alt="imagen.titulo"
+                />
+            </swiper-slide>
         </swiper>
     </div>
 </template>
@@ -29,11 +26,16 @@ import "swiper/components/pagination/pagination.min.css";
 import SwiperCore, { Mousewheel, Pagination, Autoplay } from "swiper/core";
 SwiperCore.use([Mousewheel, Pagination, Autoplay]);
 
+import { mapState } from "vuex";
+
 export default {
     name: "SwiperBG",
     components: {
         Swiper,
         SwiperSlide,
+    },
+    computed: {
+        ...mapState(["dataSlider", "prefix"]),
     },
 };
 </script>

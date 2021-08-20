@@ -7,32 +7,18 @@ export default createStore({
         preloader: false,
 
         prefix: "http://pumab.neuron.com.co/public",
+        // prefix: "http://192.168.0.117:8000",
 
         /* DATOS PARA EL HOME */
         dataResultados: null,
         dataSorteos: null,
         dataUbicanos: null,
         dataTestimonios: null,
+        dataSlider: null,
+        dataVideo: null,
 
         pass: null,
         message: null,
-        socialMedia: [
-            {
-                titulo: "Instagram",
-                url: "https://www.instagram.com/",
-                img: "/img/instagram-brands.e75317fa.svg",
-            },
-            {
-                titulo: "Facebook",
-                url: "https://www.facebook.com/",
-                img: "/img/facebook-square-brands.34e73505.svg",
-            },
-            {
-                titulo: "Whatsapp",
-                url: "https://wa.me/584245555555",
-                img: "/img/whatsapp-brands.a8812701.svg",
-            },
-        ],
 
         /* DATOS PARA EL LOGIN */
         token: null,
@@ -51,6 +37,8 @@ export default createStore({
             state.dataSorteos = dataHome["Datos tipo 2: Sorteos"];
             state.dataUbicanos = dataHome["Datos tipo 3: Ubicanos"];
             state.dataTestimonios = dataHome["Datos tipo 4: Testimonios"];
+            state.dataSlider = dataHome["Datos tipo 5: Slider"];
+            state.dataVideo = dataHome["Datos tipo 6: Video"];
         },
 
         setToken(state, token) {

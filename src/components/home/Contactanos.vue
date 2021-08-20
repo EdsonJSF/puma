@@ -47,12 +47,10 @@
                 2021 Chance Puma derechos reservados
             </div>
             <div
-                class="paralelogramo paralelogramo-dark d-flex justify-content-center align-items-center my-4 w-25 mx-auto"
+                @click="toTopSwiper"
+                class="paralelogramo paralelogramo-dark btn d-flex justify-content-center align-items-center my-4 p-0 w-25 mx-auto"
             >
-                <div
-                    @click="toTopSwiper"
-                    class="triangulo-top bg-transparent"
-                ></div>
+                <div class="triangulo-top bg-transparent"></div>
             </div>
         </div>
     </div>
@@ -115,7 +113,7 @@ textarea,
 textarea:focus {
     margin: 0.7rem 0;
     padding: 0rem 1rem;
-    background: var(--bs-dark);
+    background: var(--bs-gray);
     resize: none;
 }
 

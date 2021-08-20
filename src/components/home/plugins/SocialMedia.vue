@@ -3,15 +3,6 @@
         <div class="collapse" id="menuSocialMedia">
             <div class="d-flex flex-column ms-3 me-2 py-2">
                 <!-- <a
-                    v-for="(social, index) in socialMedia"
-                    :key="index"
-                    class="mb-2"
-                    :href="social.url"
-                    target="_blank"
-                >
-                    <img :src="social.img" :alt="social.titulo" />
-                </a> -->
-                <!-- <a
                     class="mb-2"
                     href="https://www.instagram.com/"
                     target="_blank"
@@ -33,21 +24,21 @@
                 </a> -->
                 <a
                     class="mb-2"
-                    href="https://wa.me/5842455555555"
+                    href="https://wa.me/573055530585"
                     target="_blank"
                 >
                     <img
-                        src="../../../assets/img/icons/whatsapp-brands.svg"
+                        src="../../../assets/img/icons/whatsapp-co.png"
                         alt="Whatsapp"
                     />
                 </a>
                 <a
                     class="mb-2"
-                    href="https://wa.me/5842455555555"
+                    href="https://wa.me/584247499138"
                     target="_blank"
                 >
                     <img
-                        src="../../../assets/img/icons/whatsapp-brands.svg"
+                        src="../../../assets/img/icons/whatsapp-ve.png"
                         alt="Whatsapp"
                     />
                 </a>
@@ -70,12 +61,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 export default {
     name: "SocialMedia",
-    computed: {
-        ...mapState(["socialMedia"]),
-    },
 };
 </script>
 

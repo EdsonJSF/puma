@@ -218,7 +218,7 @@
                 </div>
             </form>
             <button
-                @click="limpiar"
+                @click="limpiarFactura"
                 class="btn btn-sm btn-dark btn-outline-light rounded-pill m-2"
             >
                 LIMPIAR
@@ -264,7 +264,13 @@ export default {
 
             total: "",
             loterias: "",
-            tipos: ["Directo", "Combinado"],
+            tipos: [
+                "4 cifras",
+                "Triple",
+                "Combinado de 3",
+                "Combinado de 4",
+                "Terminal",
+            ],
 
             facturaVentas: [],
             facturaData: {
@@ -279,31 +285,10 @@ export default {
     methods: {
         ...mapActions(["logout", "showPreloader"]),
 
-        setAgregar(estado) {
-            this.agregar = estado;
-        },
-        submitReporte(reporte) {
-            if (this.agregar) {
-                this.sendReporte(reporte);
-                this.showPreloader(false);
-                this.reportes.push({
-                    Fecha: "",
-                    Numero: "",
-                    Valorapuesta: "",
-                    Loteria: "",
-                    Tipo: "",
-                    Referencia: reporte.Referencia,
-                    Puntoventas: reporte.Puntoventas,
-                    Puntoentregaventas: reporte.Puntoentregaventas,
-                });
-            } else {
-                this.sendReporte(reporte);
-            }
-        },
         imprimir() {
             print();
         },
-        limpiar() {
+        limpiarFactura() {
             this.facturaVentas = [];
             this.facturaData = {
                 codigo: "",
@@ -312,6 +297,20 @@ export default {
                 total: 0,
             };
             this.clearInput();
+        },
+        clearInput() {
+            this.reportes = [
+                {
+                    Fecha: "",
+                    Numero: "",
+                    Valorapuesta: "",
+                    Loteria: "",
+                    Tipo: "",
+                    Referencia: "",
+                    Puntoventas: "",
+                    Puntoentregaventas: "",
+                },
+            ];
         },
 
         async getLoterias() {
@@ -376,27 +375,41 @@ export default {
             return date;
         },
 
-        clearInput() {
-            this.reportes = [
-                {
+        setAgregar(estado) {
+            this.agregar = estado;
+        },
+        /* Envia el reporte y simula envios simultaneos */
+        submitReporte(reporte) {
+            if (this.agregar) {
+                this.sendReporte(reporte);
+                this.showPreloader(false);
+                this.reportes.push({
                     Fecha: "",
                     Numero: "",
                     Valorapuesta: "",
                     Loteria: "",
                     Tipo: "",
-                    Referencia: "",
-                    Puntoventas: "",
-                    Puntoentregaventas: "",
-                },
-            ];
+                    Referencia: reporte.Referencia,
+                    Puntoventas: reporte.Puntoventas,
+                    Puntoentregaventas: reporte.Puntoentregaventas,
+                });
+            } else {
+                this.sendReporte(reporte);
+            }
         },
+        /* Envia el reporte */
         async sendReporte(reporte) {
             this.showPreloader(true);
 
             const completo = reporte.Loteria;
             const id = reporte.Loteria.id;
 
+            /* Para quitar efectos de color en el input Numero */
             reporte.Valorapuesta = reporte.Valorapuesta.toString();
+
+            /* Para bloquear los inputs */
+            reporte.Numero = Number(reporte.Numero);
+
             reporte.Loteria = id;
 
             try {
@@ -417,11 +430,13 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else if (resData === "Numero bloqueado") {
+                    /* Para agregar efectos de color en el input Numero y bloqueo de los inputs */
                     reporte.Valorapuesta = Number(reporte.Valorapuesta);
+                    reporte.Numero = reporte.Numero.toString();
+
                     alert(`El numero: ${reporte.Numero} esta bloqueado !`);
                 } else {
-                    reporte.Numero = Number(reporte.Numero);
-
+                    /* Datos para las propiedades de la factura */
                     const date = await this.arreglarString(
                         resData.ventas.created_at
                     );
@@ -430,9 +445,9 @@ export default {
                     this.facturaData.codigo = resData.Vendedor.codigo;
                     this.facturaData.fecha = date.fecha;
                     this.facturaData.hora = date.hora;
-                    this.facturaData.total += Number(reporte.Valorapuesta);
+                    this.facturaData.total += resData.ventas.Valorapuesta;
 
-                    this.total += Number(reporte.Valorapuesta);
+                    this.total += resData.ventas.Valorapuesta;
 
                     if (!this.agregar) {
                         this.clearInput();

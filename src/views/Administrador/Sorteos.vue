@@ -14,7 +14,7 @@
                             <input
                                 v-model="sorteo.Fecha"
                                 class="border-0 my-1"
-                                type="date"
+                                type="datetime-local"
                                 placeholder="Fecha:"
                                 required
                             />
@@ -36,7 +36,48 @@
                                 v-model="sorteo.Max"
                                 class="border-0 my-1"
                                 type="number"
+                                min="0"
                                 placeholder="Monto límite"
+                                required
+                            />
+                            <input
+                                v-model="sorteo.porc_4cifras"
+                                class="border-0 my-1"
+                                type="number"
+                                min="0"
+                                placeholder="4 cifras"
+                                required
+                            />
+                            <input
+                                v-model="sorteo.porc_triple"
+                                class="border-0 my-1"
+                                type="number"
+                                min="0"
+                                placeholder="Triple"
+                                required
+                            />
+                            <input
+                                v-model="sorteo.porc_combn3"
+                                class="border-0 my-1"
+                                type="number"
+                                min="0"
+                                placeholder="Combinado de 3"
+                                required
+                            />
+                            <input
+                                v-model="sorteo.porc_combn4"
+                                class="border-0 my-1"
+                                type="number"
+                                min="0"
+                                placeholder="Combinado de 4"
+                                required
+                            />
+                            <input
+                                v-model="sorteo.porc_terminal"
+                                class="border-0 my-1"
+                                type="number"
+                                min="0"
+                                placeholder="Terminal"
                                 required
                             />
                             <div class="d-flex justify-content-around">
@@ -74,7 +115,7 @@
                                 <tr v-if="generalSearch(sorteo)">
                                     <td>
                                         <div>
-                                            {{ sorteo.Fecha }}
+                                            {{ arreglarCadena(sorteo.Fecha) }}
                                         </div>
                                     </td>
                                     <td>
@@ -137,6 +178,11 @@ export default {
                 Loteria: "",
                 Codigo: "",
                 Max: "",
+                porc_4cifras: "",
+                porc_triple: "",
+                porc_combn3: "",
+                porc_combn4: "",
+                porc_terminal: "",
             },
             Sorteos: [],
             crear: true,
@@ -169,6 +215,9 @@ export default {
             }
             this.showPreloader(false);
         },
+        arreglarCadena(cadena) {
+            return cadena.replace("T", " ");
+        },
 
         addSorteo(sorteo) {
             if (this.crear) {
@@ -183,16 +232,25 @@ export default {
                 Loteria: "",
                 Codigo: "",
                 Max: "",
+                porc_4cifras: "",
+                porc_triple: "",
+                porc_combn3: "",
+                porc_combn4: "",
+                porc_terminal: "",
             };
             this.crear = true;
         },
         async sendSorteo(sorteo) {
             const formData = new FormData();
-
             formData.append("Fecha", sorteo.Fecha);
             formData.append("Loteria", sorteo.Loteria);
             formData.append("Codigo", sorteo.Codigo);
             formData.append("Max", sorteo.Max);
+            formData.append("porc_4cifras", sorteo.porc_4cifras);
+            formData.append("porc_triple", sorteo.porc_triple);
+            formData.append("porc_combn3", sorteo.porc_combn3);
+            formData.append("porc_combn4", sorteo.porc_combn4);
+            formData.append("porc_terminal", sorteo.porc_terminal);
 
             this.showPreloader(true);
             try {
@@ -207,10 +265,11 @@ export default {
                     }
                 );
                 const resData = await res.json();
-                console.log(resData);
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
+                } else if (resData === "El codigo ya existe") {
+                    alert(resData);
                 } else {
                     this.Sorteos.unshift(resData.sorteos);
                     this.clearInput();
@@ -222,7 +281,7 @@ export default {
             this.showPreloader(false);
         },
         selectSorteo(sorteo) {
-            console.log(sorteo);
+            sorteo.Fecha = sorteo.Fecha.replace(" ", "T");
             this.sorteo = sorteo;
             this.crear = false;
         },
