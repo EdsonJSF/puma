@@ -73,9 +73,9 @@ export default {
     right: 3vw;
     z-index: 1;
     #menuSocialMedia .d-flex {
-        background: #e9da00;
+        background: var(--bs-secondary);
         img {
-            width: 1.5rem;
+            width: 2.5rem;
         }
     }
     .pumaFollows__btn img {

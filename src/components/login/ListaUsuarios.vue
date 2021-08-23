@@ -54,16 +54,6 @@
                     />
                     <input
                         v-if="usuario.rol_id != 1"
-                        v-model="usuario.ganancia"
-                        class="form-control"
-                        type="number"
-                        min="0"
-                        max="50"
-                        placeholder="ganancia"
-                        required
-                    />
-                    <input
-                        v-if="usuario.rol_id != 1"
                         v-model="usuario.porcentaje"
                         class="form-control"
                         type="number"
@@ -108,8 +98,7 @@
                             >Seleccione promotor</option
                         >
                         <option
-                            v-for="(promotor,
-                            indexPro) in PromotoresVendedores[1]"
+                            v-for="(promotor, indexPro) in soloPromotores[1]"
                             :key="indexPro"
                             :value="promotor.id"
                             >{{ promotor.name }}</option
@@ -143,98 +132,58 @@
                     class="ListaUsuarios__data d-flex flex-column rounded-3 py-2"
                 >
                     <div class="table-responsive">
-                        <table class="table table-borderless align-middle">
-                            <tbody>
-                                <tr
-                                    v-for="(rolEmpleado,
-                                    indexRol) in PromotoresVendedores"
-                                    :key="indexRol"
-                                >
+                        <table
+                            class="table table-borderless table-hover align-middle"
+                        >
+                            <thead>
+                                <th>Nombre Apellido</th>
+                                <th>NIT</th>
+                                <th>Ganancia</th>
+                            </thead>
+                            <tbody
+                                v-for="(empleado,
+                                index) in PromotoresVendedores"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(empleado)">
                                     <td>
-                                        <table
-                                            class="table table-borderless table-hover align-middle"
-                                        >
-                                            <thead>
-                                                <th v-if="indexRol === 0">
-                                                    Vendedor
-                                                </th>
-                                                <th v-else-if="indexRol === 1">
-                                                    Promotor
-                                                </th>
-                                                <th v-else>
-                                                    Administrador
-                                                </th>
-                                            </thead>
-                                            <thead>
-                                                <th>Nombre Apellido</th>
-                                                <th>NIT</th>
-                                                <th>Ganancia</th>
-                                            </thead>
-                                            <tbody
-                                                v-for="(empleado,
-                                                indexEmp) in rolEmpleado"
-                                                :key="indexEmp"
+                                        <div>
+                                            {{ empleado.name }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ empleado.dni }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ empleado.balance }}
+                                            COP
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <button
+                                                @click="selectUsuario(empleado)"
+                                                class="btn btn-sm"
                                             >
-                                                <tr
-                                                    v-if="
-                                                        generalSearch(empleado)
-                                                    "
-                                                >
-                                                    <td>
-                                                        <div>
-                                                            {{ empleado.name }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{ empleado.dni }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{
-                                                                empleado.balance
-                                                            }}
-                                                            COP
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            <button
-                                                                @click="
-                                                                    selectUsuario(
-                                                                        empleado
-                                                                    )
-                                                                "
-                                                                class="btn btn-sm"
-                                                            >
-                                                                <img
-                                                                    src="../../assets/img/icons/pen-solid.svg"
-                                                                    alt=""
-                                                                />
-                                                            </button>
-                                                            <button
-                                                                v-if="
-                                                                    empleado.tipo ==
-                                                                        1
-                                                                "
-                                                                @click="
-                                                                    delUsuario(
-                                                                        empleado
-                                                                    )
-                                                                "
-                                                                class="btn btn-sm"
-                                                            >
-                                                                <img
-                                                                    src="../../assets/img/icons/trash-solid.svg"
-                                                                    alt=""
-                                                                />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                <img
+                                                    src="../../assets/img/icons/pen-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                            <button
+                                                v-if="empleado.tipo == 1"
+                                                @click="delUsuario(empleado)"
+                                                class="btn btn-sm"
+                                            >
+                                                <img
+                                                    src="../../assets/img/icons/trash-solid.svg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -254,13 +203,13 @@ export default {
     data() {
         return {
             PromotoresVendedores: [],
+            soloPromotores: [],
 
             usuario: {
                 name: "",
                 email: "",
                 password: "",
                 dni: "",
-                ganancia: "",
                 porcentaje: "",
                 foto: "",
                 direccion: "",
@@ -293,7 +242,12 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.PromotoresVendedores = resData;
+                    resData.map((rolEmpleado) => {
+                        rolEmpleado.map((empleadoData) => {
+                            this.PromotoresVendedores.push(empleadoData);
+                        });
+                    });
+                    this.soloPromotores = resData;
                 }
             } catch (error) {
                 console.log(error);
@@ -319,7 +273,6 @@ export default {
                 email: "",
                 password: "",
                 dni: "",
-                ganancia: "",
                 porcentaje: "",
                 foto: "",
                 direccion: "",
@@ -351,7 +304,6 @@ export default {
             formData.append("password", usuario.password);
             formData.append("dni", usuario.dni);
             formData.append("foto", usuario.foto);
-            formData.append("ganancia", usuario.ganancia);
             formData.append("porcentaje", usuario.porcentaje);
             formData.append("direccion", usuario.direccion);
             formData.append("telefono", usuario.telefono);
@@ -371,15 +323,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else if (resData.token) {
-                    let position = "";
-                    if (usuario.rol_id == 1) {
-                        position = 2;
-                    } else if (usuario.rol_id == 2) {
-                        position = 1;
-                    } else if (usuario.rol_id == 3) {
-                        position = 0;
-                    }
-                    this.PromotoresVendedores[position].unshift(resData.user);
+                    this.PromotoresVendedores.unshift(resData.user);
                     this.clearInput();
                     alert("Usuario creado");
                 } else if (JSON.parse(resData).email) {
@@ -408,7 +352,6 @@ export default {
             formData.append("email", usuario.email);
             formData.append("dni", usuario.dni);
             formData.append("foto", usuario.foto);
-            formData.append("ganancia", usuario.ganancia);
             formData.append("porcentaje", usuario.porcentaje);
             formData.append("direccion", usuario.direccion);
             formData.append("telefono", usuario.telefono);
@@ -460,16 +403,8 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    let position = "";
-                    if (usuario.rol_id == 1) {
-                        position = 2;
-                    } else if (usuario.rol_id == 2) {
-                        position = 1;
-                    } else if (usuario.rol_id == 3) {
-                        position = 0;
-                    }
-                    this.PromotoresVendedores[position][
-                        this.PromotoresVendedores[position].indexOf(usuario)
+                    this.PromotoresVendedores[
+                        this.PromotoresVendedores.indexOf(usuario)
                     ] = resData["El objeto fue eliminado con exito"];
 
                     this.clearInput();
@@ -480,6 +415,7 @@ export default {
             }
             this.showPreloader(false);
         },
+
         generalSearch(empleado) {
             const balance = empleado.balance
                 ? empleado.balance.toString().includes(this.toSearch)

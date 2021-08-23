@@ -2,7 +2,7 @@
     <div class="Reportes">
         <div class="row">
             <div v-if="rol !== 'promotor'" class="col-12 col-md-5 col-lg-4">
-                <Finanzas />
+                <Finanzas :key="componentKey" />
             </div>
             <div v-else class="col-12 col-md-5 col-lg-4"></div>
             <div class="col-12 col-md-7 col-lg-8">
@@ -125,6 +125,7 @@ export default {
             tipos: ["Gasto", "Pago", "Premio"],
             salidas: ["Acumulado", "Caja"],
             empleados: [],
+            componentKey: 0,
         };
     },
     methods: {
@@ -222,6 +223,7 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
+                    this.componentKey += 1;
                     this.clearInput();
                     alert("Reporte enviado");
                 }

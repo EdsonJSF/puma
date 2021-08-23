@@ -35,7 +35,7 @@ body {
 }
 body,
 .bg-puma-gray {
-    background-color: var(--bs-white);
+    background-color: var(--bs-gray-light);
     background-image: url("./assets/img/background/bg-sm.svg");
     background-repeat: no-repeat;
     background-position: 100% 50%;

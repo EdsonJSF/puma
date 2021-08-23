@@ -15,18 +15,23 @@
                     delay: 3000,
                     disableOnInteraction: false,
                 }"
-                class="mySwiper testimonios mt-3"
+                :breakpoints="{
+                    768: {
+                        slidesPerView: 3,
+                    },
+                }"
+                class="mySwiper testimonios mt-5"
             >
                 <swiper-slide
                     v-for="(testimonio, index) in dataTestimonios"
                     :key="index"
-                    class="d-flex flex-column"
+                    class="h-100 d-flex flex-column"
                 >
                     <img
                         :src="`${prefix}/images/${testimonio.rutaImagen}`"
                         :alt="testimonio.titulo"
                     />
-                    <h1>{{ testimonio.titulo }}</h1>
+                    <h4>{{ testimonio.titulo }}</h4>
                 </swiper-slide>
             </swiper>
         </div>

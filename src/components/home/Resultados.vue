@@ -34,21 +34,26 @@
                     delay: 3000,
                     disableOnInteraction: false,
                 }"
-                class="mySwiper resultados mt-3"
+                :breakpoints="{
+                    768: {
+                        slidesPerView: 3,
+                    },
+                }"
+                class="mySwiper resultados mt-5"
             >
                 <swiper-slide
-                    class="h-100 d-flex flex-column"
                     v-for="(resultado, index) in dataResultados"
                     :key="index"
+                    class="h-100 d-flex flex-column"
                 >
                     <img
                         :src="`${prefix}/images/${resultado.rutaImagen}`"
                         :alt="resultado.titulo"
                     />
                     <div class="d-flex flex-wrap align-items-end">
-                        <h1 class="paralelogramo-primary pe-5">
+                        <h4 class="paralelogramo-primary pe-5">
                             {{ resultado.titulo }}
-                        </h1>
+                        </h4>
                         <a
                             class="paralelogramo-primary text-reset text-nowrap text-decoration-none px-2"
                             :href="resultado.link"

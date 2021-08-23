@@ -188,6 +188,18 @@ export default {
             this.showPreloader(false);
         },
         generalSearch(solicitud) {
+            let estado = "";
+            if (solicitud.Tipo == 1) {
+                estado = "espera";
+            } else if (solicitud.Tipo == 2) {
+                estado = "aprovada";
+            } else {
+                estado = "rechazada";
+            }
+            if (this.toSearch) {
+            } else if (this.toSearch) {
+            } else if (this.toSearch) {
+            }
             const CantidadSolicitada = solicitud.CantidadSolicitada
                 ? solicitud.CantidadSolicitada.toString().includes(
                       this.toSearch
@@ -207,7 +219,8 @@ export default {
                 // solicitud.Categoria.toLowerCase().includes(this.toSearch) ||
                 CantidadSolicitada ||
                 MobiliarioSolicitado ||
-                Solicitud
+                Solicitud ||
+                estado.includes(this.toSearch)
             ) {
                 return true;
             } else {

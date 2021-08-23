@@ -42,77 +42,63 @@
             <div class="col-12 col-md-7 col-lg-8">
                 <div class="EstadoCuenta__options rounded-3 py-2">
                     <div class="table-responsive">
-                        <table class="table table-borderless align-middle">
-                            <tbody>
-                                <tr
-                                    v-for="(usuario,
-                                    indexUser) in EstadoCuentaVentas"
-                                    :key="indexUser"
-                                >
+                        <table
+                            class="table table-borderless table-hover align-middle"
+                        >
+                            <thead>
+                                <th><div>Fecha</div></th>
+                                <th><div>Transacción</div></th>
+                                <th><div>Monto</div></th>
+                                <th><div>Referencia</div></th>
+                                <th><div>Salida</div></th>
+                                <th><div>Encargado</div></th>
+                            </thead>
+                            <tbody
+                                v-for="(venta, index) in EstadoCuentaVentas"
+                                :key="index"
+                            >
+                                <tr v-if="generalSearch(venta)">
                                     <td>
-                                        <table
-                                            class="table table-borderless table-hover align-middle"
-                                        >
-                                            <thead>
-                                                <th>
-                                                    {{
-                                                        usuario.rol_id > 2
-                                                            ? "Vendedor"
-                                                            : "Promotor"
-                                                    }}
-                                                </th>
-                                                <th>{{ usuario.name }}</th>
-                                            </thead>
-                                            <thead>
-                                                <th><div>Fecha</div></th>
-                                                <th><div>Transacción</div></th>
-                                                <th><div>Monto</div></th>
-                                                <th><div>Referencia</div></th>
-                                                <th><div>Salida</div></th>
-                                            </thead>
-                                            <tbody
-                                                v-for="(venta,
-                                                indexVentas) in usuario.ventas"
-                                                :key="indexVentas"
-                                            >
-                                                <tr v-if="generalSearch(venta)">
-                                                    <td>
-                                                        <div>
-                                                            {{
-                                                                arreglarCadena(
-                                                                    venta.created_at
-                                                                )
-                                                            }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{ venta.id }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{
-                                                                venta.Valorapuesta
-                                                            }}
-                                                            COP
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{
-                                                                venta.Referencia
-                                                            }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            {{ venta.Tipo }}
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <div>
+                                            {{
+                                                arreglarCadena(venta.created_at)
+                                            }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ venta.Tipo }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-danger">
+                                            {{
+                                                venta.Valorapuesta
+                                                    ? venta.Valorapuesta
+                                                    : venta.Monto
+                                            }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{
+                                                venta.Referencia
+                                                    ? venta.Referencia
+                                                    : ""
+                                            }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{
+                                                venta.Salida ? venta.Salida : ""
+                                            }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ venta.name }}
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -156,11 +142,31 @@ export default {
                     this.logout();
                 } else {
                     this.EstadoCuenta = resData;
-                    this.EstadoCuentaVentas.push(
-                        resData["Datos y ventas del promotor"]
+                    resData["Datos y ventas del promotor"].ventas.map(
+                        (venta) => {
+                            if (venta) {
+                                venta.name =
+                                    resData["Datos y ventas del promotor"].name;
+                                this.EstadoCuentaVentas.push(venta);
+                            }
+                        }
+                    );
+                    resData["Datos y ventas del promotor"].reportes.map(
+                        (reporte) => {
+                            if (reporte) {
+                                reporte.name =
+                                    resData["Datos y ventas del promotor"].name;
+                                this.EstadoCuentaVentas.push(reporte);
+                            }
+                        }
                     );
                     resData["Datos de los vendedores"].map((vendedor) => {
-                        this.EstadoCuentaVentas.push(vendedor);
+                        vendedor.ventas.map((venta) => {
+                            if (venta) {
+                                venta.name = vendedor.name;
+                                this.EstadoCuentaVentas.push(venta);
+                            }
+                        });
                     });
                 }
             } catch (error) {
@@ -174,12 +180,27 @@ export default {
         },
         generalSearch(venta) {
             const Created_at = this.arreglarCadena(venta.created_at);
+            const Valorapuesta = venta.Valorapuesta
+                ? venta.Valorapuesta.toString().includes(this.toSearch)
+                : false;
+            const Monto = venta.Monto
+                ? venta.Monto.toString().includes(this.toSearch)
+                : false;
+            const Referencia = venta.Referencia
+                ? venta.Referencia.toLowerCase().includes(this.toSearch)
+                : false;
+            const Salida = venta.Salida
+                ? venta.Salida.toLowerCase().includes(this.toSearch)
+                : false;
+
             if (
                 Created_at.toLowerCase().includes(this.toSearch) ||
-                venta.id.toString().includes(this.toSearch) ||
-                venta.Valorapuesta.toString().includes(this.toSearch) ||
-                venta.Referencia.toLowerCase().includes(this.toSearch) ||
-                venta.Tipo.toLowerCase().includes(this.toSearch)
+                venta.Tipo.toLowerCase().includes(this.toSearch) ||
+                Valorapuesta ||
+                Monto ||
+                Referencia ||
+                Salida ||
+                venta.name.toLowerCase().includes(this.toSearch)
             ) {
                 return true;
             } else {

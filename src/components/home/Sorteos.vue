@@ -15,29 +15,43 @@
                     delay: 3000,
                     disableOnInteraction: false,
                 }"
-                class="mySwiper sorteos mt-3"
+                :breakpoints="{
+                    576: {
+                        slidesPerView: 3,
+                    },
+                    768: {
+                        slidesPerView: 4,
+                    },
+                }"
+                class="mySwiper sorteos mt-5"
             >
                 <swiper-slide
                     v-for="(sorteo, index) in dataSorteos"
                     :key="index"
+                    class="h-100 d-flex flex-column"
                 >
                     <div>
                         <img
                             :src="`${prefix}/images/${sorteo.rutaImagen}`"
                             :alt="sorteo.titulo"
                         />
-                        <p>{{ sorteo.titulo }}</p>
+                        <h4 class="text-start">{{ sorteo.titulo }}</h4>
                     </div>
                 </swiper-slide>
             </swiper>
 
             <div v-for="(video, index) in dataVideo" :key="index">
-                <video
+                <!-- <video
                     v-if="!index"
                     :src="`${prefix}/videos/${video.rutaVideo}`"
                     class="videoSorteo w-auto mw-100"
                     controls
-                ></video>
+                ></video> -->
+                <iframe
+                    :src="video.link"
+                    class="videoSorteo w-auto mw-100"
+                    controls
+                ></iframe>
             </div>
         </div>
     </div>

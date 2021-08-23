@@ -39,7 +39,16 @@
                                     </td>
                                     <td>
                                         <div class="text-danger">
-                                            {{ estadoCuenta.Monto }}
+                                            {{
+                                                venta.Valorapuesta
+                                                    ? venta.Valorapuesta
+                                                    : venta.Monto
+                                            }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {{ estadoCuenta.Referencia }}
                                         </div>
                                     </td>
                                     <td>
@@ -49,12 +58,11 @@
                                     </td>
                                     <td>
                                         <div>
-                                            {{ estadoCuenta.Salida }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            {{ estadoCuenta.user_id }}
+                                            {{
+                                                estadoCuenta.user
+                                                    ? estadoCuenta.user.name
+                                                    : ""
+                                            }}
                                         </div>
                                     </td>
                                 </tr>
@@ -113,19 +121,29 @@ export default {
         },
         generalSearch(estadoCuenta) {
             const Created_at = this.arreglarCadena(estadoCuenta.created_at);
-            const user = estadoCuenta.user_id
-                ? estadoCuenta.user_id
-                      .toString()
-                      .toLowerCase()
-                      .includes(this.toSearch)
+            const Valorapuesta = estadoCuenta.Valorapuesta
+                ? estadoCuenta.Valorapuesta.toString().includes(this.toSearch)
+                : false;
+            const Monto = estadoCuenta.Monto
+                ? estadoCuenta.Monto.toString().includes(this.toSearch)
+                : false;
+            const Referencia = estadoCuenta.Referencia
+                ? estadoCuenta.Referencia.toLowerCase().includes(this.toSearch)
+                : false;
+            const Salida = estadoCuenta.Salida
+                ? estadoCuenta.Salida.toLowerCase().includes(this.toSearch)
+                : false;
+            const user = estadoCuenta.user
+                ? estadoCuenta.user.name.toLowerCase().includes(this.toSearch)
                 : false;
 
             if (
                 Created_at.includes(this.toSearch) ||
                 estadoCuenta.Tipo.toLowerCase().includes(this.toSearch) ||
-                estadoCuenta.Monto.toString().includes(this.toSearch) ||
-                estadoCuenta.Salida.toLowerCase().includes(this.toSearch) ||
-                estadoCuenta.Salida.toLowerCase().includes(this.toSearch) ||
+                Valorapuesta ||
+                Monto ||
+                Referencia ||
+                Salida ||
                 user
             ) {
                 return true;

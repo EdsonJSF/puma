@@ -94,33 +94,19 @@
                                     />
                                 </label>
                                 <label
-                                    v-if="galeria.tipo == 6"
-                                    class="inputFile d-flex flex-column justify-content-center align-items-center w-100 h-50"
+                                    v-if="
+                                        galeria.tipo == 6 &&
+                                            galeria.link.includes('http')
+                                    "
+                                    class="inputFile d-flex flex-column justify-content-center align-items-center w-100 h-100"
                                 >
-                                    <input
-                                        @change="onVideoSelected"
-                                        :key="fileInputKey"
-                                        :required="crear"
-                                        type="file"
-                                        accept="video/*"
-                                        class="invisible"
-                                    />
-                                    <div
-                                        v-if="videoSeleccionado"
-                                        class="m-0 w-100 h-100"
-                                    >
-                                        <video
+                                    <div class="m-0 w-100 h-100">
+                                        <iframe
                                             :src="video"
                                             class="w-auto mw-100 h-auto mh-100"
                                             controls
-                                        ></video>
+                                        ></iframe>
                                     </div>
-                                    <img
-                                        v-if="!videoSeleccionado"
-                                        class="imgPlus"
-                                        src="../../assets/img/icons/plus-solid.svg"
-                                        alt=""
-                                    />
                                 </label>
                                 <div>
                                     <select
@@ -170,14 +156,14 @@
                                 ></textarea>
                                 <h5
                                     v-if="
-                                        galeria.tipo != 5 && galeria.tipo != 6
+                                        galeria.tipo == 1 || galeria.tipo == 3
                                     "
                                 >
                                     Descripción
                                 </h5>
                                 <textarea
                                     v-if="
-                                        galeria.tipo != 5 && galeria.tipo != 6
+                                        galeria.tipo == 1 || galeria.tipo == 3
                                     "
                                     v-model="galeria.contenido"
                                     class="w-100"
@@ -185,14 +171,18 @@
                                 ></textarea>
                                 <h5
                                     v-if="
-                                        galeria.tipo != 5 && galeria.tipo != 6
+                                        galeria.tipo == 1 ||
+                                            galeria.tipo == 3 ||
+                                            galeria.tipo == 6
                                     "
                                 >
                                     Link de enlace
                                 </h5>
                                 <textarea
                                     v-if="
-                                        galeria.tipo != 5 && galeria.tipo != 6
+                                        galeria.tipo == 1 ||
+                                            galeria.tipo == 3 ||
+                                            galeria.tipo == 6
                                     "
                                     v-model="galeria.link"
                                     class="w-100"
@@ -469,7 +459,7 @@ export default {
             return this.imagenSeleccionada;
         },
         video() {
-            return this.videoSeleccionado;
+            return this.galeria.link;
         },
     },
     created() {
