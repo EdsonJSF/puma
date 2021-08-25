@@ -11,6 +11,10 @@
                 :slidesPerView="2"
                 :spaceBetween="30"
                 :loop="true"
+                :autoplay="{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                }"
                 :breakpoints="{
                     576: {
                         slidesPerView: 3,
