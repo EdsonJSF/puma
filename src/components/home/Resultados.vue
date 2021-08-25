@@ -39,12 +39,12 @@
                         slidesPerView: 3,
                     },
                 }"
-                class="mySwiper resultados mt-5"
+                class="mySwiper resultados mt-4"
             >
                 <swiper-slide
                     v-for="(resultado, index) in dataResultados"
                     :key="index"
-                    class="h-100 d-flex flex-column"
+                    class="h-100 d-flex flex-column justify-content-center align-items-center"
                 >
                     <img
                         :src="`${prefix}/images/${resultado.rutaImagen}`"

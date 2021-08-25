@@ -23,12 +23,12 @@
                         slidesPerView: 4,
                     },
                 }"
-                class="mySwiper sorteos mt-5"
+                class="mySwiper sorteos mt-4"
             >
                 <swiper-slide
                     v-for="(sorteo, index) in dataSorteos"
                     :key="index"
-                    class="h-100 d-flex flex-column"
+                    class="h-100 d-flex flex-column justify-content-center align-items-center"
                 >
                     <div>
                         <img
@@ -48,8 +48,9 @@
                     controls
                 ></video> -->
                 <iframe
+                    v-if="!index"
                     :src="video.link"
-                    class="videoSorteo w-auto mw-100"
+                    class="videoSorteo w-auto mw-100 h-auto"
                     controls
                 ></iframe>
             </div>
@@ -83,6 +84,6 @@ export default {
 
 <style lang="scss" scoped>
 .videoSorteo {
-    max-height: 30vh;
+    max-height: 25vh;
 }
 </style>

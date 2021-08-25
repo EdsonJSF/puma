@@ -2,6 +2,9 @@
     width: 100%;
     height: 100%;
 }
+.swiper-container .swiper-wrapper {
+    align-items: center;
+}
 .swiper-container.position-absolute,
 .swiper-container.pumaSwiper {
     height: 100vh;
@@ -29,9 +32,10 @@
 .mySwiper.sorteos img,
 .mySwiper.testimonios img,
 .mySwiper.ubicanos img {
-    width: auto;
+    width: fit-content;
     height: auto;
     max-width: 100%;
+    max-height: 30vh;
 }
 .mySwiper.resultados p,
 .mySwiper.sorteos p,
@@ -39,8 +43,8 @@
 .mySwiper.ubicanos p {
     width: auto;
     height: auto;
-    max-width: 45vw;
-    max-height: 20vh;
+    max-width: 100%;
+    max-height: 15vh;
     overflow-y: auto;
 }
 /* 

@@ -11,21 +11,20 @@
                 :slidesPerView="2"
                 :spaceBetween="30"
                 :loop="true"
-                :autoplay="{
-                    delay: 3000,
-                    disableOnInteraction: false,
-                }"
                 :breakpoints="{
-                    768: {
+                    576: {
                         slidesPerView: 3,
                     },
+                    768: {
+                        slidesPerView: 4,
+                    },
                 }"
-                class="mySwiper testimonios mt-5"
+                class="mySwiper testimonios mt-4"
             >
                 <swiper-slide
                     v-for="(testimonio, index) in dataTestimonios"
                     :key="index"
-                    class="h-100 d-flex flex-column"
+                    class="h-100 d-flex flex-column justify-content-center align-items-center"
                 >
                     <img
                         :src="`${prefix}/images/${testimonio.rutaImagen}`"
