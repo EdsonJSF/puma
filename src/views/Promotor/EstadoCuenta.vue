@@ -71,12 +71,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="text-danger">
+                                        <div
+                                            :class="
+                                                venta.Monto ? 'text-danger' : ''
+                                            "
+                                        >
                                             {{
                                                 venta.Valorapuesta
                                                     ? venta.Valorapuesta
                                                     : venta.Monto
                                             }}
+                                            <samp class="text-dark"
+                                                >&nbspCOP</samp
+                                            >
                                         </div>
                                     </td>
                                     <td>

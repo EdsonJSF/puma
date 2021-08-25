@@ -5,23 +5,33 @@
                 <tbody class="text-start">
                     <tr>
                         <td>Ventas del día</td>
-                        <td>{{ Finanzas.AcumuladoDeVentasDelDia }} cop</td>
+                        <td class="px-2">
+                            {{ Finanzas.AcumuladoDeVentasDelDia }} cop
+                        </td>
                     </tr>
                     <tr>
                         <td>Ventas del mes</td>
-                        <td>{{ Finanzas.AcumuladoDeVentasDelMes }} cop</td>
+                        <td class="px-2">
+                            {{ Finanzas.AcumuladoDeVentasDelMes }} cop
+                        </td>
                     </tr>
                     <tr>
                         <td>Acumulado</td>
-                        <td>{{ Finanzas.AcumuladoDelMontoDeAcumulado }} cop</td>
+                        <td class="px-2">
+                            {{ Finanzas.AcumuladoDelMontoDeAcumulado }} cop
+                        </td>
                     </tr>
                     <tr>
                         <td>Premios</td>
-                        <td>{{ Finanzas.AcumuladoDelMontoDePremios }} cop</td>
+                        <td class="px-2">
+                            {{ Finanzas.AcumuladoDelMontoDePremios }} cop
+                        </td>
                     </tr>
                     <tr>
                         <td>Gastos</td>
-                        <td>{{ Finanzas.AcumuladoDelMontoDeGastos }} cop</td>
+                        <td class="px-2">
+                            {{ Finanzas.AcumuladoDelMontoDeGastos }} cop
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -74,11 +84,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-td {
-    padding: 0.5rem;
-    border-right: 0.5rem solid transparent;
-    border-left: 0.5rem solid transparent;
-}
-</style>
