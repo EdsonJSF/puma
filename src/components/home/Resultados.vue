@@ -10,9 +10,9 @@
                         src="../../assets/img/logo/logo-simple-sm.png"
                         alt="Logo Puma"
                     />
-                    <h3 class="position-absolute col-auto ms-5 ps-5">
+                    <h4 class="position-absolute col-auto ms-5 ps-5">
                         RESULTADOS
-                    </h3>
+                    </h4>
                 </div>
                 <div class="paralelogramo-secondary d-flex ps-5 py-1">
                     <button
