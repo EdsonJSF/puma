@@ -1,12 +1,15 @@
 <template>
     <div class="Reportes">
         <div class="row">
-            <div v-if="rol !== 'promotor'" class="col-12 col-md-5 col-lg-4">
+            <div
+                v-if="rol !== 'promotor'"
+                class="col-12 col-md-5 col-lg-4 my-2 my-md-0"
+            >
                 <Finanzas :key="componentKey" />
             </div>
-            <div v-else class="col-12 col-md-5 col-lg-4"></div>
-            <div class="col-12 col-md-7 col-lg-8">
-                <div class="Reportes__options rounded-3 m-1 py-1">
+            <div v-else class="col-12 col-md-5 col-lg-4 my-2 my-md-0"></div>
+            <div class="col-12 col-md-7 col-lg-8 my-2 my-md-0">
+                <div class="Reportes__options rounded-3 m-1 py-2">
                     <form @submit.prevent="sendReporte(reporte)">
                         <label>
                             Seleccione
@@ -38,9 +41,7 @@
                                     name="empleado"
                                     class="triangulo-bottom"
                                     required
-                                    @change="
-                                        mutarMonto(reporte.user_pago.balance)
-                                    "
+                                    @change="mutarMonto(reporte.user_pago)"
                                 >
                                     <option
                                         v-for="(empleado, index) in empleados"
@@ -52,17 +53,35 @@
                                 </select>
                             </div>
                         </label>
-                        <label>
-                            {{
-                                reporte.Tipo === 2
-                                    ? "Editar el monto"
-                                    : "Escriba el monto"
-                            }}
+                        <label v-if="reporte.Tipo !== 2">
+                            Escriba el monto
                             <input
                                 v-model="reporte.Monto"
                                 type="number"
                                 min="0"
                                 required
+                            />
+                        </label>
+                        <label v-if="reporte.Tipo === 2">
+                            Editar el monto
+                            <input
+                                v-model="reporte.Monto"
+                                type="number"
+                                min="0"
+                                :required="
+                                    !reporte.Monto && !reporte.MontoCredito
+                                "
+                            />
+                        </label>
+                        <label v-if="reporte.Tipo === 2">
+                            Pago credito
+                            <input
+                                v-model="reporte.MontoCredito"
+                                type="number"
+                                min="0"
+                                :required="
+                                    !reporte.Monto && !reporte.MontoCredito
+                                "
                             />
                         </label>
                         <label v-if="reporte.Tipo !== 2">
@@ -117,7 +136,8 @@ export default {
         return {
             reporte: {
                 Tipo: "",
-                Monto: 0,
+                Monto: "",
+                MontoCredito: "",
                 Descripcion: "",
                 user_pago: "",
                 Salida: "",
@@ -131,10 +151,16 @@ export default {
     methods: {
         ...mapActions(["logout", "showPreloader"]),
         mutarMonto(monto) {
-            if (monto > 0) {
-                this.reporte.Monto = monto;
+            if (monto.balance > 0) {
+                this.reporte.Monto = monto.balance;
             } else {
                 this.reporte.Monto = 0;
+            }
+
+            if (monto.user_credito > 0) {
+                this.reporte.MontoCredito = monto.user_credito;
+            } else {
+                this.reporte.MontoCredito = 0;
             }
         },
         async getEmpleados() {
@@ -188,7 +214,8 @@ export default {
         clearInput() {
             this.reporte = {
                 Tipo: "",
-                Monto: 0,
+                Monto: "",
+                MontoCredito: "",
                 Descripcion: "",
                 user_pago: "",
                 Salida: "",
@@ -199,11 +226,22 @@ export default {
 
             if (reporte.user_pago) {
                 formData.append("user_pago", reporte.user_pago.id);
+                if (reporte.Monto) {
+                    formData.append("Monto", reporte.Monto);
+                } else {
+                    formData.append("Monto", 0);
+                }
+
+                if (reporte.MontoCredito) {
+                    formData.append("MontoCredito", reporte.MontoCredito);
+                } else {
+                    formData.append("MontoCredito", 0);
+                }
             } else {
                 formData.append("Descripcion", reporte.Descripcion);
+                formData.append("Monto", reporte.Monto);
             }
             formData.append("Tipo", reporte.Tipo);
-            formData.append("Monto", reporte.Monto);
             formData.append("Salida", reporte.Salida);
 
             this.showPreloader(true);
@@ -222,10 +260,22 @@ export default {
 
                 if (resData.status === "Token is Expired") {
                     this.logout();
+                } else if (resData == "No puedes cancelar mas de la cuenta") {
+                    alert(resData);
+                } else if (
+                    resData == "No puedes cancelar mas de la cuenta del credito"
+                ) {
+                    alert(resData);
                 } else {
                     this.componentKey += 1;
                     this.clearInput();
-                    alert("Reporte enviado");
+                    if (reporte.Tipo === 1) {
+                        alert("Reporte de gasto enviado");
+                    } else if (reporte.Tipo === 2) {
+                        alert("Reporte de pago enviado");
+                    } else {
+                        alert("Reporte de premio enviado");
+                    }
                 }
             } catch (error) {
                 console.log(error);

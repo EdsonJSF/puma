@@ -6,7 +6,9 @@
                 id="formulario"
                 class="row"
             >
-                <div class="ReportarVentas__data-input col-12 col-md-8">
+                <div
+                    class="ReportarVentas__data-input col-12 col-md-8 my-2 my-md-0"
+                >
                     <div class="table-responsive py-2">
                         <table
                             class="table table-borderless table-hover align-middle"
@@ -137,14 +139,22 @@
                                                 'number'
                                         "
                                     >
-                                        <div>
+                                        <div class="d-flex">
                                             <button
                                                 @click.prevent="
                                                     sendReporte(reporte)
                                                 "
-                                                class="btn btn-sm btn-danger"
+                                                class="btn btn-sm btn-success mx-1"
                                             >
                                                 REPARAR
+                                            </button>
+                                            <button
+                                                @click.prevent="
+                                                    delReporte(index)
+                                                "
+                                                class="btn btn-sm btn-danger mx-1"
+                                            >
+                                                ELIMINAR
                                             </button>
                                         </div>
                                     </td>
@@ -153,7 +163,9 @@
                         </table>
                     </div>
                 </div>
-                <div class="ReportarVentas__data-total col-12 col-md-4">
+                <div
+                    class="ReportarVentas__data-total col-12 col-md-4 my-2 my-md-0"
+                >
                     <div
                         class="d-flex flex-column justify-content-between text-start py-2"
                     >
@@ -425,6 +437,7 @@ export default {
                     }
                 );
                 const resData = await res.json();
+                console.log(resData);
                 reporte.Loteria = completo;
 
                 if (resData.status === "Token is Expired") {
@@ -435,6 +448,14 @@ export default {
                     reporte.Numero = reporte.Numero.toString();
 
                     alert(`El numero: ${reporte.Numero} esta bloqueado !`);
+                } else if (resData.razon) {
+                    /* Para agregar efectos de color en el input Numero y bloqueo de los inputs */
+                    reporte.Valorapuesta = Number(reporte.Valorapuesta);
+                    reporte.Numero = reporte.Numero.toString();
+
+                    alert(
+                        `${resData.razon}, Seleccione una cantidad menor o igual a ${resData.restante}`
+                    );
                 } else {
                     /* Datos para las propiedades de la factura */
                     const date = await this.arreglarString(
@@ -460,6 +481,9 @@ export default {
                 console.log(error);
             }
             this.showPreloader(false);
+        },
+        async delReporte(index) {
+            this.reportes.splice(index, 1);
         },
     },
     computed: {

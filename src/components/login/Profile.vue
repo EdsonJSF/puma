@@ -1,6 +1,6 @@
 <template>
     <div class="Profile">
-        <div class="Profile d-flex flex-column align-items-start">
+        <div class="Profile d-flex flex-column align-items-start py-2">
             <img
                 v-if="userPerfil.foto"
                 :src="`${prefix}/images/${userPerfil.foto}`"

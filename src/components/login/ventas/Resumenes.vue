@@ -1,10 +1,10 @@
 <template>
     <div class="Resumenes">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
+            <div class="col-12 col-md-5 col-lg-4 my-2 my-md-0">
                 <Finanzas />
             </div>
-            <div class="col-12 col-md-7 col-lg-8">
+            <div class="col-12 col-md-7 col-lg-8 my-2 my-md-0">
                 <div class="Resumenes__data rounded-3 py-2">
                     <div class="table-responsive">
                         <table
@@ -14,7 +14,7 @@
                                 <th><div>Fecha</div></th>
                                 <th><div>Número</div></th>
                                 <th>
-                                    <div>Valor a aportar</div>
+                                    <div>Valor a apostar</div>
                                 </th>
                                 <th><div>Lotería</div></th>
                                 <th><div>Tipo</div></th>

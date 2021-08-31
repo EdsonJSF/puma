@@ -28,7 +28,7 @@
                 <swiper-slide
                     v-for="(sorteo, index) in dataSorteos"
                     :key="index"
-                    class="h-100 d-flex flex-column justify-content-center align-items-center"
+                    class="h-100 d-flex flex-column justify-content-start align-items-center"
                 >
                     <div>
                         <img

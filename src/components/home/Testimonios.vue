@@ -28,7 +28,7 @@
                 <swiper-slide
                     v-for="(testimonio, index) in dataTestimonios"
                     :key="index"
-                    class="h-100 d-flex flex-column justify-content-center align-items-center"
+                    class="h-100 d-flex flex-column justify-content-start align-items-center"
                 >
                     <img
                         :src="`${prefix}/images/${testimonio.rutaImagen}`"

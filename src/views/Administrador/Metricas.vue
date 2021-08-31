@@ -1,7 +1,7 @@
 <template>
     <div class="Metricas">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
+            <div class="col-12 col-md-5 col-lg-4 my-2 my-md-0">
                 <div
                     class="Metricas__numeros d-flex flex-column border border-dark rounded-3 py-2"
                 >
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-7 col-lg-8 mt-2 mt-md-0">
+            <div class="col-12 col-md-7 col-lg-8 my-2 my-md-0">
                 <div class="Metricas__Info rounded-3 py-2">
                     <div class="table-responsive">
                         <table

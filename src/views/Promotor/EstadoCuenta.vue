@@ -1,7 +1,7 @@
 <template>
     <div class="EstadoCuenta">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
+            <div class="col-12 col-md-5 col-lg-4 my-2 my-md-0">
                 <div class="d-flex justify-content-center py-2">
                     <table>
                         <tbody class="text-start">
@@ -39,7 +39,7 @@
                     </table>
                 </div>
             </div>
-            <div class="col-12 col-md-7 col-lg-8">
+            <div class="col-12 col-md-7 col-lg-8 my-2 my-md-0">
                 <div class="EstadoCuenta__options rounded-3 py-2">
                     <div class="table-responsive">
                         <table

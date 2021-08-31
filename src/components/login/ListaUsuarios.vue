@@ -1,7 +1,7 @@
 <template>
     <div class="ListaUsuarios">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
+            <div class="col-12 col-md-5 col-lg-4 my-2 my-md-0">
                 <form
                     @submit.prevent="addUsuario(usuario)"
                     class="ListaUsuarios__form d-flex flex-column rounded-3 py-2"
@@ -127,7 +127,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-12 col-md-7 col-lg-8">
+            <div class="col-12 col-md-7 col-lg-8 my-2 my-md-0">
                 <div
                     class="ListaUsuarios__data d-flex flex-column rounded-3 py-2"
                 >

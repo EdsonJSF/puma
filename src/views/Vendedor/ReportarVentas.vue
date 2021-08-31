@@ -1,7 +1,7 @@
 <template>
     <div class="ReportarVentas">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 my-2">
                 <Reportar />
             </div>
         </div>

@@ -35,8 +35,11 @@
                     disableOnInteraction: false,
                 }"
                 :breakpoints="{
-                    768: {
+                    576: {
                         slidesPerView: 3,
+                    },
+                    768: {
+                        slidesPerView: 4,
                     },
                 }"
                 class="mySwiper resultados mt-4"
@@ -44,14 +47,14 @@
                 <swiper-slide
                     v-for="(resultado, index) in dataResultados"
                     :key="index"
-                    class="h-100 d-flex flex-column justify-content-center align-items-center"
+                    class="h-100 d-flex flex-column justify-content-start align-items-center"
                 >
                     <img
                         :src="`${prefix}/images/${resultado.rutaImagen}`"
                         :alt="resultado.titulo"
                     />
                     <div class="d-flex flex-wrap align-items-end">
-                        <h4 class="paralelogramo-primary pe-5">
+                        <h4 class="paralelogramo-primary px-2">
                             {{ resultado.titulo }}
                         </h4>
                         <a

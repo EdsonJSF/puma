@@ -1,7 +1,7 @@
 <template>
     <div class="Galerias">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4 mb-4 mb-md-0">
+            <div class="col-12 col-md-5 col-lg-4 my-2 my-md-0">
                 <div class="Galerias__lista d-flex flex-column rounded-3 py-2">
                     <div
                         v-for="(galeria, indexGaleria) in Galerias"
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-7 col-lg-8">
+            <div class="col-12 col-md-7 col-lg-8 my-2 my-md-0">
                 <div class="Galerias__module rounded-3 py-2">
                     <form
                         @submit.prevent="addGaleria(galeria)"

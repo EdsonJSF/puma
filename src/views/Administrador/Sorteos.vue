@@ -1,7 +1,7 @@
 <template>
     <div class="Sorteos">
         <div class="row">
-            <div class="col-12 col-md-5 col-lg-4">
+            <div class="col-12 col-md-5 col-lg-4 my-2 my-md-0">
                 <div class="Sorteos__input d-flex flex-column rounded-3 py-2">
                     <div>
                         <h5>Nuevo Sorteo</h5>
@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-7 col-lg-8 mt-2 mt-md-0">
+            <div class="col-12 col-md-7 col-lg-8 my-2 my-md-0">
                 <div class="Sorteos__data d-flex flex-column rounded-3 py-2">
                     <div class="table-responsive">
                         <table

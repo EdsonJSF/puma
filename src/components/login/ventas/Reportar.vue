@@ -6,7 +6,7 @@
                 id="formulario"
                 class="row"
             >
-                <div class="Reportar__data-input col-12 col-md-8">
+                <div class="Reportar__data-input col-12 col-md-8 my-2 my-md-0">
                     <div class="table-responsive py-2">
                         <table
                             class="table table-borderless table-hover align-middle"
@@ -153,7 +153,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="Reportar__data-total col-12 col-md-4">
+                <div class="Reportar__data-total col-12 col-md-4 my-2 my-md-0">
                     <div
                         class="d-flex flex-column justify-content-between text-start py-2"
                     >
@@ -441,6 +441,14 @@ export default {
                     reporte.Numero = reporte.Numero.toString();
 
                     alert(`El numero: ${reporte.Numero} esta bloqueado !`);
+                } else if (resData.razon) {
+                    /* Para agregar efectos de color en el input Numero y bloqueo de los inputs */
+                    reporte.Valorapuesta = Number(reporte.Valorapuesta);
+                    reporte.Numero = reporte.Numero.toString();
+
+                    alert(
+                        `${resData.razon}, Seleccione una cantidad menor o igual a ${resData.restante}`
+                    );
                 } else {
                     /* Datos para las propiedades de la factura */
                     const date = await this.arreglarString(
