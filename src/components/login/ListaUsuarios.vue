@@ -4,113 +4,164 @@
             <div class="col-12 col-md-5 col-lg-4 my-2 my-md-0">
                 <form
                     @submit.prevent="addUsuario(usuario)"
-                    class="ListaUsuarios__form d-flex flex-column rounded-3 py-2"
+                    class="ListaUsuarios__form d-flex flex-column rounded-3 py-2 px-1"
                 >
-                    <input
-                        @change="onFileSelected"
-                        :key="fileInputKey"
-                        type="file"
-                        class="form-control"
-                        accept="image/*"
-                        :required="crear"
-                    />
-                    <figure v-if="imagenSeleccionada" class="m-0">
+                    <label class="position-relative btn d-flex w-100 py-1 px-4">
+                        <input
+                            @change="onFileSelected"
+                            :key="fileInputKey"
+                            :required="crear"
+                            type="file"
+                            accept="image/*"
+                            class="invisible position-absolute"
+                        />
                         <img
+                            v-if="imagenSeleccionada"
+                            class="w-25 h-auto rounded-3"
                             :src="imagen"
-                            width="150"
-                            height="150"
                             alt="Imagen Seleccionada"
                         />
-                    </figure>
-                    <input
-                        v-model="usuario.name"
-                        class="form-control"
-                        type="name"
-                        placeholder="name"
-                        required
-                    />
-                    <input
-                        v-model="usuario.email"
-                        class="form-control"
-                        type="email"
-                        placeholder="email"
-                        required
-                    />
-                    <input
-                        v-if="crear"
-                        class="form-control"
-                        v-model="usuario.password"
-                        type="password"
-                        minlength="6"
-                        placeholder="password"
-                        required
-                    />
-                    <input
-                        v-model="usuario.dni"
-                        class="form-control"
-                        type="number"
-                        placeholder="dni"
-                        required
-                    />
-                    <input
-                        v-if="usuario.rol_id != 1"
-                        v-model="usuario.porcentaje"
-                        class="form-control"
-                        type="number"
-                        min="0"
-                        max="50"
-                        placeholder="porcentaje"
-                        required
-                    />
-                    <input
-                        v-model="usuario.direccion"
-                        class="form-control"
-                        type="direccion"
-                        placeholder="direccion"
-                        required
-                    />
-                    <input
-                        v-model="usuario.telefono"
-                        class="form-control"
-                        type="phone"
-                        placeholder="telefono"
-                        required
-                    />
-                    <select
-                        v-model="usuario.rol_id"
-                        class="form-control"
-                        required
+                        <img
+                            v-if="!imagenSeleccionada"
+                            class="w-25 h-auto bg-secondary p-2 pb-0 rounded-3"
+                            src="../../assets/img/icons/user-alt-solid.svg"
+                        />
+                        <img
+                            class="p-3"
+                            width="50"
+                            src="../../assets/img/icons/plus-solid-white.svg"
+                        />
+                    </label>
+                    <div class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">Nombre</label>
+                        <input
+                            v-model="usuario.name"
+                            class="form-control"
+                            type="name"
+                            placeholder="Nombre"
+                            required
+                        />
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">Correo</label>
+                        <input
+                            v-model="usuario.email"
+                            class="form-control"
+                            type="email"
+                            placeholder="Correo"
+                            required
+                        />
+                    </div>
+                    <div v-if="crear" class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">Contraseña</label>
+                        <input
+                            class="form-control"
+                            v-model="usuario.password"
+                            type="password"
+                            minlength="6"
+                            placeholder="Contraseña"
+                            required
+                        />
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">NIT</label>
+                        <input
+                            v-model="usuario.dni"
+                            class="form-control"
+                            type="number"
+                            placeholder="NIT"
+                            required
+                        />
+                    </div>
+                    <div
+                        v-if="usuario.rol_id && usuario.rol_id != 1"
+                        class="d-flex align-items-center"
                     >
-                        <option value="" class="form-control" disabled selected
-                            >Seleccione rol</option
+                        <label class="btn btn-light me-1">Porcentaje</label>
+                        <input
+                            v-model="usuario.porcentaje"
+                            class="form-control"
+                            type="number"
+                            min="0"
+                            max="50"
+                            placeholder="Porcentaje"
+                            required
+                        />
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">Dirección</label>
+                        <input
+                            v-model="usuario.direccion"
+                            class="form-control"
+                            type="direccion"
+                            placeholder="dirección"
+                            required
+                        />
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">Teléfono</label>
+                        <input
+                            v-model="usuario.telefono"
+                            class="form-control"
+                            type="phone"
+                            placeholder="teléfono"
+                            required
+                        />
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">Rol</label>
+                        <select
+                            v-model="usuario.rol_id"
+                            class="form-control"
+                            required
                         >
-                        <option value="1">Administrador</option>
-                        <option value="2">Promotor</option>
-                        <option value="3">Vendedor</option>
-                    </select>
-                    <select
+                            <option
+                                value=""
+                                class="form-control"
+                                disabled
+                                selected
+                                >Seleccione rol</option
+                            >
+                            <option value="1">Administrador</option>
+                            <option value="2">Promotor</option>
+                            <option value="3">Vendedor</option>
+                        </select>
+                    </div>
+                    <div
                         v-if="usuario.rol_id == 3"
-                        v-model="usuario.user_id"
-                        class="form-control"
-                        required
+                        class="d-flex align-items-center"
                     >
-                        <option value="" class="form-control" disabled selected
-                            >Seleccione promotor</option
+                        <label class="btn btn-light me-1">Encargado</label>
+                        <select
+                            v-model="usuario.user_id"
+                            class="form-control"
+                            required
                         >
-                        <option
-                            v-for="(promotor, indexPro) in soloPromotores[1]"
-                            :key="indexPro"
-                            :value="promotor.id"
-                            >{{ promotor.name }}</option
-                        >
-                    </select>
-                    <input
-                        v-model="usuario.codigo"
-                        class="form-control"
-                        type="text"
-                        placeholder="codígo"
-                        required
-                    />
+                            <option
+                                value=""
+                                class="form-control"
+                                disabled
+                                selected
+                                >Seleccione promotor</option
+                            >
+                            <option
+                                v-for="(promotor, indexPro) in soloPromotores"
+                                :key="indexPro"
+                                :value="promotor.id"
+                                >{{ promotor.name }}</option
+                            >
+                        </select>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="btn btn-light me-1">Código</label>
+                        <input
+                            v-model="usuario.codigo"
+                            class="form-control"
+                            type="text"
+                            placeholder="código"
+                            required
+                        />
+                    </div>
                     <div class="d-flex justify-content-around">
                         <button
                             @click.prevent="clearInput"
@@ -247,7 +298,7 @@ export default {
                             this.PromotoresVendedores.push(empleadoData);
                         });
                     });
-                    this.soloPromotores = resData;
+                    this.soloPromotores = resData[1];
                 }
             } catch (error) {
                 console.log(error);
@@ -326,10 +377,13 @@ export default {
                     this.PromotoresVendedores.unshift(resData.user);
                     this.clearInput();
                     alert("Usuario creado");
+                    if (usuario.rol_id == 2) {
+                        this.soloPromotores.push(resData.user);
+                    }
                 } else if (JSON.parse(resData).email) {
                     alert("Ya existe el email");
                 } else if (JSON.parse(resData).codigo) {
-                    alert("Ya existe el codigo");
+                    alert("Ya existe el código");
                 }
             } catch (error) {
                 console.log(error);
@@ -449,9 +503,12 @@ export default {
 .ListaUsuarios {
     .ListaUsuarios__form {
         background: var(--bs-dark);
-        .form-control,
-        .form-control:focus {
-            margin: 1px 0;
+        div {
+            margin: 2px 0;
+            label {
+                font-weight: 400;
+                cursor: default;
+            }
         }
     }
     .ListaUsuarios__data {
