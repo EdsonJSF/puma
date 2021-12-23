@@ -94,7 +94,7 @@
                             v-model="usuario.direccion"
                             class="form-control"
                             type="direccion"
-                            placeholder="dirección"
+                            placeholder="Dirección"
                             required
                         />
                     </div>
@@ -104,7 +104,7 @@
                             v-model="usuario.telefono"
                             class="form-control"
                             type="phone"
-                            placeholder="teléfono"
+                            placeholder="Teléfono"
                             required
                         />
                     </div>
@@ -158,7 +158,7 @@
                             v-model="usuario.codigo"
                             class="form-control"
                             type="text"
-                            placeholder="código"
+                            placeholder="Código"
                             required
                         />
                     </div>

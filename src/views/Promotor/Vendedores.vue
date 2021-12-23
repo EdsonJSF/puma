@@ -73,10 +73,7 @@
                             required
                         />
                     </div>
-                    <div
-                        v-if="usuario.rol_id && usuario.rol_id != 1"
-                        class="d-flex align-items-center"
-                    >
+                    <div class="d-flex align-items-center">
                         <label class="btn btn-light me-1">Porcentaje</label>
                         <input
                             v-model="usuario.porcentaje"
@@ -84,7 +81,7 @@
                             type="number"
                             min="0"
                             max="50"
-                            placeholder="porcentaje"
+                            placeholder="Porcentaje"
                             required
                         />
                     </div>
@@ -94,7 +91,7 @@
                             v-model="usuario.direccion"
                             class="form-control"
                             type="direccion"
-                            placeholder="dirección"
+                            placeholder="Dirección"
                             required
                         />
                     </div>
@@ -104,7 +101,7 @@
                             v-model="usuario.telefono"
                             class="form-control"
                             type="phone"
-                            placeholder="teléfono"
+                            placeholder="Teléfono"
                             required
                         />
                     </div>
@@ -114,7 +111,7 @@
                             v-model="usuario.codigo"
                             class="form-control"
                             type="text"
-                            placeholder="código"
+                            placeholder="Código"
                             required
                         />
                     </div>
@@ -143,7 +140,7 @@
                             <thead>
                                 <th>Nombre Apellido</th>
                                 <th>NIT</th>
-                                <th>Ganancia</th>
+                                <th>Porcentaje</th>
                             </thead>
                             <tbody
                                 v-for="(vendedor, index) in Vendedores"
@@ -157,7 +154,7 @@
                                         <div>{{ vendedor.dni }}</div>
                                     </td>
                                     <td>
-                                        <div>{{ vendedor.porcentaje }}</div>
+                                        <div>{{ vendedor.porcentaje }}%</div>
                                     </td>
                                     <td>
                                         <div>
@@ -295,7 +292,7 @@ export default {
             formData.append("password", usuario.password);
             formData.append("dni", usuario.dni);
             formData.append("foto", usuario.foto);
-            formData.append("ganancia", usuario.ganancia);
+            // formData.append("ganancia", usuario.ganancia);
             formData.append("porcentaje", usuario.porcentaje);
             formData.append("direccion", usuario.direccion);
             formData.append("telefono", usuario.telefono);
@@ -343,7 +340,7 @@ export default {
             formData.append("email", usuario.email);
             formData.append("dni", usuario.dni);
             formData.append("foto", usuario.foto);
-            formData.append("ganancia", usuario.ganancia);
+            // formData.append("ganancia", usuario.ganancia);
             formData.append("porcentaje", usuario.porcentaje);
             formData.append("direccion", usuario.direccion);
             formData.append("telefono", usuario.telefono);
