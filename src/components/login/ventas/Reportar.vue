@@ -22,6 +22,11 @@
                                 <tr
                                     v-for="(reporte, index) in reportes"
                                     :key="index"
+                                    :class="
+                                        typeof reporte.Numero === 'number'
+                                            ? 'fail'
+                                            : ''
+                                    "
                                 >
                                     <td>
                                         <div>
@@ -29,13 +34,12 @@
                                                 v-model="reporte.Fecha"
                                                 :disabled="
                                                     typeof reporte.Valorapuesta ===
-                                                        'number' ||
-                                                        typeof reporte.Numero ===
-                                                            'number'
+                                                        'number'
                                                 "
                                                 class="bg-transparent w-100"
                                                 type="date"
                                                 placeholder="Fecha"
+                                                :max="date"
                                                 required
                                             />
                                         </div>
@@ -44,19 +48,14 @@
                                         <div>
                                             <input
                                                 v-model="reporte.Numero"
-                                                :class="
-                                                    typeof reporte.Valorapuesta ===
-                                                    'number'
-                                                        ? 'text-danger'
-                                                        : ''
-                                                "
                                                 :disabled="
-                                                    typeof reporte.Numero ===
+                                                    typeof reporte.Valorapuesta ===
                                                         'number'
                                                 "
                                                 class="bg-transparent w-100"
                                                 type="number"
                                                 min="0"
+                                                max="9999"
                                                 step="1"
                                                 placeholder="Numero"
                                                 required
@@ -69,9 +68,7 @@
                                                 v-model="reporte.Valorapuesta"
                                                 :disabled="
                                                     typeof reporte.Valorapuesta ===
-                                                        'number' ||
-                                                        typeof reporte.Numero ===
-                                                            'number'
+                                                        'number'
                                                 "
                                                 class="bg-transparent w-100"
                                                 type="number"
@@ -88,9 +85,7 @@
                                                 v-model="reporte.Loteria"
                                                 :disabled="
                                                     typeof reporte.Valorapuesta ===
-                                                        'number' ||
-                                                        typeof reporte.Numero ===
-                                                            'number'
+                                                        'number'
                                                 "
                                                 class="triangulo-bottom"
                                                 required
@@ -114,38 +109,54 @@
                                                 v-model="reporte.Tipo"
                                                 :disabled="
                                                     typeof reporte.Valorapuesta ===
-                                                        'number' ||
-                                                        typeof reporte.Numero ===
-                                                            'number'
+                                                        'number'
                                                 "
                                                 class="triangulo-bottom"
                                                 required
                                             >
                                                 <option
-                                                    v-for="(tipo,
-                                                    index) in tipos"
-                                                    :key="index"
-                                                    :value="tipo"
-                                                    >{{ tipo }}</option
+                                                    v-if="
+                                                        reporte.Numero.length <
+                                                            3 &&
+                                                            reporte.Numero
+                                                                .length > 0
+                                                    "
+                                                    value="Terminal"
+                                                    >Terminal</option
+                                                >
+                                                <option
+                                                    v-if="
+                                                        reporte.Numero
+                                                            .length === 3
+                                                    "
+                                                    value="Triple"
+                                                    >Triple</option
+                                                >
+                                                <option
+                                                    v-if="
+                                                        reporte.Numero
+                                                            .length === 3
+                                                    "
+                                                    value="Combinado de 3"
+                                                    >Combinado de 3</option
+                                                >
+                                                <option
+                                                    v-if="
+                                                        reporte.Numero
+                                                            .length === 4
+                                                    "
+                                                    value="Combinado de 4"
+                                                    >Combinado de 4</option
+                                                >
+                                                <option
+                                                    v-if="
+                                                        reporte.Numero
+                                                            .length === 4
+                                                    "
+                                                    value="4 cifras"
+                                                    >4 cifras</option
                                                 >
                                             </select>
-                                        </div>
-                                    </td>
-                                    <td
-                                        v-if="
-                                            typeof reporte.Valorapuesta ===
-                                                'number'
-                                        "
-                                    >
-                                        <div>
-                                            <button
-                                                @click.prevent="
-                                                    sendReporte(reporte)
-                                                "
-                                                class="btn btn-sm btn-danger"
-                                            >
-                                                REPARAR
-                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -191,14 +202,13 @@
                                 />
                             </div>
                             <div class="Reportar__data-item my-1 p-2">
-                                <h6>Referencia</h6>
+                                <h6>Observaciones</h6>
                                 <input
                                     v-model="
                                         reportes[reportes.length - 1].Referencia
                                     "
                                     class="bg-transparent w-100"
                                     type="text"
-                                    required
                                 />
                             </div>
                         </div>
@@ -253,6 +263,7 @@ export default {
     },
     data() {
         return {
+            date: "",
             reportes: [
                 {
                     Fecha: "",
@@ -290,6 +301,11 @@ export default {
     methods: {
         ...mapActions(["logout", "showPreloader"]),
 
+        getDate() {
+            const date = new Date();
+            this.date = `${date.getFullYear()}-${date.getMonth() +
+                1}-${date.getDate()}`;
+        },
         imprimir() {
             print();
         },
@@ -301,6 +317,7 @@ export default {
                 hora: "",
                 total: 0,
             };
+            this.total = 0;
             this.clearInput();
         },
         clearInput() {
@@ -359,7 +376,6 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else {
-                    this.total = Number(resData.sumatotal);
                     this.promotor = resData.promotor[0].name;
                 }
             } catch (error) {
@@ -405,16 +421,15 @@ export default {
         },
         /* Envia el reporte */
         async sendReporte(reporte) {
-            this.showPreloader(true);
+            if (reporte.Numero.length < 2) {
+                reporte.Numero = `0${reporte.Numero}`;
+            }
+            await this.showPreloader(true);
 
             const completo = reporte.Loteria;
             const id = reporte.Loteria.id;
 
-            /* Para quitar efectos de color en el input Numero */
-            reporte.Valorapuesta = reporte.Valorapuesta.toString();
-
-            /* Para bloquear los inputs */
-            reporte.Numero = Number(reporte.Numero);
+            reporte.Valorapuesta = Number(reporte.Valorapuesta);
 
             reporte.Loteria = id;
 
@@ -436,19 +451,13 @@ export default {
                 if (resData.status === "Token is Expired") {
                     this.logout();
                 } else if (resData === "Numero bloqueado") {
-                    /* Para agregar efectos de color en el input Numero y bloqueo de los inputs */
-                    reporte.Valorapuesta = Number(reporte.Valorapuesta);
-                    reporte.Numero = reporte.Numero.toString();
-
                     alert(`El numero: ${reporte.Numero} esta bloqueado !`);
+                    reporte.Numero = Number(reporte.Numero);
                 } else if (resData.razon) {
-                    /* Para agregar efectos de color en el input Numero y bloqueo de los inputs */
-                    reporte.Valorapuesta = Number(reporte.Valorapuesta);
-                    reporte.Numero = reporte.Numero.toString();
-
                     alert(
                         `${resData.razon}, Seleccione una cantidad menor o igual a ${resData.restante}`
                     );
+                    reporte.Numero = Number(reporte.Numero);
                 } else {
                     /* Datos para las propiedades de la factura */
                     const date = await this.arreglarString(
@@ -471,6 +480,7 @@ export default {
                     }
                 }
             } catch (error) {
+                reporte.Numero = Number(reporte.Numero);
                 console.log(error);
             }
             this.showPreloader(false);
@@ -480,6 +490,7 @@ export default {
         ...mapState(["token", "rol", "prefix"]),
     },
     created() {
+        this.getDate();
         this.getPromotor();
         this.getLoterias();
     },
@@ -522,6 +533,16 @@ export default {
             th:last-child,
             td:last-child {
                 border-right: none;
+            }
+            tr.fail {
+                td div {
+                    background: var(--bs-danger);
+                    color: #ffffff !important;
+                    input,
+                    input::placeholder {
+                        color: #ffffff !important;
+                    }
+                }
             }
         }
     }
