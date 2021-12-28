@@ -478,7 +478,7 @@ export default {
             if (
                 empleado.name.toLowerCase().includes(this.toSearch) ||
                 empleado.dni.toString().includes(this.toSearch) ||
-                empleado.codigo.includes(this.toSearch) ||
+                empleado.codigo.toLowerCase().includes(this.toSearch) ||
                 porcentaje
             ) {
                 return true;

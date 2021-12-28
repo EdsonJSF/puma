@@ -410,7 +410,7 @@ export default {
             if (
                 vendedor.name.toLowerCase().includes(this.toSearch) ||
                 vendedor.dni.toString().includes(this.toSearch) ||
-                vendedor.codigo.includes(this.toSearch) ||
+                vendedor.codigo.toLowerCase().includes(this.toSearch) ||
                 vendedor.porcentaje.toString().includes(this.toSearch)
             ) {
                 return true;
