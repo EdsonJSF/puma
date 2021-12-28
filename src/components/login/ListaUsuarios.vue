@@ -189,7 +189,8 @@
                             <thead>
                                 <th>Nombre Apellido</th>
                                 <th>NIT</th>
-                                <th>Ganancia</th>
+                                <th>Porcentaje</th>
+                                <th>Código</th>
                             </thead>
                             <tbody
                                 v-for="(empleado,
@@ -208,10 +209,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div>
-                                            {{ empleado.balance }}
-                                            COP
-                                        </div>
+                                        <div>{{ empleado.porcentaje }}%</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ empleado.codigo }}</div>
                                     </td>
                                     <td>
                                         <div>
@@ -471,13 +472,14 @@ export default {
         },
 
         generalSearch(empleado) {
-            const balance = empleado.balance
-                ? empleado.balance.toString().includes(this.toSearch)
+            const porcentaje = empleado.porcentaje
+                ? empleado.porcentaje.toString().includes(this.toSearch)
                 : false;
             if (
                 empleado.name.toLowerCase().includes(this.toSearch) ||
                 empleado.dni.toString().includes(this.toSearch) ||
-                balance
+                empleado.codigo.includes(this.toSearch) ||
+                porcentaje
             ) {
                 return true;
             } else {
