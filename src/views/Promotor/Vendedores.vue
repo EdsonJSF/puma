@@ -141,6 +141,7 @@
                                 <th>Nombre Apellido</th>
                                 <th>NIT</th>
                                 <th>Porcentaje</th>
+                                <th>Código</th>
                             </thead>
                             <tbody
                                 v-for="(vendedor, index) in Vendedores"
@@ -155,6 +156,9 @@
                                     </td>
                                     <td>
                                         <div>{{ vendedor.porcentaje }}%</div>
+                                    </td>
+                                    <td>
+                                        <div>{{ vendedor.codigo }}</div>
                                     </td>
                                     <td>
                                         <div>
@@ -406,6 +410,7 @@ export default {
             if (
                 vendedor.name.toLowerCase().includes(this.toSearch) ||
                 vendedor.dni.toString().includes(this.toSearch) ||
+                vendedor.codigo.includes(this.toSearch) ||
                 vendedor.porcentaje.toString().includes(this.toSearch)
             ) {
                 return true;
