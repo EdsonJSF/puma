@@ -53,8 +53,12 @@
                                         >
                                             {{
                                                 estadoCuenta.Monto
-                                                    ? estadoCuenta.Monto
-                                                    : estadoCuenta.venta
+                                                    ? Number(
+                                                          estadoCuenta.Monto
+                                                      ).toLocaleString("de-DE")
+                                                    : Number(
+                                                          estadoCuenta.venta
+                                                      ).toLocaleString("de-DE")
                                             }}
                                             <samp class="text-dark"
                                                 >&nbspCOP</samp

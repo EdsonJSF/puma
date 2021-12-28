@@ -36,7 +36,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div>{{ venta.Valorapuesta }} COP</div>
+                                        <div>
+                                            {{
+                                                Number(
+                                                    venta.Valorapuesta
+                                                ).toLocaleString("de-DE")
+                                            }}
+                                            COP
+                                        </div>
                                     </td>
                                     <td>
                                         <div>

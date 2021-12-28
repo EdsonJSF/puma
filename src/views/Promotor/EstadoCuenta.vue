@@ -78,8 +78,12 @@
                                         >
                                             {{
                                                 venta.Valorapuesta
-                                                    ? venta.Valorapuesta
-                                                    : venta.Monto
+                                                    ? Number(
+                                                          venta.Valorapuesta
+                                                      ).toLocaleString("de-DE")
+                                                    : Number(
+                                                          venta.Monto
+                                                      ).toLocaleString("de-DE")
                                             }}
                                             <samp class="text-dark"
                                                 >&nbspCOP</samp

@@ -20,7 +20,12 @@
                             </td>
                             <td>
                                 <div v-if="solicitud.CantidadSolicitada">
-                                    {{ solicitud.CantidadSolicitada }} COP
+                                    {{
+                                        Number(
+                                            solicitud.CantidadSolicitada
+                                        ).toLocaleString("de-DE")
+                                    }}
+                                    COP
                                 </div>
                                 <div v-if="solicitud.MobiliarioSolicitado">
                                     {{ solicitud.MobiliarioSolicitado }}
