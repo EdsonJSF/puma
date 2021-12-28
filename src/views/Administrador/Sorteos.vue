@@ -33,9 +33,10 @@
                                 required
                             />
                             <input
+                                @keyup="toThousands()"
                                 v-model="sorteo.Max"
                                 class="border-0 my-1"
-                                type="number"
+                                type="text"
                                 min="0"
                                 placeholder="Monto límite"
                                 required
@@ -190,6 +191,17 @@ export default {
     },
     methods: {
         ...mapActions(["logout", "showPreloader", "sendSearch"]),
+
+        toThousands() {
+            this.sorteo.Max = this.sorteo.Max.toString();
+            this.sorteo.Max = this.sorteo.Max.replace(/\./gi, "");
+            this.sorteo.Max = Number(this.sorteo.Max);
+            if (this.sorteo.Max) {
+                this.sorteo.Max = this.sorteo.Max.toLocaleString("de-DE");
+            } else {
+                this.sorteo.Max = 0;
+            }
+        },
 
         async getSorteos() {
             this.showPreloader(true);
