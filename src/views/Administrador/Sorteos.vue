@@ -257,7 +257,7 @@ export default {
             formData.append("Fecha", sorteo.Fecha);
             formData.append("Loteria", sorteo.Loteria);
             formData.append("Codigo", sorteo.Codigo);
-            formData.append("Max", sorteo.Max);
+            formData.append("Max", sorteo.Max.toString().replace(/\./gi, ""));
             formData.append("porc_4cifras", sorteo.porc_4cifras);
             formData.append("porc_triple", sorteo.porc_triple);
             formData.append("porc_combn3", sorteo.porc_combn3);
@@ -299,6 +299,7 @@ export default {
         },
         async editSorteo(sorteo) {
             sorteo.Estado = 1;
+            sorteo.Max = sorteo.Max.toString().replace(/\./gi, "");
             this.showPreloader(true);
             try {
                 const res = await fetch(
